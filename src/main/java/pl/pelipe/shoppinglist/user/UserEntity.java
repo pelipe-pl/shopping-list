@@ -31,6 +31,23 @@ public class UserEntity {
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    public UserEntity() {
+    }
+
+    public UserEntity(@NotNull String name, @NotNull String lastName, @Email String email, @NotNull @Min(10) String password, LocalDateTime createdAt) {
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.createdAt = createdAt;
+    }
+
+    public UserEntity(@NotNull String name, @NotNull String lastName, @Email String email, @NotNull @Min(10) String password) {
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
 
     public Long getId() {
         return id;

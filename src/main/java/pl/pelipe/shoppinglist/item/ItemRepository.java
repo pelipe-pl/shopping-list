@@ -11,4 +11,6 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Integer> {
     List<ItemEntity> findAllByUser_Id(Long userId);
 
     List<ItemEntity> findAllByUser_IdAndDone(Long userId, Boolean done);
+
+    ItemEntity getById(Long id);
 }

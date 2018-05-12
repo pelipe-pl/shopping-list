@@ -26,6 +26,23 @@ public class ItemEntity {
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    public ItemEntity() {
+    }
+
+    public ItemEntity(@NotNull String name, UserEntity user, Boolean done, LocalDateTime createdAt) {
+        this.name = name;
+        this.user = user;
+        this.done = done;
+        this.createdAt = createdAt;
+    }
+
+    public ItemEntity(Long id, @NotNull String name, UserEntity user, Boolean done, LocalDateTime createdAt) {
+        this.name = name;
+        this.user = user;
+        this.done = done;
+        this.createdAt = createdAt;
+    }
+
     public Long getId() {
         return id;
     }
@@ -44,6 +61,18 @@ public class ItemEntity {
 
     public void setUser(UserEntity user) {
         this.user = user;
+    }
+
+    public void setDone(Boolean done) {
+        this.done = done;
+    }
+
+    public Boolean getDone() {
+        return done;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     @Override
