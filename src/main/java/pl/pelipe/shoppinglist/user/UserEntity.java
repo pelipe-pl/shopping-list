@@ -5,7 +5,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "user_table")
@@ -13,7 +13,7 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @NotNull
     private String name;
@@ -23,33 +23,33 @@ public class UserEntity {
 
     @Email
     @Column(unique = true, nullable = false)
-    private String email;
+    private String userName;
 
     @NotNull
-    @Min(10)
     private String password;
 
+    private String passwordConfirm;
+
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @ManyToMany
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
 
     public UserEntity() {
     }
 
-    public UserEntity(@NotNull String name, @NotNull String lastName, @Email String email, @NotNull @Min(10) String password, LocalDateTime createdAt) {
+    public UserEntity(@NotNull String name, @NotNull String lastName, @Email String userName, @NotNull @Min(10) String password, String passwordConfirm, LocalDateTime createdAt, Set<Role> roles) {
         this.name = name;
         this.lastName = lastName;
-        this.email = email;
+        this.userName = userName;
         this.password = password;
+        this.passwordConfirm = passwordConfirm;
         this.createdAt = createdAt;
+        this.roles = roles;
     }
 
-    public UserEntity(@NotNull String name, @NotNull String lastName, @Email String email, @NotNull @Min(10) String password) {
-        this.name = name;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-    }
-
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -69,12 +69,12 @@ public class UserEntity {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
@@ -85,26 +85,23 @@ public class UserEntity {
         this.password = password;
     }
 
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserEntity that = (UserEntity) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(lastName, that.lastName) &&
-                Objects.equals(email, that.email) &&
-                Objects.equals(password, that.password) &&
-                Objects.equals(createdAt, that.createdAt);
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(id, name, lastName, email, password, createdAt);
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }
