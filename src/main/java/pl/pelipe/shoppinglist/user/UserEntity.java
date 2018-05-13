@@ -12,22 +12,21 @@ import java.util.Set;
 public class UserEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @NotNull
     private String name;
 
-    @NotNull
     private String lastName;
 
     @Email
     @Column(unique = true, nullable = false)
-    private String userName;
+    private String username;
 
     @NotNull
     private String password;
 
+    @Transient
     private String passwordConfirm;
 
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -39,10 +38,10 @@ public class UserEntity {
     public UserEntity() {
     }
 
-    public UserEntity(@NotNull String name, @NotNull String lastName, @Email String userName, @NotNull @Min(10) String password, String passwordConfirm, LocalDateTime createdAt, Set<Role> roles) {
+    public UserEntity(@NotNull String name, @NotNull String lastName, @Email String username, @NotNull @Min(10) String password, String passwordConfirm, LocalDateTime createdAt, Set<Role> roles) {
         this.name = name;
         this.lastName = lastName;
-        this.userName = userName;
+        this.username = username;
         this.password = password;
         this.passwordConfirm = passwordConfirm;
         this.createdAt = createdAt;
@@ -69,12 +68,12 @@ public class UserEntity {
         this.lastName = lastName;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

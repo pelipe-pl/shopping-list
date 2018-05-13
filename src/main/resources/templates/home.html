@@ -4,9 +4,10 @@
     <th:block th:replace="layouts/head"></th:block>
 </head>
 <body>
-<p style="text-align: center"><img src="shopping-list-logo-with-text.png">
-<h1 style="text-align: center; font-size: 60px">Hello!</h1>
-<p style="text-align: center; font-size: 40px">Welcome to <span th:text="${appName}"></span></p>
+<th:block th:replace="layouts/nav"></th:block>
 
+<div>
+<h1 style="text-align: center; font-size: 60px">Welcome!</h1>
+</div>
 </body>
 </html>

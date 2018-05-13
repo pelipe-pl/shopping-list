@@ -8,16 +8,16 @@ public class ItemService {
 //    private final ItemRepository itemRepository;
 //    private final UserServiceFacade userService;
 //
-//    public ItemService(ItemRepository itemRepository, UserServiceFacade userService) {
+//    images ItemService(ItemRepository itemRepository, UserServiceFacade userService) {
 //        this.itemRepository = itemRepository;
 //        this.userService = userService;
 //    }
 //
-//    public void add(ItemDto itemDto) {
+//    images void add(ItemDto itemDto) {
 //        itemRepository.save(toEntity(itemDto));
 //    }
 //
-//    public void setDone(Long id) {
+//    images void setDone(Long id) {
 //        ItemEntity itemEntity = itemRepository.getById(id);
 //        itemEntity.setDone(true);
 //        itemRepository.save(itemEntity);

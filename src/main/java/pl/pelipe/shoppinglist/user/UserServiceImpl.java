@@ -1,6 +1,7 @@
 package pl.pelipe.shoppinglist.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -8,26 +9,25 @@ import java.util.HashSet;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
-
-    private final RoleRepository roleRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-    }
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @SuppressWarnings("unchecked")
     @Override
     public void save(UserEntity userEntity) {
-        userEntity.setPassword(userEntity.getPassword());
-        userEntity.setRoles(new HashSet(roleRepository.findAll()));
+        userEntity.setPassword(bCryptPasswordEncoder.encode(userEntity.getPassword()));
+        userEntity.setRoles(new HashSet<>(roleRepository.findAll()));
         userRepository.save(userEntity);
     }
 
     @Override
-    public UserEntity findByUsername(String userName) {
-        return userRepository.findByUserName(userName);
+    public UserEntity findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }
