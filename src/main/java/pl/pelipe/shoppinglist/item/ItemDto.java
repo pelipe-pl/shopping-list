@@ -8,7 +8,7 @@ public class ItemDto {
 
     private String name;
 
-    private Long userId;
+    private Integer userId;
 
     private Boolean done;
 
@@ -17,7 +17,7 @@ public class ItemDto {
     public ItemDto() {
     }
 
-    public ItemDto(Long id, String name, Long userId, Boolean done, LocalDateTime createdAt) {
+    public ItemDto(Long id, String name, Integer userId, Boolean done, LocalDateTime createdAt) {
         this.id = id;
         this.name = name;
         this.userId = userId;
@@ -37,11 +37,11 @@ public class ItemDto {
         this.name = name;
     }
 
-    public Long getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 

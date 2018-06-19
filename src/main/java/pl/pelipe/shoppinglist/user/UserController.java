@@ -7,6 +7,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import pl.pelipe.shoppinglist.item.ItemDto;
+import pl.pelipe.shoppinglist.item.ItemService;
+
+import java.security.Principal;
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -45,19 +50,20 @@ public class UserController {
         return "registration";
     }
 
+    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    public String profile(Model model) {
+        return "profile";
+    }
+
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registration(@ModelAttribute("userForm") UserEntity userForm, BindingResult bindingResult, Model model) {
         userValidator.validate(userForm, bindingResult);
-
         if (bindingResult.hasErrors()) {
             model.addAttribute("error", bindingResult.toString());
             return "/registration";
         }
-
         userService.save(userForm);
-
         model.addAttribute("message", "You have been successfully registered.");
-
-        return "redirect:/login";
+        return "/login";
     }
 }
