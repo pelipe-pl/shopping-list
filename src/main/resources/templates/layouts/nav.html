@@ -24,3 +24,4 @@
 </div>
 <div th:if="${error}" class="alert alert-danger" role="alert"><h4 th:text="${error}"></h4></div>
 <div th:if="${message}" class="alert alert-info" role="alert"><h4 th:text="${message}"></h4></div>
+<div th:if="${userInfo != null}" th:utext="${userInfo}"></div>

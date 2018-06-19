@@ -38,7 +38,7 @@ public class UserEntity {
     public UserEntity() {
     }
 
-    public UserEntity(@NotNull String name, @NotNull String lastName, @Email String username, @NotNull @Min(10) String password, String passwordConfirm, LocalDateTime createdAt, Set<Role> roles) {
+    public UserEntity(String name, String lastName, @Email String username, @NotNull String password, String passwordConfirm, LocalDateTime createdAt, Set<Role> roles) {
         this.name = name;
         this.lastName = lastName;
         this.username = username;
@@ -95,6 +95,7 @@ public class UserEntity {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
+
 
     public Set<Role> getRoles() {
         return roles;
