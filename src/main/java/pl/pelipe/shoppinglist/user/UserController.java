@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class UserController {
 
     private final UserService userService;
-
     private final UserValidator userValidator;
 
     @Autowired
@@ -25,7 +24,7 @@ public class UserController {
     public String login(Model model, String error, String logout) {
 
         if (error != null) {
-            model.addAttribute("error", "Sorry! Your username and password is invalid!");
+            model.addAttribute("error", "Sorry! Invalid username and/or password!");
         }
         if (logout != null) {
             model.addAttribute("message", "Success! You have been logged out.");
