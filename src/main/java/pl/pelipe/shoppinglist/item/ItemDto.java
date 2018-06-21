@@ -12,7 +12,7 @@ public class ItemDto {
 
     private Boolean done;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     public ItemDto() {
     }

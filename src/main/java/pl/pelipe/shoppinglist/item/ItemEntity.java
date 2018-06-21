@@ -22,7 +22,7 @@ public class ItemEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    private Boolean done;
+    private Boolean done = false;
 
     private LocalDateTime createdAt = LocalDateTime.now();
 

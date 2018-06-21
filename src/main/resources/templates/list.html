@@ -5,9 +5,17 @@
 </head>
 <body>
 <th:block th:replace="layouts/nav"></th:block>
-<h1 style="text-align: center">Your list:</h1>
-<ul class="list-group-item list-group-item-action list-group-item-primary" style="align-items: center; display: flex; justify-content: center;" th:each="item : ${items}">
-    <li class="list-group-item" style="width: 300px" th:text="${item.name}"></li>
-</ul>
+<div class="container" style="width: 400px">
+    <h1 style="text-align: center">YOUR LIST:</h1>
+    <ul class="list-group-item list-group-item-action list-group-item-primary"
+        style="align-items: center; display: flex; justify-content: center;" th:each="item : ${items}">
+        <li class="list-group-item" style="width: 300px" th:text="${item.name}">
+        </li>
+    </ul>
+    <form th:action="@{/add}" method="post">
+        <input type="text" id="name" name="name" placeholder="item name" autofocus="autofocus" class="form-control"/>
+        <button class="btn-secondary" type="submit">Add item</button>
+    </form>
+</div>
 </body>
 </html>
