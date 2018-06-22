@@ -54,6 +54,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/*.png", "/*.jpg", "/css/**", "/js/**", "/sass/**", "/img/**", "/*.ttf", "/*.scss", "/resources/**", "/fonts/**" );
+        web.ignoring().antMatchers("/*.png", "/*.jpg", "/css/**", "/js/**",
+                "/sass/**", "/img/**", "/*.ttf", "/*.scss", "/resources/**", "/fonts/**",
+                "/favico/**", "*.json","*.ico" );
     }
 }
