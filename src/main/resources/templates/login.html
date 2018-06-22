@@ -3,22 +3,52 @@
 <head>
     <th:block th:replace="layouts/head"></th:block>
 </head>
-<body>
+<body class="login-page sidebar-collapse">
 
 <th:block th:replace="layouts/nav"></th:block>
-
-<div class="form-group" style="align-items: center; display: flex; justify-content: center;">
-    <form th:action="@{/login}" method="post" class="form-signin">
-        <h1>Please log in</h1>
-        <br/>
-        <label for="username" class="sr-only">Username</label>
-        <input type="email" id="username" name="username" placeholder="Email address" autofocus="autofocus" class="form-control"/>
-        <br/>
-        <label for="password" class="sr-only">Password</label>
-        <input type="password" id="password" name="password" placeholder="Password" class="form-control"/> <br/>
-
-        <button class="btn-secondary" type="submit">Log in</button>
-    </form>
+<div class="page-header" filter-color="orange">
+    <div class="page-header-image" style="background-image:url(/img/bg-login.jpg)"></div>
+    <div class="container">
+        <div class="col-md-4 content-center">
+            <th:block th:replace="layouts/notification"></th:block>
+            <div class="card card-login card-plain">
+                <form th:action="@{/login}" method="post" class="form">
+                    <div class="header header-primary text-center">
+                        <div class="logo-container">
+                            <img src="sl-logo.png" alt="Shopping List">
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="input-group form-group-no-border input-lg">
+                                <span class="input-group-addon">
+                                    <i class="now-ui-icons users_circle-08"></i>
+                                </span>
+                            <input type="email" id="username" name="username" placeholder="Email address"
+                                   autofocus="autofocus"
+                                   class="form-control"/>
+                        </div>
+                        <div class="input-group form-group-no-border input-lg">
+                                <span class="input-group-addon">
+                                    <i class="now-ui-icons text_caps-small"></i>
+                                </span>
+                            <input type="password" id="password" name="password" placeholder="Password"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="footer text-center">
+                        <button type="submit" class="btn btn-primary btn-round btn-lg btn-block">Login</button>
+                    </div>
+                    <div class="align-content-center">
+                        Have no account yet? <strong><a href="/registration">REGISTER</a></strong>
+                    </div>
+                    <div class="pull-right">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <th:block th:replace="layouts/footer"></th:block>
 </div>
 </body>
+<th:block th:replace="layouts/scripts"></th:block>
 </html>

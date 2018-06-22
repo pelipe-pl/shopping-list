@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/resources/**", "/registration")
+                .antMatchers("/resources/**", "/registration", "/")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -54,6 +54,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/*.png", "/*.jpg", "/*.jpeg", "/error/*");
+        web.ignoring().antMatchers("/*.png", "/*.jpg", "/css/**", "/js/**", "/sass/**", "/img/**", "/*.ttf", "/*.scss", "/resources/**", "/fonts/**" );
     }
 }

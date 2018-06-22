@@ -3,38 +3,72 @@
 <head>
     <th:block th:replace="layouts/head"></th:block>
 </head>
-<body>
+<body class="login-page sidebar-collapse">
 
 <th:block th:replace="layouts/nav"></th:block>
 
-<div class="form-group" style="align-items: center; display: flex; justify-content: center;">
+<div class="page-header" filter-color="orange">
+    <div class="page-header-image" style="background-image:url(/img/bg-login.jpg)"></div>
+    <div class="container">
+        <div class="col-md-4 content-center">
+            <th:block th:replace="layouts/notification"></th:block>
+            <div class="card card-login card-plain">
+                <form th:action="@{/registration}" method="post" class="form">
+                    <div class="header header-primary text-center">
 
-    <form th:action="@{/registration}" method="post" class="form-signin">
-
-        <h1>Register your account</h1>
-        <br/>
-        <label for="name" class="sr-only">Name:</label>
-        <input type="text" id="name" name="name" class="form-control" placeholder="Name" autofocus="true"/>
-        <br/>
-
-        <label for="lastName" class="sr-only">Email address</label>
-        <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Last name"/>
-        <br/>
-
-        <label for="username" class="sr-only">Email address</label>
-        <input type="email" id="username" name="username" class="form-control" placeholder="Email address"/>
-        <br/>
-
-        <label for="password" class="sr-only">Password</label>
-        <input type="password" id="password" name="password" class="form-control" placeholder="Password"/>
-        </br>
-
-        <label for="passwordConfirm" class="sr-only">Confirm your password</label>
-        <input type="password" id="passwordConfirm" name="passwordConfirm" class="form-control"
-               placeholder="Confirm your password"/>
-        </br>
-        <button class="btn-secondary" type="submit">Register</button>
-    </form>
+                    </div>
+                    <div class="content">
+                        <div class="input-group form-group-no-border input-lg">
+                                <span class="input-group-addon">
+                                    <i class="now-ui-icons users_circle-08"></i>
+                                </span>
+                            <input type="text" id="name" name="name" placeholder="First name"
+                                   autofocus="autofocus" class="form-control"/>
+                        </div>
+                        <div class="input-group form-group-no-border input-lg">
+                                <span class="input-group-addon">
+                                    <i class="now-ui-icons users_circle-08"></i>
+                                </span>
+                            <input type="text" id="lastName" name="lastName" placeholder="Last name"
+                                   class="form-control"/>
+                        </div>
+                        <div class="input-group form-group-no-border input-lg">
+                                <span class="input-group-addon">
+                                    <i class="now-ui-icons ui-1_email-85"></i>
+                                </span>
+                            <input type="email" id="username" name="username" placeholder="Email address"
+                                   class="form-control"/>
+                        </div>
+                        <div class="input-group form-group-no-border input-lg">
+                                <span class="input-group-addon">
+                                    <i class="now-ui-icons text_caps-small"></i>
+                                </span>
+                            <input type="password" id="password" name="password" placeholder="Password"
+                                   class="form-control"/>
+                        </div>
+                        <div class="input-group form-group-no-border input-lg">
+                                <span class="input-group-addon">
+                                    <i class="now-ui-icons text_caps-small"></i>
+                                </span>
+                            <input type="password" id="passwordConfirm" name="passwordConfirm"
+                                   placeholder="Confirm your password"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="footer text-center">
+                        <button type="submit" class="btn btn-primary btn-round btn-lg btn-block">Register</button>
+                    </div>
+                    <div class="align-content-center">
+                        Have an account already? <strong><a href="/login">LOGIN</a></strong>
+                    </div>
+                    <div class="pull-right">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <th:block th:replace="layouts/footer"></th:block>
 </div>
 </body>
+<th:block th:replace="layouts/scripts"></th:block>
 </html>

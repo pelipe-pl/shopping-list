@@ -1,6 +1,7 @@
 package pl.pelipe.shoppinglist.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,8 +39,8 @@ public class UserController {
     }
 
     @RequestMapping(value = {"/", "/home"}, method = RequestMethod.GET)
-    public String home(Model model) {
-
+    public String home(Model model, Principal principal) {
+        if (principal != null) model.addAttribute("name", userService.findByUsername(principal.getName()).getName());
         return "home";
     }
 

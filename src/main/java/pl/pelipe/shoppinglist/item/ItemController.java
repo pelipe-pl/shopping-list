@@ -2,7 +2,6 @@ package pl.pelipe.shoppinglist.item;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import pl.pelipe.shoppinglist.user.UserService;
@@ -12,8 +11,8 @@ import java.security.Principal;
 @Controller
 public class ItemController {
 
-    final ItemService itemService;
-    final UserService userService;
+    private final ItemService itemService;
+    private final UserService userService;
 
     public ItemController(ItemService itemService, UserService userService) {
         this.itemService = itemService;
@@ -34,6 +33,4 @@ public class ItemController {
         model.addAttribute("items", itemService.findAllByUsername(principal.getName()));
         return "list";
     }
-
-
 }

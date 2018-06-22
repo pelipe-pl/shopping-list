@@ -1,13 +1,36 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<body lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <th:block th:replace="layouts/head"></th:block>
 </head>
-<body>
+<body class="index-page sidebar-collapse">
 <th:block th:replace="layouts/nav"></th:block>
-
-<div>
-    <h1 style="text-align: center; font-size: 60px">Welcome!</h1>
-</div>
+<div class="wrapper">
+    <div class="page-header" filter-color="orange">
+        <div class="page-header-image" data-parallax="true"
+             style="background-image:url(/img/bg-landing-page.png)"></div>
+        <div class="container">
+            <div sec:authorize="isAnonymous()" class="content-center brand">
+                <h1 class="h1-seo">SHOPPING LIST</h1>
+                <h3> Simple web application made with Java, Spring, Thymeleaf and Hibernate with PostgreSQL.</h3>
+                <div class="footer text-center">
+                    <a href="/login">
+                        <button class="btn btn-primary btn-round btn-lg btn-block">Get Started</button>
+                    </a>
+                </div>
+            </div>
+            <div sec:authorize="isAuthenticated()" class="content-center brand">
+                <h1 class="h1-seo">Welcome, <span th:text="${name}"></span>!</h1>
+                <h3> You are ready to manage your own shopping list.</h3>
+                <div class="footer text-center">
+                    <a href="/list">
+                        <button class="btn btn-primary btn-round btn-lg btn-block">Check your shopping list</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <th:block th:replace="layouts/footer"></th:block>
+    </div>
 </body>
+<th:block th:replace="layouts/scripts"></th:block>
 </html>
