@@ -3,21 +3,45 @@
 <head>
     <th:block th:replace="layouts/head"></th:block>
 </head>
-<body>
+<body class="sidebar-collapse">
 <th:block th:replace="layouts/nav"></th:block>
-<div class="container" style="width: 400px">
-    <h1 style="text-align: center">YOUR LIST:</h1>
-    <ul class="list-group-item list-group-item-action list-group-item-primary"
-        style="align-items: center; display: flex; justify-content: center;" th:each="item : ${items}">
-        <li class="list-group-item" style="width: 300px" th:text="${item.name}">
-        </li>
-    </ul>
-    <form th:action="@{/add}" method="post">
-        <input type="text" id="name" name="name" placeholder="item name" autofocus="autofocus" class="form-control"/>
-        <button class="btn-secondary" type="submit">Add item</button>
-    </form>
+<div class="page-header" filter-color="orange">
+    <div class="page-header-image" style="background-image:url(/img/bg-login.jpg)"></div>
+    <div class="container">
+        <div class="col-md-4 content-center">
+            <h1 style="text-align: center">YOUR LIST</h1>
+            <div class="container">
+                <table th:each="item : ${items}" class="table-condensed">
+                    <tr>
+                        <td>
+                            <button th:if="${item.done == false}" th:text="${item.name}"
+                                    class="btn btn-primary btn-round"></button>
+                            <button th:if="${item.done == true}" th:text="${item.name}" class="btn btn-light btn-round"
+                                    style="text-decoration: line-through"></button>
+                        </td>
+                        <td>
+                            <form th:if="${item.done == false}" th:action="@{/done}" method="post">
+                                <input type="hidden" id="id" name="id" th:value="${item.id}">
+                                <button type="submit">Done</button>
+                            </form>
+
+                            <form th:if="${item.done == true}" th:action="@{/notdone}" method="post">
+                                <input type="hidden" id="id" name="id" th:value="${item.id}">
+                                <button type="submit">Undone</button>
+                            </form>
+                        </td>
+                    </tr>
+                </table>
+                <form th:action="@{/add}" method="post">
+                    <input type="text" id="name" name="name" placeholder="item name" autofocus="autofocus"
+                           class="form-control"/>
+                    <button class="btn-secondary" type="submit">Add item</button>
+                </form>
+            </div>
+        </div>
+        <th:block th:replace="layouts/footer"></th:block>
+    </div>
 </div>
-<th:block th:replace="layouts/footer"></th:block>
 </body>
 <th:block th:replace="layouts/scripts"></th:block>
 </html>

@@ -2,6 +2,7 @@ package pl.pelipe.shoppinglist.item;
 
 import java.time.LocalDateTime;
 
+
 public class ItemDto {
 
     private Long id;
@@ -10,7 +11,7 @@ public class ItemDto {
 
     private Integer userId;
 
-    private Boolean done;
+    private Boolean done = false;
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
@@ -59,5 +60,9 @@ public class ItemDto {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

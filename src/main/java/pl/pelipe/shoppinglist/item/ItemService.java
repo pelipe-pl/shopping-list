@@ -27,15 +27,15 @@ public class ItemService {
             .collect(Collectors.toList());}
 
     public List<ItemDto> findAllByUsername(String username) {
-        return itemRepository.findAllByUser_Username(username)
+        return itemRepository.findAllByUser_UsernameOrderByDone(username)
                 .stream()
                 .map(i -> toDto(i))
                 .collect(Collectors.toList());
     }
 
-    public void setDone(Long id) {
+    public void setDone(Long id, Boolean done) {
         ItemEntity itemEntity = itemRepository.getById(id);
-        itemEntity.setDone(true);
+        itemEntity.setDone(done);
         itemRepository.save(itemEntity);
     }
 
