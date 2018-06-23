@@ -50,6 +50,6 @@ public class ItemController {
     public String setNotDone(Model model, ItemDto item, Principal principal) {
         itemService.setDone(item.getId(), false);
         model.addAttribute("items", itemService.findAllByUsername(principal.getName()));
-        return "List";
+        return "list";
     }
 }
