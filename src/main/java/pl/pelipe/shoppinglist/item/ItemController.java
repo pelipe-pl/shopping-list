@@ -43,7 +43,7 @@ public class ItemController {
     public String setDone(Model model, ItemDto item, Principal principal) {
         itemService.setDone(item.getId(), true);
         model.addAttribute("items", itemService.findAllByUsername(principal.getName()));
-        return "List";
+        return "list";
     }
 
     @RequestMapping(value = "/notdone", method = RequestMethod.POST)
