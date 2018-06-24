@@ -35,21 +35,18 @@ public class ItemController {
     public String addItem(Model model, ItemDto item, Principal principal) {
         item.setUserId(userService.findByUsername(principal.getName()).getId());
         itemService.add(item);
-        model.addAttribute("items", itemService.findAllByUsername(principal.getName()));
-        return "list";
+        return "redirect:list";
     }
 
     @RequestMapping(value = "/done", method = RequestMethod.POST)
     public String setDone(Model model, ItemDto item, Principal principal) {
         itemService.setDone(item.getId(), true);
-        model.addAttribute("items", itemService.findAllByUsername(principal.getName()));
-        return "list";
+        return "redirect:list";
     }
 
     @RequestMapping(value = "/notdone", method = RequestMethod.POST)
     public String setNotDone(Model model, ItemDto item, Principal principal) {
         itemService.setDone(item.getId(), false);
-        model.addAttribute("items", itemService.findAllByUsername(principal.getName()));
-        return "list";
+        return "redirect:list";
     }
 }
