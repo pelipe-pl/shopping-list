@@ -3,13 +3,43 @@
 <head>
     <th:block th:replace="layouts/head"></th:block>
 </head>
-<body>
+<body class="sidebar-collapse">
 <th:block th:replace="layouts/nav"></th:block>
-<div class="container" style="width: 400px">
-<h1>PROFILE:</h1>
-    nothing here yet :(
+<div class="page-header" filter-color="orange">
+    <div class="page-header-image" style="background-image:url(/img/bg-login.jpg)"></div>
+    <div class="container">
+        <div class="col-md-4 content-center">
+
+            <table class="table-condensed">
+                <tr>
+                    <th><h1>PROFILE:</h1></th>
+                </tr>
+                <tr>
+                    <td>E-mail:</td>
+                    <td th:text="${user.username}"></td>
+                </tr>
+                <tr>
+                    <td>Name:</td>
+                    <td th:text="${user.name}"></td>
+                </tr>
+                <tr>
+                    <td>Last name:</td>
+                    <td th:text="${user.lastName}"></td>
+                </tr>
+                <tr>
+                    <td>Registration date:</td>
+                    <td th:text="${#temporals.format(user.createdAt, 'dd-MM-yyyy')}"></td>
+                </tr>
+                <tr>
+                    <td><a href="/profile-edit">
+                        <button>Edit</button>
+                    </a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <th:block th:replace="layouts/footer"></th:block>
 </div>
-<th:block th:replace="layouts/footer"></th:block>
 </body>
 <th:block th:replace="layouts/scripts"></th:block>
 </html>

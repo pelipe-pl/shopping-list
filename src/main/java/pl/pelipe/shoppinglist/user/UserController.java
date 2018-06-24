@@ -26,6 +26,12 @@ public class UserController {
         this.userValidator = userValidator;
     }
 
+    @ModelAttribute
+    public void getUser(Model model, Principal principal) {
+        if (principal != null)
+            model.addAttribute("user", userService.findByUsername(principal.getName()));
+    }
+
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(Model model, String error, String logout) {
 
@@ -47,7 +53,6 @@ public class UserController {
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
         model.addAttribute("userForm", new UserEntity());
-
         return "registration";
     }
 
