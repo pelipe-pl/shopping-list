@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <th:block th:replace="layouts/head"></th:block>
+</head>
+<body class="sidebar-collapse">
+<th:block th:replace="layouts/nav"></th:block>
+<div class="page-header" filter-color="orange">
+    <div class="page-header-image" style="background-image:url(/img/bg-login.jpg)"></div>
+    <div class="container">
+        <div class="col-md-4 content-center">
+            <form th:action="@{/profile-edit}" method="post" class="form">
+                <input type="hidden" id="id" name="id" th:value="${user.id}">
+                <table class="table-condensed">
+                    <tr>
+                        <th><h1>PROFILE EDIT:</h1></th>
+                    </tr>
+                    <tr>
+                        <td>E-mail:</td>
+                        <td>
+                            <input type="text" id="username" name="username" th:value="${user.username}"
+                                   class="form-control" readonly/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Name:</td>
+                        <td>
+                            <input type="text" id="name" name="name" th:value="${user.name}"
+                                   class="form-control"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Last name:</td>
+                        <td>
+                            <input type="text" id="lastName" name="lastName" th:value="${user.lastName}"
+                                   class="form-control"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Registration date:</td>
+                        <td th:text="${#temporals.format(user.createdAt, 'dd-MM-yyyy')}"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button type="submit" class="btn btn-primary btn-round btn-lg btn-block">Submit</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <th:block th:replace="layouts/footer"></th:block>
+    </div>
+</div>
+</body>
+<th:block th:replace="layouts/scripts"></th:block>
+</html>

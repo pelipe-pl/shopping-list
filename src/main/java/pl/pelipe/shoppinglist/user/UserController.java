@@ -56,11 +56,6 @@ public class UserController {
         return "registration";
     }
 
-    @RequestMapping(value = "/profile", method = RequestMethod.GET)
-    public String profile(Model model) {
-        return "profile";
-    }
-
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registration(@ModelAttribute("userForm") UserEntity userForm, BindingResult bindingResult, Model model) {
         userValidator.validate(userForm, bindingResult);
@@ -71,5 +66,27 @@ public class UserController {
         userService.save(userForm);
         model.addAttribute("message", "You have been successfully registered.");
         return "/login";
+    }
+
+    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    public String profile(Model model) {
+        return "profile";
+    }
+
+    @RequestMapping(value = "/profile-edit", method = RequestMethod.GET)
+    public String profileEdit(Model model) {
+        return "profile-edit";
+    }
+
+    @RequestMapping(value = "/profile-edit", method = RequestMethod.POST)
+    public String profileEdit(@ModelAttribute("userForm") UserEntity userForm,
+                              BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("error", bindingResult.toString());
+            return "/profile-edit";
+        }
+        userService.update(userForm);
+        model.addAttribute("message", "You have successfully updated your info.");
+        return "/profile";
     }
 }

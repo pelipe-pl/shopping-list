@@ -1,14 +1,16 @@
 package pl.pelipe.shoppinglist.user;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
 @Table(name = "user_table")
+@DynamicUpdate
 public class UserEntity {
 
     @Id
@@ -96,12 +98,15 @@ public class UserEntity {
         return createdAt;
     }
 
-
     public Set<Role> getRoles() {
         return roles;
     }
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }
