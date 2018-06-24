@@ -16,7 +16,8 @@
                         <td>
                             <button th:if="${item.done == false}" th:text="${item.name}"
                                     class="btn btn-primary btn-round"></button>
-                            <button th:if="${item.done == true}" th:text="${item.name}" class="btn btn-light btn-round"
+                            <button th:if="${item.done == true}" th:text="${item.name}"
+                                    class="btn btn-light btn-round"
                                     style="text-decoration: line-through"></button>
                         </td>
                         <td>
