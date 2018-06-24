@@ -83,10 +83,10 @@ public class UserController {
                               BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("error", bindingResult.toString());
-            return "/profile-edit";
+            return "profile-edit";
         }
         userService.update(userForm);
         model.addAttribute("message", "You have successfully updated your info.");
-        return "/profile";
+        return "profile";
     }
 }
