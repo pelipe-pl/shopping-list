@@ -21,13 +21,15 @@ public class ItemService {
         itemRepository.save(toEntity(itemDto));
     }
 
-    public List<ItemDto> findAll(){return itemRepository.findAll()
-            .stream()
-            .map(i -> toDto(i))
-            .collect(Collectors.toList());}
+    public List<ItemDto> findAll() {
+        return itemRepository.findAll()
+                .stream()
+                .map(i -> toDto(i))
+                .collect(Collectors.toList());
+    }
 
     public List<ItemDto> findAllByUsername(String username) {
-        return itemRepository.findAllByUser_UsernameOrderByDone(username)
+        return itemRepository.findAllByUser_UsernameAndRemovedFalseOrderByDone(username)
                 .stream()
                 .map(i -> toDto(i))
                 .collect(Collectors.toList());
@@ -36,6 +38,12 @@ public class ItemService {
     public void setDone(Long id, Boolean done) {
         ItemEntity itemEntity = itemRepository.getById(id);
         itemEntity.setDone(done);
+        itemRepository.save(itemEntity);
+    }
+
+    public void setRemoved(Long id) {
+        ItemEntity itemEntity = itemRepository.getById(id);
+        itemEntity.setRemoved(true);
         itemRepository.save(itemEntity);
     }
 

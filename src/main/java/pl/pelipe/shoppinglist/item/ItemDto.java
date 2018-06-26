@@ -13,6 +13,8 @@ public class ItemDto {
 
     private Boolean done = false;
 
+    private Boolean removed = false;
+
     private LocalDateTime createdAt = LocalDateTime.now();
 
     public ItemDto() {
@@ -28,6 +30,10 @@ public class ItemDto {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -54,6 +60,14 @@ public class ItemDto {
         this.done = done;
     }
 
+    public Boolean getRemoved() {
+        return removed;
+    }
+
+    public void setRemoved(Boolean removed) {
+        this.removed = removed;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -62,7 +76,5 @@ public class ItemDto {
         this.createdAt = createdAt;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+
 }

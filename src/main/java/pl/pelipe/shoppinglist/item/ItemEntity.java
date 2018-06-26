@@ -24,15 +24,18 @@ public class ItemEntity {
 
     private Boolean done = false;
 
+    private Boolean removed = false;
+
     private LocalDateTime createdAt = LocalDateTime.now();
 
     public ItemEntity() {
     }
 
-    public ItemEntity(@NotNull String name, UserEntity user, Boolean done, LocalDateTime createdAt) {
+    public ItemEntity(@NotNull String name, UserEntity user, Boolean done, Boolean removed, LocalDateTime createdAt) {
         this.name = name;
         this.user = user;
         this.done = done;
+        this.removed = removed;
         this.createdAt = createdAt;
     }
 
@@ -73,6 +76,14 @@ public class ItemEntity {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public Boolean getRemoved() {
+        return removed;
+    }
+
+    public void setRemoved(Boolean removed) {
+        this.removed = removed;
     }
 
     @Override
