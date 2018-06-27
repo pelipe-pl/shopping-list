@@ -35,6 +35,18 @@ public class ItemService {
                 .collect(Collectors.toList());
     }
 
+    public void findDoneAndSetRemoved(String username) {
+        List<ItemEntity> items = itemRepository.findAllByUser_UsernameAndRemovedFalseAndDoneTrue(username);
+        items.forEach(i -> i.setRemoved(true));
+        itemRepository.saveAll(items);
+    }
+
+    public void findAllNotRemovedAndSetDone(String username) {
+        List<ItemEntity> items = itemRepository.findAllByUser_UsernameAndRemovedFalseAndDoneFalse(username);
+        items.forEach(i -> i.setDone(true));
+        itemRepository.saveAll(items);
+    }
+
     public void setDone(Long id, Boolean done) {
         ItemEntity itemEntity = itemRepository.getById(id);
         itemEntity.setDone(done);

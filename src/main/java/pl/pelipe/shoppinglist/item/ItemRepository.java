@@ -8,7 +8,11 @@ import java.util.List;
 @Repository
 public interface ItemRepository extends JpaRepository<ItemEntity, Integer> {
 
+    ItemEntity getById(Long id);
+
     List<ItemEntity> findAllByUser_UsernameAndRemovedFalseOrderByDone(String username);
 
-    ItemEntity getById(Long id);
+    List<ItemEntity> findAllByUser_UsernameAndRemovedFalseAndDoneTrue(String username);
+
+    List<ItemEntity> findAllByUser_UsernameAndRemovedFalseAndDoneFalse(String username);
 }

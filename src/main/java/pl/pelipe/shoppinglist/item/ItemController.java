@@ -55,4 +55,16 @@ public class ItemController {
         itemService.setRemoved(item.getId());
         return "redirect:list";
     }
+
+    @RequestMapping(value = "/removedone", method = RequestMethod.GET)
+    public String setDoneItemsRemoved(Model model, Principal principal) {
+        itemService.findDoneAndSetRemoved(principal.getName());
+        return "redirect:list";
+    }
+
+    @RequestMapping(value = "/setalldone", method = RequestMethod.GET)
+    public String setAllItemsDone(Model model, Principal principal) {
+        itemService.findAllNotRemovedAndSetDone(principal.getName());
+        return "redirect:list";
+    }
 }
