@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <th:block th:replace="layouts/head"></th:block>
 </head>
-<body>
+<body class="sidebar-collapse">
 <th:block th:replace="layouts/nav"></th:block>
-<h1 style="text-align: center; font-size: 60px">Error 404!</h1>
-<p style="text-align: center"><img src="error-monster.png">
+<div class="wrapper" style="margin-top: 100px">
+    <h1 class="title" style="text-align: center; font-size: 60px">Error 404!</h1>
+    <div style="text-align: center"><img src="img/error-monster.png">
+    </div>
+    <th:block th:replace="layouts/footer"></th:block>
+</div>
 </body>
+<th:block th:replace="layouts/scripts"></th:block>
 </html>
