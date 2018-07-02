@@ -1,74 +1,77 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th:block th:replace="layouts/head"></th:block>
+    <th:block th:replace="layouts/head">Head</th:block>
 </head>
-<body class="login-page sidebar-collapse">
+<body class="login-page sidebar-collapse"
+      style="background-size: cover; background: url(/img/sl-bg2.jpg) no-repeat center center fixed;
+min-height: 100vh">
 
-<th:block th:replace="layouts/nav"></th:block>
+<th:block th:replace="layouts/nav">Nav</th:block>
 
-<div class="page-header" filter-color="orange">
-    <div class="page-header-image" style="background-image:url(/img/bg-login.jpg)"></div>
-    <div class="container">
-        <div class="col-md-4 content-center">
-            <th:block th:replace="layouts/notification"></th:block>
-            <div class="card card-login card-plain">
-                <form th:action="@{/registration}" method="post" class="form">
-                    <div class="header header-primary text-center">
-
-                    </div>
-                    <div class="content">
-                        <div class="input-group form-group-no-border input-lg">
+<div class="wrapper">
+    <th:block th:replace="layouts/notification">Notifications</th:block>
+    <div class="section align-middle" style="background-color: transparent; padding-top: 100px">
+        <div class="container">
+            <div class="row justify-content-center align-self-center">
+                <div class="card card-login card-plain">
+                    <form th:action="@{/registration}" method="post" class="form">
+                        <div class="header header-primary text-center d-none d-lg-block">
+                            <div class="logo-container">
+                                <img src="/img/sl-logo-basket-small.png" alt="Shopping list">
+                            </div>
+                        </div>
+                        <div class="content">
+                            <div class="input-group form-group-no-border input-lg">
                                 <span class="input-group-addon">
                                     <i class="now-ui-icons users_circle-08"></i>
                                 </span>
-                            <input type="text" id="name" name="name" placeholder="First name"
-                                   autofocus="autofocus" class="form-control"/>
-                        </div>
-                        <div class="input-group form-group-no-border input-lg">
+                                <input type="text" id="name" name="name" placeholder="First name"
+                                       autofocus="autofocus" class="form-control" required/>
+                            </div>
+                            <div class="input-group form-group-no-border input-lg">
                                 <span class="input-group-addon">
                                     <i class="now-ui-icons users_circle-08"></i>
                                 </span>
-                            <input type="text" id="lastName" name="lastName" placeholder="Last name"
-                                   class="form-control"/>
-                        </div>
-                        <div class="input-group form-group-no-border input-lg">
+                                <input type="text" id="lastName" name="lastName" placeholder="Last name"
+                                       class="form-control" required/>
+                            </div>
+                            <div class="input-group form-group-no-border input-lg">
                                 <span class="input-group-addon">
                                     <i class="now-ui-icons ui-1_email-85"></i>
                                 </span>
-                            <input type="email" id="username" name="username" placeholder="Email address"
-                                   class="form-control"/>
-                        </div>
-                        <div class="input-group form-group-no-border input-lg">
+                                <input type="email" id="username" name="username" placeholder="Email address"
+                                       class="form-control" required/>
+                            </div>
+                            <div class="input-group form-group-no-border input-lg">
                                 <span class="input-group-addon">
                                     <i class="now-ui-icons text_caps-small"></i>
                                 </span>
-                            <input type="password" id="password" name="password" placeholder="Password"
-                                   class="form-control"/>
-                        </div>
-                        <div class="input-group form-group-no-border input-lg">
+                                <input type="password" id="password" name="password" placeholder="Password"
+                                       class="form-control" required/>
+                            </div>
+                            <div class="input-group form-group-no-border input-lg">
                                 <span class="input-group-addon">
                                     <i class="now-ui-icons text_caps-small"></i>
                                 </span>
-                            <input type="password" id="passwordConfirm" name="passwordConfirm"
-                                   placeholder="Confirm your password"
-                                   class="form-control"/>
+                                <input type="password" id="passwordConfirm" name="passwordConfirm"
+                                       placeholder="Confirm your password"
+                                       class="form-control" required/>
+                            </div>
                         </div>
-                    </div>
-                    <div class="footer text-center">
-                        <button type="submit" class="btn btn-primary btn-round btn-lg btn-block">Register</button>
-                    </div>
-                    <div class="align-content-center">
-                        Have an account already? <strong><a href="/login">LOGIN</a></strong>
-                    </div>
-                    <div class="pull-right">
-                    </div>
-                </form>
+                        <div class="footer text-center">
+                            <button type="submit" class="btn btn-primary btn-round btn-lg btn-block">Register</button>
+                        </div>
+                        <div class="footer text-center text-light">
+                            Have an account already? <strong><a href="/login">LOGIN</a></strong>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-    <th:block th:replace="layouts/footer"></th:block>
+    <th:block th:replace="layouts/footer">Footer</th:block>
 </div>
 </body>
-<th:block th:replace="layouts/scripts"></th:block>
+<th:block th:replace="layouts/scripts">Scripts</th:block>
 </html>

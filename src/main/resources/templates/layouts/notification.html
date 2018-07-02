@@ -1,17 +1,17 @@
-<div th:if="${message}" class="alert alert-info" role="alert">
+<div th:if="${message}" class="alert alert-info" role="alert" style="margin-top: 75px">
     <div class="container">
         <div class="alert-icon">
-            <i class="now-ui-icons travel_info"></i></p>
+            <i class="now-ui-icons travel_info"></i>
         </div>
         <strong th:text="${message}"></strong>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 				<span aria-hidden="true">
 				<i class="now-ui-icons ui-1_simple-remove"></i>
-			</span>
+			    </span>
         </button>
     </div>
 </div>
-<div th:if="${error}" class="alert alert-danger" role="alert">
+<div th:if="${error}" class="alert alert-danger" role="alert" style="margin-top: 75px">
     <div class="container">
         <div class="alert-icon">
             <i class="now-ui-icons objects_support-17"></i>

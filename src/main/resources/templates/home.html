@@ -1,36 +1,43 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <th:block th:replace="layouts/head"></th:block>
+    <th:block th:replace="layouts/head">Head</th:block>
 </head>
-<body class="sidebar-collapse">
-<th:block th:replace="layouts/nav"></th:block>
+<body class="landing-page sidebar-collapse"
+      style="background-size: cover; background: url(/img/sl-bg2.jpg) no-repeat center center fixed;
+min-height: 100vh">
+
+<th:block th:replace="layouts/nav">Nav</th:block>
 <div class="wrapper">
-    <div class="page-header" filter-color="orange">
-        <div class="page-header-image" data-parallax="true"
-             style="background-image:url(/img/bg-landing-page.png)"></div>
+    <th:block th:replace="layouts/notification">Notification</th:block>
+    <div class="section align-middle" style="background-color: transparent; margin-top: 100px">
         <div class="container">
-            <div sec:authorize="isAnonymous()" class="content-center brand">
-                <h1 class="h1-seo">SHOPPING LIST</h1>
-                <h3> Simple web application made with Java, Spring, Thymeleaf and Hibernate with PostgreSQL.</h3>
-                <div class="footer text-center">
-                    <a href="/login">
-                        <button class="btn btn-primary btn-round btn-lg btn-block">Get Started</button>
-                    </a>
-                </div>
-            </div>
-            <div sec:authorize="isAuthenticated()" class="content-center brand">
-                <h1 class="h1-seo">Welcome, <span th:text="${name}"></span>!</h1>
-                <h3> You are ready to manage your own shopping list.</h3>
-                <div class="footer text-center">
-                    <a href="/list">
-                        <button class="btn btn-primary btn-round btn-lg btn-block">Check your shopping list</button>
-                    </a>
+            <div class="row justify-content-center align-self-center">
+                <div class="col-md-8 text-center ">
+                    <div sec:authorize="isAnonymous()">
+                        <h1 class="title text-light d-none d-lg-block">SHOPPING LIST</h1>
+                        <h5 class="subTitle text-light">Simple web application made with Java, Spring,
+                            Thymeleaf and Hibernate with PostgreSQL.</h5>
+                        <a href="/login">
+                            <button class="btn btn-primary btn-round btn-lg text-center" style="max-width: 250px">
+                                Get started
+                            </button>
+                        </a>
+                    </div>
+                    <div sec:authorize="isAuthenticated()">
+                        <h1 class="title text-light">Welcome, <span th:text="${name}"></span>!</h1>
+                        <h5 class="subTitle text-light">You are ready to manage your own shopping list.</h5>
+                        <a href="/list">
+                            <button class="btn btn-primary btn-round btn-lg text-center" style="max-width: 250px">
+                                Check your list
+                            </button>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-        <th:block th:replace="layouts/footer"></th:block>
     </div>
+    <th:block th:replace="layouts/footer"></th:block>
 </div>
 </body>
 <th:block th:replace="layouts/scripts"></th:block>

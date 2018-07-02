@@ -1,88 +1,94 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th:block th:replace="layouts/head"></th:block>
+    <th:block th:replace="layouts/head">Head</th:block>
 </head>
-<body class="sidebar-collapse">
-<th:block th:replace="layouts/nav"></th:block>
-<div class="page-header" filter-color="orange">
-    <div class="page-header-image" style="background-image:url(/img/bg-login.jpg)"></div>
-    <div class="container">
-        <div class="col-md-12 content-center form-group">
-            <table class="table-condensed content-center">
-                <tr>
-                    <td>
-                        <h1 style="text-align: center">YOUR LIST</h1>
-                    </td>
-                    <td>
-                        <div class="dropdown">
-                            <a href="" class="btn btn-icon btn-default btn-round" style="width: 85px"
-                               data-toggle="dropdown" id="navbarDropdownMenuLink1">
-                                <i class="now-ui-icons ui-1_settings-gear-63"></i>
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
-                                <a class="dropdown-item" href="/setalldone">Set all done</a>
-                                <a class="dropdown-item" href="/removedone">Remove all done</a>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-                <form th:action="@{/add}" method="post">
-                    <tr>
-                        <td>
-                            <input type="text" id="name" name="name" placeholder="Type new item name here."
-                                   class="form-control" style="width: 300px"/>
-                        </td>
-                        <td>
-                            <button class="btn btn-icon btn-warning btn-round" style="width: 85px" type="submit">
-                                <i class="now-ui-icons ui-1_simple-add"></i>
-                            </button>
-                        </td>
-                    </tr>
-                </form>
-            </table>
-            <table th:each="item : ${items}" class="table-condensed">
-                <tr>
-                    <td>
-                        <button th:if="${item.done == false}" th:text="${item.name}"
-                                class="btn btn-primary btn-round" style="width: 300px"></button>
-                        <button th:if="${item.done == true}" th:text="${item.name}"
-                                class="btn btn-light btn-round"
-                                style="text-decoration: line-through; width: 300px"></button>
-                    </td>
-                    <td>
-                        <form th:if="${item.done == false}" th:action="@{/done}" method="post">
-                            <input type="hidden" id="id" name="id" th:value="${item.id}">
-                            <button type="submit" class="btn btn-success btn-icon  btn-icon-mini btn-round"
-                                    title="Set done">
-                                <i class="now-ui-icons ui-1_check"></i>
-                            </button>
-                        </form>
+<body class="sidebar-collapse"
+      style="background-size: cover;
+      background: url(/img/sl-bg2.jpg) no-repeat center center fixed; min-height: 100vh">
 
-                        <form th:if="${item.done == true}" th:action="@{/notdone}" method="post">
-                            <input type="hidden" id="id" name="id" th:value="${item.id}">
-                            <button type="submit" class="btn btn-default btn-icon  btn-icon-mini btn-round"
-                                    title="Set not done">
-                                <i class="now-ui-icons arrows-1_minimal-up"></i>
-                            </button>
+<th:block th:replace="layouts/nav">Nav</th:block>
+
+<div class="wrapper">
+    <th:block th:replace="layouts/notification">Notifications</th:block>
+    <div class="section align-middle" style="background-color: transparent; padding-top: 100px">
+        <div class="container">
+            <div class="row justify-content-center align-self-center text-light">
+                <div class="col-md-4">
+                    <h2 class="title text-center">Your list</h2>
+                    <table class="table-condensed content-center">
+                        <tr>
+                            <td></td>
+                            <td>
+                                <div class="dropdown">
+                                    <a href="" class="btn btn-icon btn-default btn-round"
+                                       data-toggle="dropdown" id="navbarDropdownMenuLink1">
+                                        <i class="now-ui-icons ui-1_settings-gear-63"></i>
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
+                                        <a class="dropdown-item" href="/setalldone">Set all done</a>
+                                        <a class="dropdown-item" href="/removedone">Remove all done</a>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <form th:action="@{/add}" method="post">
+                            <tr>
+                                <td>
+                                    <input type="text" id="name" name="name" placeholder="Type new item name here."
+                                           class="form-control" style="width: 200px"/>
+                                </td>
+                                <td>
+                                    <button class="btn btn-icon btn-warning btn-round" style="width: 85px"
+                                            type="submit">
+                                        <i class="now-ui-icons ui-1_simple-add"></i>
+                                    </button>
+                                </td>
+                            </tr>
                         </form>
-                    <td>
-                        <form th:if="${item.done == false || item.done == true}" th:action="@{/remove}"
-                              method="post">
-                            <input type="hidden" id="id" name="id" th:value="${item.id}">
-                            <button type="submit" class="btn btn-danger btn-icon  btn-icon-mini btn-round"
-                                    title="Remove">
-                                <i class="now-ui-icons ui-1_simple-remove"></i>
-                            </button>
-                        </form>
-                    </td>
-                    </td>
-                </tr>
-            </table>
+                    </table>
+                    <table th:each="item : ${items}" class="table-condensed">
+                        <tr>
+                            <td>
+                                <button th:if="${item.done == false}" th:text="${item.name}"
+                                        class="btn btn-primary btn-round btn-block" style="width: 200px"></button>
+                                <button th:if="${item.done == true}" th:text="${item.name}"
+                                        class="btn btn-light btn-round btn-block"
+                                        style="text-decoration: line-through; width: 200px"></button>
+                            </td>
+                            <td>
+                                <form th:if="${item.done == false}" th:action="@{/done}" method="post">
+                                    <input type="hidden" id="id" name="id" th:value="${item.id}">
+                                    <button type="submit" class="btn btn-success btn-icon  btn-icon-mini btn-round"
+                                            title="Set done">
+                                        <i class="now-ui-icons ui-1_check"></i>
+                                    </button>
+                                </form>
+
+                                <form th:if="${item.done == true}" th:action="@{/notdone}" method="post">
+                                    <input type="hidden" id="id" name="id" th:value="${item.id}">
+                                    <button type="submit" class="btn btn-default btn-icon  btn-icon-mini btn-round"
+                                            title="Set not done">
+                                        <i class="now-ui-icons arrows-1_minimal-up"></i>
+                                    </button>
+                                </form>
+                            <td>
+                                <form th:if="${item.done == false || item.done == true}" th:action="@{/remove}"
+                                      method="post">
+                                    <input type="hidden" id="id" name="id" th:value="${item.id}">
+                                    <button type="submit" class="btn btn-danger btn-icon  btn-icon-mini btn-round"
+                                            title="Remove">
+                                        <i class="now-ui-icons ui-1_simple-remove"></i>
+                                    </button>
+                                </form>
+                            </td>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <th:block th:replace="layouts/footer">Footer</th:block>
         </div>
-    </div>
-    <th:block th:replace="layouts/footer"></th:block>
-</div>
 </body>
-<th:block th:replace="layouts/scripts"></th:block>
+<th:block th:replace="layouts/scripts">Scripts</th:block>
 </html>

@@ -1,44 +1,49 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th:block th:replace="layouts/head"></th:block>
+    <th:block th:replace="layouts/head">Head</th:block>
 </head>
-<body class="sidebar-collapse">
-<th:block th:replace="layouts/nav"></th:block>
-<div class="page-header" filter-color="orange">
-    <div class="page-header-image" style="background-image:url(/img/bg-login.jpg)"></div>
-    <div class="container">
-        <div class="col-md-4 content-center">
-            <th:block th:replace="layouts/notification"></th:block>
-            <table class="table-condensed">
-                <tr>
-                    <th><h1>PROFILE:</h1></th>
-                </tr>
-                <tr>
-                    <td>E-mail:</td>
-                    <td th:text="${user.username}"></td>
-                </tr>
-                <tr>
-                    <td>Name:</td>
-                    <td th:text="${user.name}"></td>
-                </tr>
-                <tr>
-                    <td>Last name:</td>
-                    <td th:text="${user.lastName}"></td>
-                </tr>
-                <tr>
-                    <td>Registration date:</td>
-                    <td th:text="${#temporals.format(user.createdAt, 'dd-MM-yyyy')}"></td>
-                </tr>
-                <tr>
-                    <td><a href="/profile-edit">
-                        <button>Edit</button>
-                    </a></td>
-                </tr>
-            </table>
+<body class="sidebar-collapse"
+      style="background-size: cover;
+      background: url(/img/sl-bg2.jpg) no-repeat center center fixed; min-height: 100vh">
+
+<th:block th:replace="layouts/nav">Nav</th:block>
+
+<div class="wrapper">
+    <th:block th:replace="layouts/notification">Notifications</th:block>
+    <div class="section align-middle" style="background-color: transparent; padding-top: 100px">
+        <div class="container">
+            <div class="row justify-content-center align-self-center text-light">
+                <div class="col-5">
+                    <h2 class="title text-center">Profile</h2>
+                    <table class="table">
+                        <tr>
+                            <td scope="row" style="font-weight: bold">E-mail:</td>
+                            <td scope="col" th:text="${user.username}"></td>
+                        </tr>
+                        <tr>
+                            <td scope="row" style="font-weight: bold">Name:</td>
+                            <td scope="col" th:text="${user.name}"></td>
+                        </tr>
+                        <tr>
+                            <td scope="row" style="font-weight: bold">Last name:</td>
+                            <td scope="col" th:text="${user.lastName}"></td>
+                        </tr>
+                        <tr>
+                            <td scope="row" style="font-weight: bold">Registration date:</td>
+                            <td scope="col" th:text="${#temporals.format(user.createdAt, 'dd-MM-yyyy')}"></td>
+                        </tr>
+                    </table>
+                    <div class="row justify-content-center align-self-center text-light">
+                        <a href="/profile-edit">
+                            <button class="btn btn-primary btn-round btn-lg btn-block">Edit</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <th:block th:replace="layouts/footer"></th:block>
     </div>
+    <th:block th:replace="layouts/footer"></th:block>
 </div>
 </body>
 <th:block th:replace="layouts/scripts"></th:block>

@@ -1,56 +1,60 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th:block th:replace="layouts/head"></th:block>
+    <th:block th:replace="layouts/head">Head</th:block>
 </head>
-<body class="sidebar-collapse">
-<th:block th:replace="layouts/nav"></th:block>
-<div class="page-header" filter-color="orange">
-    <div class="page-header-image" style="background-image:url(/img/bg-login.jpg)"></div>
-    <div class="container">
-        <div class="col-md-4 content-center">
-            <th:block th:replace="layouts/notification"></th:block>
-            <form th:action="@{/profile-edit}" method="post" class="form">
-                <input type="hidden" id="id" name="id" th:value="${user.id}">
-                <table class="table-condensed">
-                    <tr>
-                        <th><h1>PROFILE EDIT:</h1></th>
-                    </tr>
-                    <tr>
-                        <td>E-mail:</td>
-                        <td>
-                            <input type="text" id="username" name="username" th:value="${user.username}"
-                                   class="form-control" readonly/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Name:</td>
-                        <td>
-                            <input type="text" id="name" name="name" th:value="${user.name}"
-                                   class="form-control"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Last name:</td>
-                        <td>
-                            <input type="text" id="lastName" name="lastName" th:value="${user.lastName}"
-                                   class="form-control"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Registration date:</td>
-                        <td th:text="${#temporals.format(user.createdAt, 'dd-MM-yyyy')}"></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <button type="submit" class="btn btn-primary btn-round btn-lg btn-block">Submit</button>
-                        </td>
-                    </tr>
-                </table>
-            </form>
+<body class="sidebar-collapse"
+      style="background-size: cover; background: url(/img/sl-bg2.jpg) no-repeat center center fixed;
+min-height: 100vh">
+
+<th:block th:replace="layouts/nav">Nav</th:block>
+
+<div class="wrapper">
+    <th:block th:replace="layouts/notification">Notifications</th:block>
+    <div class="section align-middle" style="background-color: transparent; padding-top: 100px">
+        <div class="container">
+            <div class="row justify-content-center align-self-center text-light">
+                <div class="col-5">
+                    <form th:action="@{/profile-edit}" method="post" class="form">
+                        <h2 class="title text-center">Profile</h2>
+                        <input type="hidden" id="id" name="id" th:value="${user.id}">
+                        <table class="table">
+                            <tr>
+                                <td scope="row" style="font-weight: bold">E-mail:</td>
+                                <td th:text="${user.username}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td scope="row" style="font-weight: bold">Name:</td>
+                                <td scope="col">
+                                    <input type="text" id="name" name="name" th:value="${user.name}"
+                                           class="form-control bg-light"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td scope="row" style="font-weight: bold">Last name:</td>
+                                <td scope="col">
+                                    <input type="text" id="lastName" name="lastName" th:value="${user.lastName}"
+                                           class="form-control bg-light"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td scope="row" style="font-weight: bold">Registration date:</td>
+                                <td scope="col" th:text="${#temporals.format(user.createdAt, 'dd-MM-yyyy')}"></td>
+                            </tr>
+                            <tr>
+                        </table>
+                        <div class="row justify-content-center align-self-center text-light">
+                            <button type="submit" class="btn btn-primary btn-round btn-lg btn-block">Save changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
         </div>
-        <th:block th:replace="layouts/footer"></th:block>
     </div>
+    <th:block th:replace="layouts/footer"></th:block>
 </div>
 </body>
 <th:block th:replace="layouts/scripts"></th:block>
