@@ -11,21 +11,22 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
     private final UserService userService;
+    private final ItemListService itemListService;
 
-    public ItemService(ItemRepository itemRepository, UserService userService) {
+    public ItemService(ItemRepository itemRepository, UserService userService, ItemListService itemListService) {
         this.itemRepository = itemRepository;
         this.userService = userService;
+        this.itemListService = itemListService;
     }
 
     public void add(ItemDto itemDto) {
-        itemRepository.save(toEntity(itemDto));
-    }
-
-    public List<ItemDto> findAll() {
-        return itemRepository.findAll()
-                .stream()
-                .map(i -> toDto(i))
-                .collect(Collectors.toList());
+        ItemEntity itemEntity = new ItemEntity();
+        itemEntity.setName(itemDto.getName());
+        itemEntity.setUser(userService.findById(itemDto.getUserId()));
+        itemEntity.setList(itemListService.getById(itemDto.getListId()));
+        itemEntity.setDone(false);
+        itemEntity.setRemoved(false);
+        itemRepository.save(itemEntity);
     }
 
     public List<ItemDto> findAllByUsername(String username) {
@@ -59,21 +60,15 @@ public class ItemService {
         itemRepository.save(itemEntity);
     }
 
-    private ItemEntity toEntity(ItemDto itemDto) {
-        return new ItemEntity(
-                itemDto.getId(),
-                itemDto.getName(),
-                userService.findById(itemDto.getUserId()),
-                itemDto.getDone(),
-                itemDto.getCreatedAt());
-    }
-
     private ItemDto toDto(ItemEntity itemEntity) {
-        return new ItemDto(
-                itemEntity.getId(),
-                itemEntity.getName(),
-                itemEntity.getUser().getId(),
-                itemEntity.getDone(),
-                itemEntity.getCreatedAt());
+        ItemDto itemDto = new ItemDto();
+        itemDto.setId(itemEntity.getId());
+        itemDto.setUserId(itemEntity.getUser().getId());
+        itemDto.setCreatedAt(itemEntity.getCreatedAt());
+        itemDto.setListId(itemEntity.getId());
+        itemDto.setDone(itemEntity.getDone());
+        itemDto.setRemoved(itemEntity.getRemoved());
+        itemDto.setName(itemEntity.getName());
+        return itemDto;
     }
 }
