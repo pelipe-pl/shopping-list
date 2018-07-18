@@ -29,8 +29,8 @@ public class ItemService {
         itemRepository.save(itemEntity);
     }
 
-    public List<ItemDto> findAllByUsername(String username) {
-        return itemRepository.findAllByUser_UsernameAndRemovedFalseOrderByDone(username)
+    public List<ItemDto> findAllByUsernameAndListId(String username, Long listId) {
+        return itemRepository.findAllByUser_UsernameAndRemovedFalseAndList_Id(username, listId)
                 .stream()
                 .map(i -> toDto(i))
                 .collect(Collectors.toList());

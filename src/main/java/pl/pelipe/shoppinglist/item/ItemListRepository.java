@@ -8,6 +8,8 @@ import java.util.List;
 @Repository
 public interface ItemListRepository extends JpaRepository<ItemListEntity, Long> {
 
-    List<ItemListEntity> findAllByUser_IdAndRemovedFalse(Long id);
+    List<ItemListEntity> findAllByUser_UsernameAndRemovedFalse(String username);
+
+    ItemListEntity getByIdAndUser_Username(Long id, String username);
 
 }

@@ -15,11 +15,15 @@ public class ItemListService {
         this.userRepository = userRepository;
     }
 
-    public ItemListEntity getById(Long id) {
+    ItemListEntity getById(Long id) {
         return itemListRepository.getOne(id);
     }
 
-    public void add(ItemListDto itemListDto){
+    ItemListDto getByIdAndUsername(Long id, String username) {
+        return toDto(itemListRepository.getByIdAndUser_Username(id, username));
+    }
+
+    public void add(ItemListDto itemListDto) {
         ItemListEntity itemListEntity = new ItemListEntity();
         itemListEntity.setName(itemListDto.getName());
         itemListEntity.setUser(userRepository.getById(itemListDto.getUserId()));
@@ -27,13 +31,22 @@ public class ItemListService {
         itemListRepository.save(itemListEntity);
     }
 
-    public void remove(Long id){
+    List<ItemListEntity> findAllByUsernameAndRemovedFalse(String username) {
+        return itemListRepository.findAllByUser_UsernameAndRemovedFalse(username);
+    }
+
+    public void remove(Long id) {
         ItemListEntity itemListEntity = itemListRepository.getOne(id);
         itemListEntity.setRemoved(true);
         itemListRepository.save(itemListEntity);
     }
 
-    public List<ItemListEntity> findAllByUserIdAndRemovedFalse(Long id) {
-        return itemListRepository.findAllByUser_IdAndRemovedFalse(id);
+    private ItemListDto toDto(ItemListEntity itemListEntity) {
+        ItemListDto itemListDto = new ItemListDto();
+        itemListDto.setId(itemListEntity.getId());
+        itemListDto.setName(itemListEntity.getName());
+        itemListDto.setCreatedAt(itemListEntity.getCreatedAt());
+        itemListDto.setRemoved(itemListEntity.getRemoved());
+        return itemListDto;
     }
 }

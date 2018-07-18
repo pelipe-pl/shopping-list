@@ -27,9 +27,9 @@ min-height: 100vh">
                     <div sec:authorize="isAuthenticated()">
                         <h1 class="title text-light">Welcome, <span th:text="${name}"></span>!</h1>
                         <h5 class="subTitle text-light">You are ready to manage your own shopping list.</h5>
-                        <a href="/list">
+                        <a href="/lists">
                             <button class="btn btn-primary btn-round btn-lg text-center" style="max-width: 250px">
-                                Check your list
+                                Check your lists
                             </button>
                         </a>
                     </div>

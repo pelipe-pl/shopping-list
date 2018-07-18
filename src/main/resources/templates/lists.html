@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="layouts/head">Head</th:block>
+</head>
+<body class="sidebar-collapse"
+      style="background-size: cover;
+      background: url(/img/sl-bg2.jpg) no-repeat center center fixed; min-height: 100vh">
+
+<th:block th:replace="layouts/nav">Nav</th:block>
+
+<div class="wrapper">
+    <th:block th:replace="layouts/notification">Notifications</th:block>
+    <div class="section align-middle" style="background-color: transparent; padding-top: 100px">
+        <div class="container">
+            <div class="row justify-content-center align-self-center text-light">
+                <div class="col-md-4">
+                    <h2 class="title text-center">Your lists</h2>
+
+                    <table th:each="list : ${lists}" class="table-condensed">
+                        <tr>
+                            <td>
+                                <a th:href="@{'/list/'+ ${list.id}}"
+                                <button th:text="${list.name}"
+                                        class="btn btn-primary btn-round btn-block" style="width: 200px">
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <th:block th:replace="layouts/footer">Footer</th:block>
+        </div>
+    </div>
+</div>
+</body>
+<th:block th:replace="layouts/scripts">Scripts</th:block>
+</html>
