@@ -1,18 +1,15 @@
 package pl.pelipe.shoppinglist.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import pl.pelipe.shoppinglist.item.ItemDto;
-import pl.pelipe.shoppinglist.item.ItemService;
 
+import java.io.IOException;
 import java.security.Principal;
-import java.util.List;
 
 @Controller
 public class UserController {
@@ -57,7 +54,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registration(@ModelAttribute("userForm") UserEntity userForm, BindingResult bindingResult, Model model) {
+    public String registration(@ModelAttribute("userForm") UserEntity userForm, BindingResult bindingResult, Model model) throws IOException {
         userValidator.validate(userForm, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("error", bindingResult.toString());
