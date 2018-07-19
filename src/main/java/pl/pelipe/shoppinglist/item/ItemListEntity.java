@@ -13,13 +13,13 @@ import java.time.LocalDateTime;
 public class ItemListEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotEmpty
+    //    @NotEmpty
     @Column(name = "name")
-    @Min(value = 3, message = "The list must be minimum {3} characters long")
-    @Max(value = 30, message = "The list name cannot be longer than {30} characters.")
+//    @Min(value = 3, message = "The list must be minimum {3} characters long")
+//    @Max(value = 30, message = "The list name cannot be longer than {30} characters.")
     private String name;
 
     @ManyToOne

@@ -17,6 +17,23 @@
                 <div class="col-md-4">
                     <h2 class="title text-center">Your lists</h2>
 
+                    <form action="list/add" method="post">
+                        <table>
+                            <tr>
+                                <td>
+                                    <input type="text" id="name" name="name" placeholder="Type new list name here."
+                                           class="form-control" style="width: 200px"/>
+                                </td>
+                                <td>
+                                    <button class="btn btn-icon btn-warning btn-round" style="width: 85px"
+                                            type="submit">
+                                        <i class="now-ui-icons ui-1_simple-add"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+
                     <table th:each="list : ${lists}" class="table-condensed">
                         <tr>
                             <td>

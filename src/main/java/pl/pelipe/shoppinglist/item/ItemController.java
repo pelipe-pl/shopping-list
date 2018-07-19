@@ -42,6 +42,13 @@ public class ItemController {
         return "list";
     }
 
+    @RequestMapping(value = "/list/add", method = RequestMethod.POST)
+    public String addList(ItemListDto itemListDto, Principal principal) {
+        itemListDto.setUserId(userService.findByUsername(principal.getName()).getId());
+        itemListService.add(itemListDto);
+        return "redirect:lists";
+    }
+
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addItem(ItemDto item, Principal principal) {
         item.setUserId(userService.findByUsername(principal.getName()).getId());

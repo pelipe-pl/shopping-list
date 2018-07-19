@@ -30,7 +30,7 @@ public class ItemService {
     }
 
     public List<ItemDto> findAllByUsernameAndListId(String username, Long listId) {
-        return itemRepository.findAllByUser_UsernameAndRemovedFalseAndList_Id(username, listId)
+        return itemRepository.findAllByUser_UsernameAndRemovedFalseAndList_IdOrderByDone(username, listId)
                 .stream()
                 .map(i -> toDto(i))
                 .collect(Collectors.toList());

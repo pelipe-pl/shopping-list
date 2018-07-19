@@ -65,7 +65,7 @@ public class UserController {
         }
         userService.save(userForm);
         model.addAttribute("message", "You have been successfully registered.");
-        return "/login";
+        return "login";
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
