@@ -22,6 +22,10 @@ public class ItemEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
+    @ManyToOne
+    @JoinColumn(name = "item_list_id", referencedColumnName = "id")
+    private ItemListEntity list;
+
     private Boolean done = false;
 
     private Boolean removed = false;
@@ -43,6 +47,15 @@ public class ItemEntity {
         this.name = name;
         this.user = user;
         this.done = done;
+        this.createdAt = createdAt;
+    }
+
+    public ItemEntity(@NotNull String name, UserEntity user, ItemListEntity list, Boolean done, Boolean removed, LocalDateTime createdAt) {
+        this.name = name;
+        this.user = user;
+        this.list = list;
+        this.done = done;
+        this.removed = removed;
         this.createdAt = createdAt;
     }
 
@@ -84,6 +97,18 @@ public class ItemEntity {
 
     public void setRemoved(Boolean removed) {
         this.removed = removed;
+    }
+
+    public ItemListEntity getList() {
+        return list;
+    }
+
+    public void setList(ItemListEntity list) {
+        this.list = list;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override

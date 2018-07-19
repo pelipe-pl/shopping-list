@@ -10,9 +10,9 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Integer> {
 
     ItemEntity getById(Long id);
 
-    List<ItemEntity> findAllByUser_UsernameAndRemovedFalseOrderByDone(String username);
+    List<ItemEntity> findAllByUser_UsernameAndList_IdAndRemovedFalseAndDoneTrue(String username, Long listId);
 
-    List<ItemEntity> findAllByUser_UsernameAndRemovedFalseAndDoneTrue(String username);
+    List<ItemEntity> findAllByUser_UsernameAndList_IdAndRemovedFalseAndDoneFalse(String username, Long listId);
 
-    List<ItemEntity> findAllByUser_UsernameAndRemovedFalseAndDoneFalse(String username);
+    List<ItemEntity> findAllByUser_UsernameAndRemovedFalseAndList_IdOrderByDone(String username, Long ListId);
 }

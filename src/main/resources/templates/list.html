@@ -15,9 +15,12 @@
         <div class="container">
             <div class="row justify-content-center align-self-center text-light">
                 <div class="col-md-4">
-                    <h2 class="title text-center">Your list</h2>
+                    <h2 class="title text-center" th:text="${list.getName()}"></h2>
+                    <div th:if="${items.isEmpty()}">
+                        <h5>This list is empty.</h5>
+                    </div>
                     <table class="table-condensed content-center">
-                        <tr>
+                        <tr th:if="${!items.isEmpty()}">
                             <td></td>
                             <td>
                                 <div class="dropdown">
@@ -26,17 +29,18 @@
                                         <i class="now-ui-icons ui-1_settings-gear-63"></i>
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
-                                        <a class="dropdown-item" href="/setalldone">Set all done</a>
-                                        <a class="dropdown-item" href="/removedone">Remove all done</a>
+                                        <a class="dropdown-item" th:href="@{'/list/setalldone/'+ ${list.id}}">Set all done</a>
+                                        <a class="dropdown-item" th:href="@{'/list/removedone/'+ ${list.id}}">Remove all done</a>
                                     </ul>
                                 </div>
                             </td>
                         </tr>
-                        <form th:action="@{/add}" method="post">
+                        <form action="/item/add" method="post">
                             <tr>
                                 <td>
                                     <input type="text" id="name" name="name" placeholder="Type new item name here."
                                            class="form-control" style="width: 200px"/>
+                                    <input type="hidden" id="listId" name="listId" th:value="${list.id}">
                                 </td>
                                 <td>
                                     <button class="btn btn-icon btn-warning btn-round" style="width: 85px"
@@ -57,31 +61,33 @@
                                         style="text-decoration: line-through; width: 200px"></button>
                             </td>
                             <td>
-                                <form th:if="${item.done == false}" th:action="@{/done}" method="post">
+                                <form th:if="${item.done == false}" th:action="@{/item/done}" method="post">
                                     <input type="hidden" id="id" name="id" th:value="${item.id}">
+                                    <input type="hidden" id="listId" name="listId" th:value="${list.id}">
                                     <button type="submit" class="btn btn-success btn-icon  btn-icon-mini btn-round"
                                             title="Set done">
                                         <i class="now-ui-icons ui-1_check"></i>
                                     </button>
                                 </form>
 
-                                <form th:if="${item.done == true}" th:action="@{/notdone}" method="post">
+                                <form th:if="${item.done == true}" th:action="@{/item/notdone}" method="post">
                                     <input type="hidden" id="id" name="id" th:value="${item.id}">
+                                    <input type="hidden" id="listId" name="listId" th:value="${list.id}">
                                     <button type="submit" class="btn btn-default btn-icon  btn-icon-mini btn-round"
                                             title="Set not done">
                                         <i class="now-ui-icons arrows-1_minimal-up"></i>
                                     </button>
                                 </form>
                             <td>
-                                <form th:if="${item.done == false || item.done == true}" th:action="@{/remove}"
+                                <form th:action="@{/item/remove}"
                                       method="post">
                                     <input type="hidden" id="id" name="id" th:value="${item.id}">
+                                    <input type="hidden" id="listId" name="listId" th:value="${list.id}">
                                     <button type="submit" class="btn btn-danger btn-icon  btn-icon-mini btn-round"
                                             title="Remove">
                                         <i class="now-ui-icons ui-1_simple-remove"></i>
                                     </button>
                                 </form>
-                            </td>
                             </td>
                         </tr>
                     </table>
@@ -89,6 +95,8 @@
             </div>
             <th:block th:replace="layouts/footer">Footer</th:block>
         </div>
+    </div>
+</div>
 </body>
 <th:block th:replace="layouts/scripts">Scripts</th:block>
 </html>

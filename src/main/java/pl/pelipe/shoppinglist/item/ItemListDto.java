@@ -1,8 +1,9 @@
 package pl.pelipe.shoppinglist.item;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
-public class ItemDto {
+public class ItemListDto {
 
     private Long id;
 
@@ -10,31 +11,17 @@ public class ItemDto {
 
     private Long userId;
 
-    private Long listId;
+    private Boolean removed;
 
-    private Boolean done = false;
+    private LocalDateTime createdAt;
 
-    private Boolean removed = false;
-
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    public ItemDto() {
+    public ItemListDto() {
     }
 
-    public ItemDto(Long id, String name, Long userId, Boolean done, LocalDateTime createdAt) {
+    public ItemListDto(Long id, String name, Long userId, Boolean removed, LocalDateTime createdAt) {
         this.id = id;
         this.name = name;
         this.userId = userId;
-        this.done = done;
-        this.createdAt = createdAt;
-    }
-
-    public ItemDto(Long id, String name, Long userId, Long listId, Boolean done, Boolean removed, LocalDateTime createdAt) {
-        this.id = id;
-        this.name = name;
-        this.userId = userId;
-        this.listId = listId;
-        this.done = done;
         this.removed = removed;
         this.createdAt = createdAt;
     }
@@ -63,14 +50,6 @@ public class ItemDto {
         this.userId = userId;
     }
 
-    public Boolean getDone() {
-        return done;
-    }
-
-    public void setDone(Boolean done) {
-        this.done = done;
-    }
-
     public Boolean getRemoved() {
         return removed;
     }
@@ -87,11 +66,18 @@ public class ItemDto {
         this.createdAt = createdAt;
     }
 
-    public Long getListId() {
-        return listId;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ItemListDto that = (ItemListDto) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(userId, that.userId);
     }
 
-    public void setListId(Long listId) {
-        this.listId = listId;
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, userId);
     }
 }

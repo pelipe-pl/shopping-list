@@ -3,6 +3,7 @@ package pl.pelipe.shoppinglist.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.pelipe.shoppinglist.item.ItemListService;
 
 import java.util.HashSet;
 
@@ -15,11 +16,14 @@ public class UserServiceImpl implements UserService {
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    private ItemListService itemListService;
+
     @Autowired
-    public UserServiceImpl(RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository userRepository) {
+    public UserServiceImpl(RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository userRepository, ItemListService itemListService) {
         this.roleRepository = roleRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userRepository = userRepository;
+        this.itemListService = itemListService;
     }
 
     @SuppressWarnings("unchecked")
@@ -28,6 +32,7 @@ public class UserServiceImpl implements UserService {
         userEntity.setPassword(bCryptPasswordEncoder.encode(userEntity.getPassword()));
         userEntity.setRoles(new HashSet<>(roleRepository.findAll()));
         userRepository.save(userEntity);
+        itemListService.addSampleLists(userEntity);
     }
 
     @Override
@@ -44,7 +49,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity findById(Integer id) {
+    public UserEntity findById(Long id) {
         return userRepository.getById(id);
     }
 }

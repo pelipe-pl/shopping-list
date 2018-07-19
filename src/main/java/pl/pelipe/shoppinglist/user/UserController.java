@@ -69,12 +69,12 @@ public class UserController {
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
-    public String profile(Model model) {
+    public String profile() {
         return "profile";
     }
 
     @RequestMapping(value = "/profile-edit", method = RequestMethod.GET)
-    public String profileEdit(Model model) {
+    public String profileEdit() {
         return "profile-edit";
     }
 

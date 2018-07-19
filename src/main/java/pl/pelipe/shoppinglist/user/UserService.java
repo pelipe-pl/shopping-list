@@ -7,5 +7,5 @@ public interface UserService {
 
     UserEntity findByUsername(String username);
 
-    UserEntity findById(Integer id);
+    UserEntity findById(Long id);
 }
