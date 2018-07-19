@@ -29,32 +29,34 @@ public class ItemService {
         itemRepository.save(itemEntity);
     }
 
-    public List<ItemDto> findAllByUsernameAndListId(String username, Long listId) {
+    List<ItemDto> findAllByUsernameAndListId(String username, Long listId) {
         return itemRepository.findAllByUser_UsernameAndRemovedFalseAndList_IdOrderByDone(username, listId)
                 .stream()
                 .map(i -> toDto(i))
                 .collect(Collectors.toList());
     }
 
-    public void findDoneAndSetRemoved(String username) {
-        List<ItemEntity> items = itemRepository.findAllByUser_UsernameAndRemovedFalseAndDoneTrue(username);
+    void findDoneAndSetRemoved(Long listId, String username) {
+        List<ItemEntity> items =
+                itemRepository.findAllByUser_UsernameAndList_IdAndRemovedFalseAndDoneTrue(username, listId);
         items.forEach(i -> i.setRemoved(true));
         itemRepository.saveAll(items);
     }
 
-    public void findAllNotRemovedAndSetDone(String username) {
-        List<ItemEntity> items = itemRepository.findAllByUser_UsernameAndRemovedFalseAndDoneFalse(username);
+    void findAllNotRemovedAndSetDone(Long listId, String username) {
+        List<ItemEntity> items =
+                itemRepository.findAllByUser_UsernameAndList_IdAndRemovedFalseAndDoneFalse(username, listId);
         items.forEach(i -> i.setDone(true));
         itemRepository.saveAll(items);
     }
 
-    public void setDone(Long id, Boolean done) {
+    void setDone(Long id, Boolean done) {
         ItemEntity itemEntity = itemRepository.getById(id);
         itemEntity.setDone(done);
         itemRepository.save(itemEntity);
     }
 
-    public void setRemoved(Long id) {
+    void setRemoved(Long id) {
         ItemEntity itemEntity = itemRepository.getById(id);
         itemEntity.setRemoved(true);
         itemRepository.save(itemEntity);

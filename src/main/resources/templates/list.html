@@ -26,8 +26,8 @@
                                         <i class="now-ui-icons ui-1_settings-gear-63"></i>
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
-                                        <a class="dropdown-item" href="/list/setalldone">Set all done</a>
-                                        <a class="dropdown-item" href="/list/removedone">Remove all done</a>
+                                        <a class="dropdown-item" th:href="@{'/list/setalldone/'+ ${list.id}}">Set all done</a>
+                                        <a class="dropdown-item" th:href="@{'/list/removedone/'+ ${list.id}}">Remove all done</a>
                                     </ul>
                                 </div>
                             </td>
