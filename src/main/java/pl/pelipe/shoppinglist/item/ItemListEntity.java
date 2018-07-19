@@ -28,6 +28,14 @@ public class ItemListEntity {
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    public ItemListEntity() {
+    }
+
+    public ItemListEntity(@NotEmpty String name, UserEntity user) {
+        this.name = name;
+        this.user = user;
+    }
+
     public Long getId() {
         return id;
     }

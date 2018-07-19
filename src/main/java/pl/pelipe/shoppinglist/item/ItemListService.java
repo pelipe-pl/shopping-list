@@ -1,6 +1,7 @@
 package pl.pelipe.shoppinglist.item;
 
 import org.springframework.stereotype.Service;
+import pl.pelipe.shoppinglist.user.UserEntity;
 import pl.pelipe.shoppinglist.user.UserRepository;
 
 import java.util.List;
@@ -9,10 +10,12 @@ import java.util.List;
 public class ItemListService {
     private final ItemListRepository itemListRepository;
     private final UserRepository userRepository;
+    private final ItemListFactory itemListFactory;
 
-    public ItemListService(ItemListRepository itemListRepository, UserRepository userRepository) {
+    public ItemListService(ItemListRepository itemListRepository, UserRepository userRepository, ItemListFactory itemListFactory) {
         this.itemListRepository = itemListRepository;
         this.userRepository = userRepository;
+        this.itemListFactory = itemListFactory;
     }
 
     ItemListEntity getById(Long id) {
@@ -31,6 +34,10 @@ public class ItemListService {
         itemListRepository.save(itemListEntity);
     }
 
+    public void add(List<ItemListEntity> itemListEntityList) {
+        itemListRepository.saveAll(itemListEntityList);
+    }
+
     List<ItemListEntity> findAllByUsernameAndRemovedFalse(String username) {
         return itemListRepository.findAllByUser_UsernameAndRemovedFalse(username);
     }
@@ -39,6 +46,10 @@ public class ItemListService {
         ItemListEntity itemListEntity = itemListRepository.getByIdAndUser_Username(id, username);
         itemListEntity.setRemoved(true);
         itemListRepository.save(itemListEntity);
+    }
+
+    public void addSampleLists(UserEntity userEntity) {
+        itemListRepository.saveAll(itemListFactory.createSampleLists(userEntity));
     }
 
     private ItemListDto toDto(ItemListEntity itemListEntity) {

@@ -16,8 +16,11 @@
             <div class="row justify-content-center align-self-center text-light">
                 <div class="col-md-4">
                     <h2 class="title text-center" th:text="${list.getName()}"></h2>
+                    <div th:if="${items.isEmpty()}">
+                        <h5>This list is empty.</h5>
+                    </div>
                     <table class="table-condensed content-center">
-                        <tr>
+                        <tr th:if="${!items.isEmpty()}">
                             <td></td>
                             <td>
                                 <div class="dropdown">
