@@ -46,7 +46,13 @@ public class ItemController {
     public String addList(ItemListDto itemListDto, Principal principal) {
         itemListDto.setUserId(userService.findByUsername(principal.getName()).getId());
         itemListService.add(itemListDto);
-        return "redirect:lists";
+        return "redirect:/lists";
+    }
+
+    @RequestMapping(value = "/list/remove/{listId}", method = RequestMethod.POST)
+    public String removeList(@PathVariable Long listId, Principal principal){
+        itemListService.remove(listId, principal.getName());
+        return "redirect:/lists";
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)

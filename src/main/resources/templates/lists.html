@@ -16,7 +16,9 @@
             <div class="row justify-content-center align-self-center text-light">
                 <div class="col-md-4">
                     <h2 class="title text-center">Your lists</h2>
-
+                    <div th:if="${lists.isEmpty()}">
+                        <h5>You have no lists.</h5>
+                    </div>
                     <form action="list/add" method="post">
                         <table>
                             <tr>
@@ -37,11 +39,21 @@
                     <table th:each="list : ${lists}" class="table-condensed">
                         <tr>
                             <td>
-                                <a th:href="@{'/list/'+ ${list.id}}"
+                                <a th:href="@{'/list/'+ ${list.id}}">
                                 <button th:text="${list.name}"
                                         class="btn btn-primary btn-round btn-block" style="width: 200px">
                                 </button>
+                                </a>
                             </td>
+                            <td>
+                                <form th:action="@{'/list/remove/'+ ${list.id}}" method="post">
+                                <button class="btn btn-icon btn-danger btn-round" style="width: 85px"
+                                        type="submit">
+                                    <i class="now-ui-icons ui-1_simple-remove"></i>
+                                </button>
+                                </form>
+                            </td>
+
                         </tr>
                     </table>
                 </div>

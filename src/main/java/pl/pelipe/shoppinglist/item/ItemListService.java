@@ -35,8 +35,8 @@ public class ItemListService {
         return itemListRepository.findAllByUser_UsernameAndRemovedFalse(username);
     }
 
-    public void remove(Long id) {
-        ItemListEntity itemListEntity = itemListRepository.getOne(id);
+    public void remove(Long id, String username) {
+        ItemListEntity itemListEntity = itemListRepository.getByIdAndUser_Username(id, username);
         itemListEntity.setRemoved(true);
         itemListRepository.save(itemListEntity);
     }
