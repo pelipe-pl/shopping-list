@@ -55,38 +55,38 @@ public class ItemController {
         return "redirect:/lists";
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/item/add", method = RequestMethod.POST)
     public String addItem(ItemDto item, Principal principal) {
         item.setUserId(userService.findByUsername(principal.getName()).getId());
         itemService.add(item);
-        return "redirect:list" + "/" + item.getListId();
+        return "redirect:/list" + "/" + item.getListId();
     }
 
-    @RequestMapping(value = "/done", method = RequestMethod.POST)
+    @RequestMapping(value = "/item/done", method = RequestMethod.POST)
     public String setDone(ItemDto item) {
         itemService.setDone(item.getId(), true);
-        return "redirect:list" + "/" + item.getListId();
+        return "redirect:/list" + "/" + item.getListId();
     }
 
-    @RequestMapping(value = "/notdone", method = RequestMethod.POST)
+    @RequestMapping(value = "/item/notdone", method = RequestMethod.POST)
     public String setNotDone(ItemDto item) {
         itemService.setDone(item.getId(), false);
-        return "redirect:list" + "/" + item.getListId();
+        return "redirect:/list" + "/" + item.getListId();
     }
 
-    @RequestMapping(value = "/remove", method = RequestMethod.POST)
+    @RequestMapping(value = "/item/remove", method = RequestMethod.POST)
     public String setRemoved(ItemDto item) {
         itemService.setRemoved(item.getId());
-        return "redirect:list" + "/" + item.getListId();
+        return "redirect:/list" + "/" + item.getListId();
     }
 
-    @RequestMapping(value = "/removedone", method = RequestMethod.GET)
+    @RequestMapping(value = "/list/removedone", method = RequestMethod.GET)
     public String setDoneItemsRemoved(Principal principal) {
         itemService.findDoneAndSetRemoved(principal.getName());
         return "redirect:list";
     }
 
-    @RequestMapping(value = "/setalldone", method = RequestMethod.GET)
+    @RequestMapping(value = "/list/setalldone", method = RequestMethod.GET)
     public String setAllItemsDone(Principal principal) {
         itemService.findAllNotRemovedAndSetDone(principal.getName());
         return "redirect:list";

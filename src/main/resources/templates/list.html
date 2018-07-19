@@ -26,13 +26,13 @@
                                         <i class="now-ui-icons ui-1_settings-gear-63"></i>
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
-                                        <a class="dropdown-item" href="/setalldone">Set all done</a>
-                                        <a class="dropdown-item" href="/removedone">Remove all done</a>
+                                        <a class="dropdown-item" href="/list/setalldone">Set all done</a>
+                                        <a class="dropdown-item" href="/list/removedone">Remove all done</a>
                                     </ul>
                                 </div>
                             </td>
                         </tr>
-                        <form th:action="@{/add}" method="post">
+                        <form action="/item/add" method="post">
                             <tr>
                                 <td>
                                     <input type="text" id="name" name="name" placeholder="Type new item name here."
@@ -58,7 +58,7 @@
                                         style="text-decoration: line-through; width: 200px"></button>
                             </td>
                             <td>
-                                <form th:if="${item.done == false}" th:action="@{/done}" method="post">
+                                <form th:if="${item.done == false}" th:action="@{/item/done}" method="post">
                                     <input type="hidden" id="id" name="id" th:value="${item.id}">
                                     <input type="hidden" id="listId" name="listId" th:value="${list.id}">
                                     <button type="submit" class="btn btn-success btn-icon  btn-icon-mini btn-round"
@@ -67,7 +67,7 @@
                                     </button>
                                 </form>
 
-                                <form th:if="${item.done == true}" th:action="@{/notdone}" method="post">
+                                <form th:if="${item.done == true}" th:action="@{/item/notdone}" method="post">
                                     <input type="hidden" id="id" name="id" th:value="${item.id}">
                                     <input type="hidden" id="listId" name="listId" th:value="${list.id}">
                                     <button type="submit" class="btn btn-default btn-icon  btn-icon-mini btn-round"
@@ -76,7 +76,7 @@
                                     </button>
                                 </form>
                             <td>
-                                <form th:action="@{/remove}"
+                                <form th:action="@{/item/remove}"
                                       method="post">
                                     <input type="hidden" id="id" name="id" th:value="${item.id}">
                                     <input type="hidden" id="listId" name="listId" th:value="${list.id}">
