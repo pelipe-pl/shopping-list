@@ -40,20 +40,49 @@
                         <tr>
                             <td>
                                 <a th:href="@{'/list/'+ ${list.id}}">
-                                <button th:text="${list.name}"
-                                        class="btn btn-primary btn-round btn-block" style="width: 200px">
-                                </button>
+                                    <button th:text="${list.name}"
+                                            class="btn btn-primary btn-round btn-block" style="width: 200px">
+                                    </button>
                                 </a>
                             </td>
                             <td>
                                 <form th:action="@{'/list/remove/'+ ${list.id}}" method="post">
-                                <button class="btn btn-icon btn-danger btn-round" style="width: 85px"
-                                        type="submit">
-                                    <i class="now-ui-icons ui-1_simple-remove"></i>
-                                </button>
+                                    <button class="btn btn-icon btn-danger btn-round" style="width: 85px"
+                                            type="button" data-toggle="modal"
+                                            th:attr="data-target='#deleteModal'+${list.getId()}">
+                                        <i class="now-ui-icons ui-1_simple-remove"></i>
+                                    </button>
+                                    <!--modal------------->
+                                    <div class="modal fade" th:id="'deleteModal'+${list.getId()}" tabindex="-1"
+                                         role="dialog"
+                                         th:attr="aria-labelledby='deleteModalLabel'+${list.getId()}"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h3 class="modal-title" style="color: #2c2c2c"
+                                                        th:id="'deleteModalLabel'+${list.getId()}">Remove</h3>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body" style="color: #2c2c2c">
+                                                    Are you sure you want to remove the list named "<span
+                                                        th:text="${list.getName()}"></span>"?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close
+                                                    </button>
+                                                    <button type="submit" class="btn btn-primary">Remove</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end of modal-->
                                 </form>
                             </td>
-
                         </tr>
                     </table>
                 </div>
