@@ -36,13 +36,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .anyRequest()
                 .authenticated()
+
                 .and()
                 .formLogin()
                 .loginPage("/login")
                 .permitAll()
+
                 .and()
                 .logout()
-                .permitAll();
+                .permitAll()
+                .deleteCookies("JSESSIONID")
+
+                .and()
+                .rememberMe().key("REMEMBER_ME_KEY");
+
+
 
         http.csrf().disable();
     }
