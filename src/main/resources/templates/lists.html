@@ -40,8 +40,8 @@
                         <tr>
                             <td>
                                 <a th:href="@{'/list/'+ ${list.id}}">
-                                    <button th:text="${list.name}"
-                                            class="btn btn-primary btn-round btn-block" style="width: 200px">
+                                    <button th:text="${#strings.toUpperCase(list.name)}"
+                                            class="btn btn-primary btn-round btn-block" style="width: 200px; font-weight: bold;">
                                     </button>
                                 </a>
                             </td>
@@ -69,13 +69,13 @@
                                                 </div>
                                                 <div class="modal-body" style="color: #2c2c2c">
                                                     Are you sure you want to remove the list named "<span
-                                                        th:text="${list.getName()}"></span>"?
+                                                        th:text="${#strings.toUpperCase(list.name)}"></span>"?
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">Close
+                                                            data-dismiss="modal">No, sorry.
                                                     </button>
-                                                    <button type="submit" class="btn btn-primary">Remove</button>
+                                                    <button type="submit" class="btn btn-danger">Yes, remove it.</button>
                                                 </div>
                                             </div>
                                         </div>
