@@ -12,7 +12,7 @@ class ItemListFactory {
     List<ItemListEntity> createSampleLists(UserEntity userEntity) {
         ItemListEntity sampleList1 = new ItemListEntity("Grocery", userEntity);
         ItemListEntity sampleList2 = new ItemListEntity("Cosmetics", userEntity);
-        ItemListEntity sampleList3 = new ItemListEntity("Household chemicals", userEntity);
+        ItemListEntity sampleList3 = new ItemListEntity("Household", userEntity);
         ItemListEntity sampleList4 = new ItemListEntity("Wish list", userEntity);
         List<ItemListEntity> itemListEntityList = new ArrayList<>();
         itemListEntityList.add(sampleList1);

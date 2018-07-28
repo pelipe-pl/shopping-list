@@ -15,6 +15,10 @@ public class ItemListDto {
 
     private LocalDateTime createdAt;
 
+    private Long totalSize;
+
+    private Long undoneSize;
+
     public ItemListDto() {
     }
 
@@ -64,6 +68,22 @@ public class ItemListDto {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Long getTotalSize() {
+        return totalSize;
+    }
+
+    public void setTotalSize(Long totalSize) {
+        this.totalSize = totalSize;
+    }
+
+    public Long getUndoneSize() {
+        return undoneSize;
+    }
+
+    public void setUndoneSize(Long undoneSize) {
+        this.undoneSize = undoneSize;
     }
 
     @Override

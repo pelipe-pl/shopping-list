@@ -7,6 +7,8 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "item_list")
@@ -27,6 +29,9 @@ public class ItemListEntity {
     private Boolean removed = false;
 
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "list")
+    private List<ItemEntity> itemList = new ArrayList<>();
 
     public ItemListEntity() {
     }
@@ -74,5 +79,13 @@ public class ItemListEntity {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<ItemEntity> getItemList() {
+        return itemList;
+    }
+
+    public void setItemList(List<ItemEntity> itemList) {
+        this.itemList = itemList;
     }
 }

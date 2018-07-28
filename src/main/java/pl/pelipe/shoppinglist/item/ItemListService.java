@@ -5,6 +5,7 @@ import pl.pelipe.shoppinglist.user.UserEntity;
 import pl.pelipe.shoppinglist.user.UserRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemListService {
@@ -38,8 +39,8 @@ public class ItemListService {
         itemListRepository.saveAll(itemListEntityList);
     }
 
-    List<ItemListEntity> findAllByUsernameAndRemovedFalse(String username) {
-        return itemListRepository.findAllByUser_UsernameAndRemovedFalse(username);
+    List<ItemListDto> findAllByUsernameAndRemovedFalse(String username) {
+        return toDtoList(itemListRepository.findAllByUser_UsernameAndRemovedFalse(username));
     }
 
     public void remove(Long id, String username) {
@@ -58,6 +59,20 @@ public class ItemListService {
         itemListDto.setName(itemListEntity.getName());
         itemListDto.setCreatedAt(itemListEntity.getCreatedAt());
         itemListDto.setRemoved(itemListEntity.getRemoved());
+        itemListDto.setTotalSize(itemListEntity.getItemList()
+                .stream()
+                .filter(itemEntity -> !itemEntity.getRemoved())
+                .count());
+        itemListDto.setUndoneSize(itemListEntity.getItemList()
+                .stream()
+                .filter(itemEntity -> !itemEntity.getRemoved() && !itemEntity.getDone())
+                .count());
         return itemListDto;
+    }
+
+    private List<ItemListDto> toDtoList(List<ItemListEntity> listEntities){
+        return listEntities.stream()
+                .map( itemListEntity -> toDto(itemListEntity))
+                .collect(Collectors.toList());
     }
 }
