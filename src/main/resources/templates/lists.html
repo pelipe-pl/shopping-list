@@ -39,9 +39,12 @@
                     <table th:each="list : ${lists}" class="table-condensed">
                         <tr>
                             <td>
+
                                 <a th:href="@{'/list/'+ ${list.id}}">
-                                    <button th:text="${#strings.toUpperCase(list.name)}"
+                                    <button
                                             class="btn btn-primary btn-round btn-block" style="width: 200px; font-weight: bold;">
+                                        <span th:text="${#strings.toUpperCase(list.name)
+                                        +' ['+list.getUndoneSize()+'/'+list.getTotalSize()+']'}"></span>
                                     </button>
                                 </a>
                             </td>
