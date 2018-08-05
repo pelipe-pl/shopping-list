@@ -1,30 +1,45 @@
 package pl.pelipe.shoppinglist.user;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.pelipe.shoppinglist.email.EmailService;
 import pl.pelipe.shoppinglist.item.ItemListService;
+import org.springframework.core.env.Environment;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.HashSet;
+
+import static pl.pelipe.shoppinglist.config.Keys.URL_HOMEPAGE;
+import static pl.pelipe.shoppinglist.config.Keys.URL_PASSWORD_RESET;
 
 @Service
 public class UserServiceImpl implements UserService {
 
+    private static final String PASSWORD_RESET_CONTENT = "You have requested for new password. Following link is valid for 24 hours. " +
+            "To reset your password, please click: \n";
+    private static final String WELCOME_CONTENT = "Welcome to Shopping List by Pelipe. Now you can manage your own lists. ";
+    private static final String PASSWORD_CHANGED_CONTENT = "Your password in Shopping List has been changed.";
+
     private UserRepository userRepository;
     private RoleRepository roleRepository;
+    private PasswordResetTokenRepository tokenRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private ItemListService itemListService;
     private EmailService emailService;
+    private Environment environment;
 
     @Autowired
-    public UserServiceImpl(RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository userRepository, ItemListService itemListService, EmailService emailService) {
+    public UserServiceImpl(RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository userRepository, ItemListService itemListService, EmailService emailService, PasswordResetTokenRepository tokenRepository, Environment environment) {
         this.roleRepository = roleRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userRepository = userRepository;
         this.itemListService = itemListService;
         this.emailService = emailService;
+        this.tokenRepository = tokenRepository;
+        this.environment = environment;
     }
 
     @SuppressWarnings("unchecked")
@@ -36,8 +51,10 @@ public class UserServiceImpl implements UserService {
         itemListService.addSampleLists(userEntity);
         emailService.send(
                 userEntity.getUsername(),
-                "Welcome to shopping list",
-                "Welcome to shopping list by Pelipe. Now you can manage your own list");
+                "Welcome to Shopping List",
+                WELCOME_CONTENT
+                        + "Click" + " <a href='" + environment.getRequiredProperty(URL_HOMEPAGE)
+                        + "'>here</a> to log in and start!");
     }
 
     @Override
@@ -56,5 +73,47 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserEntity findById(Long id) {
         return userRepository.getById(id);
+    }
+
+    @Override
+    public Boolean sendPasswordResetToken(String username) throws IOException {
+        UserEntity entity = findByUsername(username);
+        if (entity != null) {
+            PasswordResetTokenEntity token = new PasswordResetTokenEntity();
+            String tokenValue = RandomStringUtils.randomAlphabetic(20);
+            token.setToken(tokenValue);
+            token.setActive(true);
+            token.setExpiryDate(LocalDateTime.now().plusHours(24));
+            emailService.send(
+                    entity.getUsername(),
+                    "Shopping List - Password Recovery",
+                    PASSWORD_RESET_CONTENT +
+                            " <a href='"
+                            + environment.getRequiredProperty(URL_PASSWORD_RESET + "/" + tokenValue)
+                            + "'>here</a>)");
+            tokenRepository.save(token);
+            return true;
+        } else return false;
+    }
+
+    @Override
+    public String resetPassword(String tokenValue, String newPassword, String newPasswordConfirm) throws IOException {
+        PasswordResetTokenEntity tokenEntity = tokenRepository.getByToken(tokenValue);
+        if (!newPassword.equals(newPasswordConfirm)) return "Passwords do not match.";
+        else if (tokenEntity == null) return "Invalid token.";
+        else if (!tokenEntity.getActive()) return "Token is not active anymore.";
+        else if (LocalDateTime.now().isAfter(tokenEntity.getExpiryDate())) return "Token has expired";
+        else {
+            UserEntity userEntity = tokenEntity.getUser();
+            userEntity.setPassword(bCryptPasswordEncoder.encode(newPassword));
+            userRepository.save(userEntity);
+            tokenEntity.setActive(false);
+            tokenRepository.save(tokenEntity);
+            emailService.send(
+                    userEntity.getUsername(),
+                    "Shopping List - Password has been changed.",
+                    PASSWORD_CHANGED_CONTENT);
+            return "Password has been changed.";
+        }
     }
 }
