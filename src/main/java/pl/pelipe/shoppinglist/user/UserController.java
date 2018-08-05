@@ -86,4 +86,73 @@ public class UserController {
         model.addAttribute("message", "You have successfully updated your info.");
         return "profile";
     }
+
+    @RequestMapping(value = "/password-recovery", method = RequestMethod.GET)
+    public String passwordRecovery(Model model) {
+        model.addAttribute("user", new UserEntity());
+        return "password-recovery";
+    }
+
+    @RequestMapping(value = "/password-recovery", method = RequestMethod.POST)
+    public String sendPasswordRecoveryToken(@ModelAttribute("user") UserEntity user, Model model) throws IOException {
+        Boolean result = userService.sendPasswordResetToken(user.getUsername());
+        if (result) {
+            model.addAttribute("message", "We have sent you an e-mail with further instructions.");
+            return "login";
+        } else {
+            model.addAttribute("error", "We could not find your e-mail");
+            return "password-recovery";
+        }
+    }
+
+    @RequestMapping(value = "/password-reset", method = RequestMethod.GET)
+    public String passwordResetPage(Model model) {
+        model.addAttribute("passwordResetRequest", new PasswordResetRequest());
+        return "password-reset";
+    }
+
+    @RequestMapping(value = "/password-reset", method = RequestMethod.POST)
+    public String passwordResetRequest(@ModelAttribute("passwordResetRequest") PasswordResetRequest passwordResetRequest, Model model) throws IOException {
+        String result = userService.resetPassword(
+                passwordResetRequest.getTokenValue(),
+                passwordResetRequest.getNewPassword(),
+                passwordResetRequest.getNewPasswordConfirm());
+        if (result.equals("Success")) {
+            model.addAttribute("message", "Your password has been changed");
+            return "login";
+        } else {
+            model.addAttribute("error", result);
+            return "password-reset";
+        }
+    }
+
+    private static class PasswordResetRequest {
+        private String tokenValue;
+        private String newPassword;
+        private String newPasswordConfirm;
+
+        String getTokenValue() {
+            return tokenValue;
+        }
+
+        String getNewPassword() {
+            return newPassword;
+        }
+
+        String getNewPasswordConfirm() {
+            return newPasswordConfirm;
+        }
+
+        public void setTokenValue(String tokenValue) {
+            this.tokenValue = tokenValue;
+        }
+
+        public void setNewPassword(String newPassword) {
+            this.newPassword = newPassword;
+        }
+
+        public void setNewPasswordConfirm(String newPasswordConfirm) {
+            this.newPasswordConfirm = newPasswordConfirm;
+        }
+    }
 }

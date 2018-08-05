@@ -77,20 +77,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean sendPasswordResetToken(String username) throws IOException {
-        UserEntity entity = findByUsername(username);
-        if (entity != null) {
+        UserEntity userEntity = findByUsername(username);
+        if (userEntity != null) {
             PasswordResetTokenEntity token = new PasswordResetTokenEntity();
             String tokenValue = RandomStringUtils.randomAlphabetic(20);
+            token.setUser(userEntity);
             token.setToken(tokenValue);
             token.setActive(true);
             token.setExpiryDate(LocalDateTime.now().plusHours(24));
             emailService.send(
-                    entity.getUsername(),
+                    userEntity.getUsername(),
                     "Shopping List - Password Recovery",
                     PASSWORD_RESET_CONTENT +
-                            " <a href='"
-                            + environment.getRequiredProperty(URL_PASSWORD_RESET + "/" + tokenValue)
-                            + "'>here</a>)");
+                            " <a href=" + '"'
+                            + environment.getRequiredProperty(URL_PASSWORD_RESET)
+                            + "?token=" + tokenValue
+                            + '"' + ">HERE</a>");
             tokenRepository.save(token);
             return true;
         } else return false;
@@ -100,6 +102,7 @@ public class UserServiceImpl implements UserService {
     public String resetPassword(String tokenValue, String newPassword, String newPasswordConfirm) throws IOException {
         PasswordResetTokenEntity tokenEntity = tokenRepository.getByToken(tokenValue);
         if (!newPassword.equals(newPasswordConfirm)) return "Passwords do not match.";
+        if (newPassword.length() < 6) return "Password must be longer than 6 characters";
         else if (tokenEntity == null) return "Invalid token.";
         else if (!tokenEntity.getActive()) return "Token is not active anymore.";
         else if (LocalDateTime.now().isAfter(tokenEntity.getExpiryDate())) return "Token has expired";
@@ -113,7 +116,7 @@ public class UserServiceImpl implements UserService {
                     userEntity.getUsername(),
                     "Shopping List - Password has been changed.",
                     PASSWORD_CHANGED_CONTENT);
-            return "Password has been changed.";
+            return "Success";
         }
     }
 }
