@@ -122,7 +122,7 @@ public class UserController {
             return "login";
         } else {
             model.addAttribute("error", result);
-            return "password-reset";
+            return "password-reset"+"?"+passwordResetRequest.tokenValue;
         }
     }
 
