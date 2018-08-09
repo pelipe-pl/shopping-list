@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -112,7 +113,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/password-reset", method = RequestMethod.POST)
-    public String passwordResetRequest(@ModelAttribute("passwordResetRequest") PasswordResetRequest passwordResetRequest, Model model) throws IOException {
+    public String passwordResetRequest(
+            @ModelAttribute("passwordResetRequest") PasswordResetRequest passwordResetRequest,
+            Model model, RedirectAttributes redirectAttributes) throws IOException {
         String result = userService.resetPassword(
                 passwordResetRequest.getTokenValue(),
                 passwordResetRequest.getNewPassword(),
@@ -121,8 +124,8 @@ public class UserController {
             model.addAttribute("message", "Your password has been changed");
             return "login";
         } else {
-            model.addAttribute("error", result);
-            return "password-reset"+"?"+passwordResetRequest.tokenValue;
+            redirectAttributes.addFlashAttribute("error", result);
+            return "redirect:/password-reset" + "?token=" + passwordResetRequest.tokenValue;
         }
     }
 
