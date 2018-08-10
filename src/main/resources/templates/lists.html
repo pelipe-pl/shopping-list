@@ -86,14 +86,10 @@
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
-                                                    <div class="modal-body" style="color: #2c2c2c">
-                                                        Please provide new name for this list.
-                                                    </div>
-
                                                     <input type="hidden" id="id" name="id"
                                                            th:value="${list.getId()}">
                                                     <input type="text" id="name" name="name" required
-                                                           placeholder="Type new name here."
+                                                           th:value="${list.getName()}"
                                                            class="form-control" style="margin: 15px; width: auto"/>
 
                                                     <div class="modal-footer">
