@@ -23,11 +23,12 @@
                         <table>
                             <tr>
                                 <td>
-                                    <input type="text" id="name" name="name" required placeholder="Type new list name here."
-                                           class="form-control" style="width: 200px"/>
+                                    <input type="text" id="name" name="name" required
+                                           placeholder="Type new list name here."
+                                           class="form-control" style="width: 250px"/>
                                 </td>
                                 <td>
-                                    <button class="btn btn-icon btn-warning btn-round" style="width: 85px"
+                                    <button class="btn btn-icon btn-warning btn-round"
                                             type="submit">
                                         <i class="now-ui-icons ui-1_simple-add"></i>
                                     </button>
@@ -42,49 +43,108 @@
 
                                 <a th:href="@{'/list/'+ ${list.id}}">
                                     <button
-                                            class="btn btn-primary btn-round btn-block" style="width: 200px; font-weight: bold;">
+                                            class="btn btn-primary btn-round btn-block"
+                                            style="width: 245px; font-weight: bold;">
                                         <span th:text="${#strings.toUpperCase(list.name)
                                         +' ['+list.getUndoneSize()+'/'+list.getTotalSize()+']'}"></span>
                                     </button>
                                 </a>
                             </td>
                             <td>
-                                <form th:action="@{'/list/remove/'+ ${list.id}}" method="post">
-                                    <button class="btn btn-icon btn-danger btn-round" style="width: 85px"
-                                            type="button" data-toggle="modal"
-                                            th:attr="data-target='#deleteModal'+${list.getId()}">
-                                        <i class="now-ui-icons ui-1_simple-remove"></i>
-                                    </button>
-                                    <!--modal------------->
+                                <div class="dropdown">
+                                    <a href="" class="btn btn-icon btn-default btn-round"
+                                       data-toggle="dropdown" id="navbarDropdownMenuLink1">
+                                        <i class="now-ui-icons design_bullet-list-67"></i>
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
+                                        <li class="nav-item dropdown">
+                                            <a class="dropdown-item" data-toggle="modal"
+                                               th:attr="data-target='#renameModal'+${list.getId()}">
+                                                Rename
+                                            </a>
+                                        </li>
+                                        <li class="nav-item dropdown">
+                                            <a class="dropdown-item" data-toggle="modal"
+                                               th:attr="data-target='#deleteModal'+${list.getId()}">
+                                                Remove
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <!--RENAME MODAL-START-->
+                                    <div class="modal fade" th:id="'renameModal'+${list.getId()}" tabindex="-1"
+                                         role="dialog"
+                                         th:attr="aria-labelledby='renameModalLabel'+${list.getId()}"
+                                         aria-hidden="true">
+                                        <form th:action="@{'/list/rename'}" method="post">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h3 class="modal-title" style="color: #2c2c2c"
+                                                            th:id="'renameModalLabel'+${list.getId()}">List rename</h3>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body" style="color: #2c2c2c">
+                                                        Please provide new name for this list.
+                                                    </div>
+
+                                                    <input type="hidden" id="id" name="id"
+                                                           th:value="${list.getId()}">
+                                                    <input type="text" id="name" name="name" required
+                                                           placeholder="Type new name here."
+                                                           class="form-control" style="margin: 15px; width: auto"/>
+
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">
+                                                            Never mind
+                                                        </button>
+                                                        <button type="submit" class="btn btn-danger">
+                                                            Submit
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!--RENAME MODAL-END-->
+                                    <!--REMOVE MODAL-START-->
                                     <div class="modal fade" th:id="'deleteModal'+${list.getId()}" tabindex="-1"
                                          role="dialog"
                                          th:attr="aria-labelledby='deleteModalLabel'+${list.getId()}"
                                          aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h3 class="modal-title" style="color: #2c2c2c"
-                                                        th:id="'deleteModalLabel'+${list.getId()}">Remove</h3>
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                            aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body" style="color: #2c2c2c">
-                                                    Are you sure you want to remove the list named "<span
-                                                        th:text="${#strings.toUpperCase(list.name)}"></span>"?
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">No, sorry.
-                                                    </button>
-                                                    <button type="submit" class="btn btn-danger">Yes, remove it.</button>
+                                        <form th:action="@{'/list/remove/'+ ${list.id}}" method="post">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h3 class="modal-title" style="color: #2c2c2c"
+                                                            th:id="'deleteModalLabel'+${list.getId()}">Remove</h3>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body" style="color: #2c2c2c">
+                                                        Are you sure you want to remove the list named "<span
+                                                            th:text="${#strings.toUpperCase(list.name)}"></span>"?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">
+                                                            No, sorry.
+                                                        </button>
+                                                        <button type="submit" class="btn btn-danger">
+                                                            Yes, remove it.
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>
-                                    <!--end of modal-->
-                                </form>
+                                    <!--REMOVE-MODAL-END-->
+                                </div>
                             </td>
                         </tr>
                     </table>

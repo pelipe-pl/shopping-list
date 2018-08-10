@@ -55,16 +55,22 @@ public class ItemController {
         return "redirect:/lists";
     }
 
-    @RequestMapping(value = "/item/add", method = RequestMethod.POST)
-    public String addItem(ItemDto item, Principal principal) {
-        item.setUserId(userService.findByUsername(principal.getName()).getId());
-        itemService.add(item);
-        return "redirect:/list" + "/" + item.getListId();
+    @RequestMapping(value = "list/rename", method = RequestMethod.POST)
+    public String renameList(ItemListDto itemListDto, Principal principal) {
+        itemListService.rename(itemListDto.getId(), itemListDto.getName(), principal.getName());
+        return "redirect:/lists";
     }
 
     @RequestMapping(value = "/item/done", method = RequestMethod.POST)
     public String setDone(ItemDto item) {
         itemService.setDone(item.getId(), true);
+        return "redirect:/list" + "/" + item.getListId();
+    }
+
+    @RequestMapping(value = "/item/add", method = RequestMethod.POST)
+    public String addItem(ItemDto item, Principal principal) {
+        item.setUserId(userService.findByUsername(principal.getName()).getId());
+        itemService.add(item);
         return "redirect:/list" + "/" + item.getListId();
     }
 
@@ -83,12 +89,12 @@ public class ItemController {
     @RequestMapping(value = "/list/removedone/{listId}", method = RequestMethod.GET)
     public String setDoneItemsRemoved(@PathVariable Long listId, Principal principal) {
         itemService.findDoneAndSetRemoved(listId, principal.getName());
-        return "redirect:/list/" +listId;
+        return "redirect:/list/" + listId;
     }
 
     @RequestMapping(value = "/list/setalldone/{listId}", method = RequestMethod.GET)
     public String setAllItemsDone(@PathVariable Long listId, Principal principal) {
         itemService.findAllNotRemovedAndSetDone(listId, principal.getName());
-        return "redirect:/list/" +listId;
+        return "redirect:/list/" + listId;
     }
 }
