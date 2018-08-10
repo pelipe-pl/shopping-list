@@ -10,6 +10,8 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Integer> {
 
     ItemEntity getById(Long id);
 
+    ItemEntity getByIdAndUserUsername(Long id, String username);
+
     List<ItemEntity> findAllByUser_UsernameAndList_IdAndRemovedFalseAndDoneTrue(String username, Long listId);
 
     List<ItemEntity> findAllByUser_UsernameAndList_IdAndRemovedFalseAndDoneFalse(String username, Long listId);

@@ -80,6 +80,12 @@ public class ItemController {
         return "redirect:/list" + "/" + item.getListId();
     }
 
+    @RequestMapping(value = "/item/rename", method = RequestMethod.POST)
+    public String renameItem(ItemDto item, Model model, Principal principal){
+        itemService.rename(item.getId(), item.getName(), principal.getName());
+        return "redirect:/list" + "/" + item.getListId();
+    }
+
     @RequestMapping(value = "/item/remove", method = RequestMethod.POST)
     public String setRemoved(ItemDto item) {
         itemService.setRemoved(item.getId());

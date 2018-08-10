@@ -62,6 +62,14 @@ public class ItemService {
         itemRepository.save(itemEntity);
     }
 
+    void rename(Long id, String name, String username) {
+        ItemEntity entity = itemRepository.getByIdAndUserUsername(id, username);
+        if (entity != null) {
+            entity.setName(name);
+            itemRepository.save(entity);
+        } else throw new IllegalArgumentException("The item does not exist.");
+    }
+
     private ItemDto toDto(ItemEntity itemEntity) {
         ItemDto itemDto = new ItemDto();
         itemDto.setId(itemEntity.getId());
