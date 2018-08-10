@@ -49,6 +49,12 @@ public class ItemListService {
         itemListRepository.save(itemListEntity);
     }
 
+    public void rename(Long id, String name, String username){
+        ItemListEntity itemListEntity = itemListRepository.getByIdAndUser_Username(id, username);
+        itemListEntity.setName(name);
+        itemListRepository.save(itemListEntity);
+    }
+
     public void addSampleLists(UserEntity userEntity) {
         itemListRepository.saveAll(itemListFactory.createSampleLists(userEntity));
     }
