@@ -8,7 +8,7 @@ import java.util.List;
 @Repository
 public interface ItemListRepository extends JpaRepository<ItemListEntity, Long> {
 
-    List<ItemListEntity> findAllByUser_UsernameAndRemovedFalse(String username);
+    List<ItemListEntity> findAllByUser_UsernameAndRemovedFalseOrderByCreatedAtDesc(String username);
 
     ItemListEntity getByIdAndUser_Username(Long id, String username);
 

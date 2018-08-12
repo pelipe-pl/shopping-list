@@ -40,7 +40,7 @@ public class ItemListService {
     }
 
     List<ItemListDto> findAllByUsernameAndRemovedFalse(String username) {
-        return toDtoList(itemListRepository.findAllByUser_UsernameAndRemovedFalse(username));
+        return toDtoList(itemListRepository.findAllByUser_UsernameAndRemovedFalseOrderByCreatedAtDesc(username));
     }
 
     public void remove(Long id, String username) {
