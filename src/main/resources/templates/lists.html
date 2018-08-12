@@ -36,7 +36,6 @@
                             </tr>
                         </table>
                     </form>
-
                     <table th:each="list : ${lists}" class="table-condensed">
                         <tr>
                             <td>
@@ -91,14 +90,13 @@
                                                     <input type="text" id="name" name="name" required
                                                            th:value="${list.getName()}"
                                                            class="form-control" style="margin: 15px; width: auto"/>
-
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary"
                                                                 data-dismiss="modal">
                                                             Never mind
                                                         </button>
                                                         <button type="submit" class="btn btn-success">
-                                                            Submit
+                                                            Rename
                                                         </button>
                                                     </div>
                                                 </div>

@@ -58,7 +58,9 @@
                         <tr>
                             <td>
                                 <button th:if="${item.done == false}" th:text="${item.name}"
-                                        class="btn btn-primary btn-round btn-block" style="width: 200px"></button>
+                                        class="btn btn-primary btn-round btn-block" style="width: 200px"
+                                        data-toggle="modal"
+                                        th:attr="data-target='#renameModal'+${item.getId()}"></button>
                                 <button th:if="${item.done == true}" th:text="${item.name}"
                                         class="btn btn-light btn-round btn-block"
                                         style="text-decoration: line-through; width: 200px"></button>
@@ -72,6 +74,43 @@
                                         <i class="now-ui-icons ui-1_check"></i>
                                     </button>
                                 </form>
+                                <!--RENAME MODAL-START-->
+                                <div class="modal fade" th:id="'renameModal'+${item.getId()}" tabindex="-1"
+                                     role="dialog"
+                                     th:attr="aria-labelledby='renameModalLabel'+${item.getId()}"
+                                     aria-hidden="true">
+                                    <form th:action="@{'/item/rename'}" method="post">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h3 class="modal-title" style="color: #2c2c2c"
+                                                        th:id="'renameModalLabel'+${item.getId()}">Item rename</h3>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <input type="hidden" id="id" name="id"
+                                                       th:value="${item.getId()}">
+                                                <input type="hidden" id="listId" name="listId" th:value="${list.id}">
+                                                <input type="text" id="name" name="name" required
+                                                       th:value="${item.getName()}"
+                                                       class="form-control" style="margin: 15px; width: auto"/>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">
+                                                        Never mind
+                                                    </button>
+                                                    <button type="submit" class="btn btn-success">
+                                                        Rename
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!--RENAME MODAL-END-->
+
 
                                 <form th:if="${item.done == true}" th:action="@{/item/notdone}" method="post">
                                     <input type="hidden" id="id" name="id" th:value="${item.id}">
