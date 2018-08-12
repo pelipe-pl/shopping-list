@@ -62,8 +62,8 @@ public class ItemController {
     }
 
     @RequestMapping(value = "/item/done", method = RequestMethod.POST)
-    public String setDone(ItemDto item) {
-        itemService.setDone(item.getId(), true);
+    public String setDone(ItemDto item, Principal principal) {
+        itemService.setDone(item.getId(), true, principal.getName());
         return "redirect:/list" + "/" + item.getListId();
     }
 
@@ -75,8 +75,8 @@ public class ItemController {
     }
 
     @RequestMapping(value = "/item/notdone", method = RequestMethod.POST)
-    public String setNotDone(ItemDto item) {
-        itemService.setDone(item.getId(), false);
+    public String setNotDone(ItemDto item, Principal principal) {
+        itemService.setDone(item.getId(), false, principal.getName());
         return "redirect:/list" + "/" + item.getListId();
     }
 
@@ -87,8 +87,8 @@ public class ItemController {
     }
 
     @RequestMapping(value = "/item/remove", method = RequestMethod.POST)
-    public String setRemoved(ItemDto item) {
-        itemService.setRemoved(item.getId());
+    public String setRemoved(ItemDto item, Principal principal) {
+        itemService.setRemoved(item.getId(), principal.getName());
         return "redirect:/list" + "/" + item.getListId();
     }
 

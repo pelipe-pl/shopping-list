@@ -3,6 +3,7 @@ package pl.pelipe.shoppinglist.item;
 import org.springframework.stereotype.Service;
 import pl.pelipe.shoppinglist.user.UserService;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,14 +51,14 @@ public class ItemService {
         itemRepository.saveAll(items);
     }
 
-    void setDone(Long id, Boolean done) {
-        ItemEntity itemEntity = itemRepository.getById(id);
+    void setDone(Long id, Boolean done, String username) {
+        ItemEntity itemEntity = itemRepository.getByIdAndUserUsername(id, username);
         itemEntity.setDone(done);
         itemRepository.save(itemEntity);
     }
 
-    void setRemoved(Long id) {
-        ItemEntity itemEntity = itemRepository.getById(id);
+    void setRemoved(Long id, String username) {
+        ItemEntity itemEntity = itemRepository.getByIdAndUserUsername(id, username);
         itemEntity.setRemoved(true);
         itemRepository.save(itemEntity);
     }
