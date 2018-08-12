@@ -81,7 +81,7 @@ public class ItemController {
     }
 
     @RequestMapping(value = "/item/rename", method = RequestMethod.POST)
-    public String renameItem(ItemDto item, Model model, Principal principal){
+    public String renameItem(ItemDto item, Principal principal){
         itemService.rename(item.getId(), item.getName(), principal.getName());
         return "redirect:/list" + "/" + item.getListId();
     }
