@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.security.Principal;
 
@@ -17,11 +18,13 @@ public class UserController {
 
     private final UserService userService;
     private final UserValidator userValidator;
+    private final CaptchaService captchaService;
 
     @Autowired
-    public UserController(UserService userService, UserValidator userValidator) {
+    public UserController(UserService userService, UserValidator userValidator, CaptchaService captchaService) {
         this.userService = userService;
         this.userValidator = userValidator;
+        this.captchaService = captchaService;
     }
 
     @ModelAttribute
@@ -55,7 +58,10 @@ public class UserController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registration(@ModelAttribute("userForm") UserEntity userForm, BindingResult bindingResult, Model model) throws IOException {
+    public String registration(@ModelAttribute("userForm") UserEntity userForm, BindingResult bindingResult, Model model,
+    HttpServletRequest request) throws IOException {
+        String response = request.getParameter("g-recaptcha-response");
+        CaptchaService.processResponse(response);
         userValidator.validate(userForm, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("error", bindingResult.toString());

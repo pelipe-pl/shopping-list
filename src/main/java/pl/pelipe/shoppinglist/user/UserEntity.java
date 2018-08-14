@@ -30,7 +30,6 @@ public class UserEntity {
 
     @Transient
     private String passwordConfirm;
-
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @ManyToMany
