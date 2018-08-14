@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <th:block th:replace="layouts/head">Head</th:block>
-
 </head>
 <body class="login-page sidebar-collapse"
       style="background-size: cover; background: url(/img/sl-bg2.jpg) no-repeat center center fixed;
@@ -60,16 +59,11 @@ min-height: 100vh">
                                        class="form-control" required/>
                             </div>
                         </div>
-                        <div class="g-recaptcha content-center"
-                             data-sitekey="6LeikWkUAAAAAEB7qJvGSKH_2okHNP37Ymfu0ce-"></div>
-                        <span id="captchaError" class="alert alert-danger col-sm-4"
-                              style="display:none"></span>
                         <div class="footer text-center">
                             <button type="submit" class="btn btn-primary btn-round btn-lg btn-block">Register</button>
                         </div>
                         <div class="footer text-center text-light">
-                            Have no account yet? <strong><a href="/registration">REGISTER</a></strong><br>
-                            Forgot your password? <strong><a href="/password-recovery">RECOVER</a> </strong>
+                            Have an account already? <strong><a href="/login">LOGIN</a></strong>
                         </div>
                     </form>
                 </div>
