@@ -1,9 +1,10 @@
 package pl.pelipe.shoppinglist.item;
 
 import org.springframework.stereotype.Service;
+import pl.pelipe.shoppinglist.email.EmailService;
 import pl.pelipe.shoppinglist.user.UserService;
 
-import java.security.Principal;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,11 +14,13 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final UserService userService;
     private final ItemListService itemListService;
+    private final EmailService emailService;
 
-    public ItemService(ItemRepository itemRepository, UserService userService, ItemListService itemListService) {
+    public ItemService(ItemRepository itemRepository, UserService userService, ItemListService itemListService, EmailService emailService) {
         this.itemRepository = itemRepository;
         this.userService = userService;
         this.itemListService = itemListService;
+        this.emailService = emailService;
     }
 
     public void add(ItemDto itemDto) {
@@ -69,6 +72,28 @@ public class ItemService {
             entity.setName(name);
             itemRepository.save(entity);
         } else throw new IllegalArgumentException("The item does not exist.");
+    }
+
+    public Boolean emailItemList(Long listId, String username) {
+        ItemListDto itemList = itemListService.getByIdAndUsername(listId, username);
+        List<ItemEntity> items = itemRepository.findAllByUser_UsernameAndRemovedFalseAndList_IdOrderByCreatedAtDesc(username, listId);
+
+        if (itemList == null || itemList.getRemoved()) return false;
+        if (items == null || items.isEmpty()) return false;
+
+        StringBuilder stringList = new StringBuilder();
+        stringList.append("<STRONG>").append(itemList.getName().toUpperCase()).append("</STRONG><br>");
+
+        for (ItemEntity item : items) {
+            stringList.append(item.getName()).append("<BR>");
+        }
+        try {
+            emailService.send(username, "Shopping list: " + itemList.getName().toUpperCase(), stringList.toString());
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     private ItemDto toDto(ItemEntity itemEntity) {

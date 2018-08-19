@@ -61,6 +61,14 @@ public class ItemController {
         return "redirect:/lists";
     }
 
+    @RequestMapping(value = "list/email/{itemListId}", method = RequestMethod.GET)
+    public String sendListOnEmail(Model model, @PathVariable Long itemListId, Principal principal) {
+        Boolean result = itemService.emailItemList(itemListId, principal.getName());
+        if (result) model.addAttribute("message", "The list has been sent to " + principal.getName() + ".");
+        else model.addAttribute("error", "Oops! Something went wrong :(");
+        return "lists";
+    }
+
     @RequestMapping(value = "/item/done", method = RequestMethod.POST)
     public String setDone(ItemDto item, Principal principal) {
         itemService.setDone(item.getId(), true, principal.getName());
@@ -81,7 +89,7 @@ public class ItemController {
     }
 
     @RequestMapping(value = "/item/rename", method = RequestMethod.POST)
-    public String renameItem(ItemDto item, Principal principal){
+    public String renameItem(ItemDto item, Principal principal) {
         itemService.rename(item.getId(), item.getName(), principal.getName());
         return "redirect:/list" + "/" + item.getListId();
     }
