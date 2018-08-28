@@ -85,7 +85,10 @@ public class ItemService {
         stringList.append("<STRONG>").append(itemList.getName().toUpperCase()).append("</STRONG><br>");
 
         for (ItemEntity item : items) {
-            stringList.append(item.getName()).append("<BR>");
+            if (item.getDone()) {
+                stringList.append("<DEL>").append(item.getName()).append("</DEL>").append("<BR>");
+            } else
+                stringList.append(item.getName()).append("<BR>");
         }
         try {
             emailService.send(username, "Shopping list: " + itemList.getName().toUpperCase(), stringList.toString());
