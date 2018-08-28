@@ -68,6 +68,10 @@
                                                 Remove
                                             </a>
                                         </li>
+                                        <li>
+                                            <a class="dropdown-item" th:href="@{'/list/email/'+ ${list.id}}">Email me
+                                                this list</a>
+                                        </li>
                                     </ul>
                                     <!--RENAME MODAL-START-->
                                     <div class="modal fade" th:id="'renameModal'+${list.getId()}" tabindex="-1"
