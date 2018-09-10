@@ -119,4 +119,22 @@ public class UserServiceImpl implements UserService {
             return "Success";
         }
     }
+
+    @Override
+    public String passwordChange(String username, String oldPassword, String newPassword, String newPasswordConfirm) throws IOException {
+        UserEntity userEntity = userRepository.findByUsername(username);
+        if (!bCryptPasswordEncoder.matches(oldPassword, userEntity.getPassword()))
+            return "The old password is not valid.";
+        else if (!newPassword.equals(newPasswordConfirm)) return "Passwords do not match.";
+        else if (newPassword.length() < 6) return "Password must be longer than 6 characters";
+        else {
+            userEntity.setPassword(bCryptPasswordEncoder.encode(newPassword));
+            userRepository.save(userEntity);
+            emailService.send(
+                    userEntity.getUsername(),
+                    "Shopping List - Password has been changed.",
+                    PASSWORD_CHANGED_CONTENT);
+            return "Success";
+        }
+    }
 }
