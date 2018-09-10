@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
             token.setExpiryDate(LocalDateTime.now().plusHours(24));
             emailService.send(
                     userEntity.getUsername(),
-                    "Shopping List - Password Recovery",
+                    "Password recovery",
                     PASSWORD_RESET_CONTENT +
                             " <a href=" + '"'
                             + environment.getRequiredProperty(URL_PASSWORD_RESET)
@@ -114,7 +114,7 @@ public class UserServiceImpl implements UserService {
             tokenRepository.save(tokenEntity);
             emailService.send(
                     userEntity.getUsername(),
-                    "Shopping List - Password has been changed.",
+                    "Your password has been changed.",
                     PASSWORD_CHANGED_CONTENT);
             return "Success";
         }
@@ -132,7 +132,7 @@ public class UserServiceImpl implements UserService {
             userRepository.save(userEntity);
             emailService.send(
                     userEntity.getUsername(),
-                    "Shopping List - Password has been changed.",
+                    "Your password has been changed.",
                     PASSWORD_CHANGED_CONTENT);
             return "Success";
         }
