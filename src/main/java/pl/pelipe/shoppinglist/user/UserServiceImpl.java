@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
             token.setExpiryDate(LocalDateTime.now().plusHours(24));
             emailService.send(
                     userEntity.getUsername(),
-                    "Shopping List - Password Recovery",
+                    "Password recovery",
                     PASSWORD_RESET_CONTENT +
                             " <a href=" + '"'
                             + environment.getRequiredProperty(URL_PASSWORD_RESET)
@@ -114,7 +114,25 @@ public class UserServiceImpl implements UserService {
             tokenRepository.save(tokenEntity);
             emailService.send(
                     userEntity.getUsername(),
-                    "Shopping List - Password has been changed.",
+                    "Your password has been changed.",
+                    PASSWORD_CHANGED_CONTENT);
+            return "Success";
+        }
+    }
+
+    @Override
+    public String passwordChange(String username, String oldPassword, String newPassword, String newPasswordConfirm) throws IOException {
+        UserEntity userEntity = userRepository.findByUsername(username);
+        if (!bCryptPasswordEncoder.matches(oldPassword, userEntity.getPassword()))
+            return "The old password is not valid.";
+        else if (!newPassword.equals(newPasswordConfirm)) return "Passwords do not match.";
+        else if (newPassword.length() < 6) return "Password must be longer than 6 characters";
+        else {
+            userEntity.setPassword(bCryptPasswordEncoder.encode(newPassword));
+            userRepository.save(userEntity);
+            emailService.send(
+                    userEntity.getUsername(),
+                    "Your password has been changed.",
                     PASSWORD_CHANGED_CONTENT);
             return "Success";
         }

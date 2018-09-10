@@ -31,15 +31,16 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(Model model, String error, String logout) {
-
+    public String login(Model model, String error, String logout, Principal principal) {
         if (error != null) {
             model.addAttribute("error", "Sorry! Invalid username and/or password!");
         }
         if (logout != null) {
-            model.addAttribute("message", "Success! You have been logged out.");
+            model.addAttribute("message", "You have been logged out.");
         }
-        return "login";
+        if (principal != null) return "redirect:/";
+        else
+            return "login";
     }
 
     @RequestMapping(value = {"/", "/home"}, method = RequestMethod.GET)
@@ -129,6 +130,23 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "/password-change", method = RequestMethod.GET)
+    public String passwordChangePage(Model model) {
+        model.addAttribute("userForm", new UserEntity());
+        return "password-change";
+    }
+
+    @RequestMapping(value = "/password-change", method = RequestMethod.POST)
+    public String passwordChange(PasswordChangeRequest request, Model model, Principal principal, final RedirectAttributes redirectAttributes) throws IOException {
+        String result = userService.passwordChange(principal.getName(), request.getOldPassword(), request.getNewPassword(), request.getNewPasswordConfirm());
+        if (result.equals("Success")) {
+            return "redirect:/logout";
+        } else {
+            model.addAttribute("error", result);
+            return "password-change";
+        }
+    }
+
     private static class PasswordResetRequest {
         private String tokenValue;
         private String newPassword;
@@ -152,6 +170,36 @@ public class UserController {
 
         public void setNewPassword(String newPassword) {
             this.newPassword = newPassword;
+        }
+
+        public void setNewPasswordConfirm(String newPasswordConfirm) {
+            this.newPasswordConfirm = newPasswordConfirm;
+        }
+    }
+
+    private static class PasswordChangeRequest {
+        private String oldPassword;
+        private String newPassword;
+        private String newPasswordConfirm;
+
+        public String getOldPassword() {
+            return oldPassword;
+        }
+
+        public void setOldPassword(String oldPassword) {
+            this.oldPassword = oldPassword;
+        }
+
+        public String getNewPassword() {
+            return newPassword;
+        }
+
+        public void setNewPassword(String newPassword) {
+            this.newPassword = newPassword;
+        }
+
+        public String getNewPasswordConfirm() {
+            return newPasswordConfirm;
         }
 
         public void setNewPasswordConfirm(String newPasswordConfirm) {
