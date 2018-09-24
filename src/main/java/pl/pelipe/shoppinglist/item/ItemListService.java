@@ -5,6 +5,7 @@ import pl.pelipe.shoppinglist.user.UserEntity;
 import pl.pelipe.shoppinglist.user.UserRepository;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,6 +54,19 @@ public class ItemListService {
         ItemListEntity itemListEntity = itemListRepository.getByIdAndUser_Username(id, username);
         itemListEntity.setName(name);
         itemListRepository.save(itemListEntity);
+    }
+
+    Integer share(Long id, String listOwnerUsername, String listSharerUsername) {
+        ItemListEntity itemList = itemListRepository.getByIdAndUser_Username(id, listOwnerUsername);
+        if (itemList == null) throw new IllegalArgumentException("The user does not have item list with this id");
+        UserEntity listSharerUser = userRepository.findByUsername(listSharerUsername);
+        if (listSharerUser == null)
+            return 1;
+        Set<UserEntity> sharers = itemList.getSharedWithUsers();
+        if (sharers.contains(listSharerUser))
+            return 2;
+        sharers.add(listSharerUser);
+            return 3;
     }
 
     public void addSampleLists(UserEntity userEntity) {

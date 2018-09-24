@@ -39,7 +39,7 @@ public class UserEntity {
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
-    @ManyToMany(mappedBy = "sharedToUsers")
+    @ManyToMany(mappedBy = "sharedWithUsers")
     private Set<ItemListEntity> sharedItemLists = new HashSet<>();
 
     public UserEntity() {

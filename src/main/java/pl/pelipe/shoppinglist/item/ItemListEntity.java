@@ -34,10 +34,10 @@ public class ItemListEntity {
     private List<ItemEntity> itemList = new ArrayList<>();
 
     @ManyToMany
-    @JoinTable(name = "shared_lists",
+    @JoinTable(name = "shared_item_list",
             joinColumns = {@JoinColumn(name = "item_list_id")},
             inverseJoinColumns = {@JoinColumn(name = "user_table_id")})
-    private Set<UserEntity> sharedToUsers = new HashSet<>();
+    private Set<UserEntity> sharedWithUsers = new HashSet<>();
 
     public ItemListEntity() {
     }
@@ -95,11 +95,11 @@ public class ItemListEntity {
         this.itemList = itemList;
     }
 
-    public Set<UserEntity> getSharedToUsers() {
-        return sharedToUsers;
+    public Set<UserEntity> getSharedWithUsers() {
+        return sharedWithUsers;
     }
 
-    public void setSharedToUsers(Set<UserEntity> sharedToUsers) {
-        this.sharedToUsers = sharedToUsers;
+    public void setSharedWithUsers(Set<UserEntity> sharedWithUsers) {
+        this.sharedWithUsers = sharedWithUsers;
     }
 }

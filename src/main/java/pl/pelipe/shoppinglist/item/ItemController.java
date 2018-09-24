@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import pl.pelipe.shoppinglist.user.UserEntity;
 import pl.pelipe.shoppinglist.user.UserService;
 
 import java.security.Principal;
@@ -27,6 +28,7 @@ public class ItemController {
     public void addAttributes(Model model, Principal principal) {
         model.addAttribute("lists", itemListService.findAllByUsernameAndRemovedFalse(principal.getName()));
         model.addAttribute("item", new ItemDto());
+        model.addAttribute("user", new UserEntity());
     }
 
     @RequestMapping(value = "/lists", method = RequestMethod.GET)
@@ -111,4 +113,28 @@ public class ItemController {
         itemService.findAllNotRemovedAndSetDone(listId, principal.getName());
         return "redirect:/list/" + listId;
     }
+
+    @RequestMapping(value = "/list/{listId}/share", method = RequestMethod.POST)
+    public String shareItemList(Model model, @PathVariable Long listId, UserEntity listSharer, Principal principal) {
+        if (listSharer == null || listSharer.getUsername() == null) {
+            model.addAttribute("error", "The sharer username has not been provided.");
+            return "redirect:/list/" + listId;
+        } else {
+            int result = itemListService.share(listId, principal.getName(), listSharer.getUsername());
+            if (result == 1) {
+                model.addAttribute("error", "The user " + listSharer.getUsername() + " not found");
+                return "redirect:/list/" + listId;
+            }
+            if (result == 2) {
+                model.addAttribute("message", "You already share this list with " + listSharer.getUsername());
+                return "redirect:/list/" + listId;
+            }
+            if (result == 3) {
+                model.addAttribute("message", "The has been list successfully shared.");
+                return "redirect:/list/" + listId;
+            }
+        }
+        return "/lists";
+    }
+
 }
