@@ -66,6 +66,8 @@ public class ItemListService {
         if (sharers.contains(listSharerUser))
             return 2;
         sharers.add(listSharerUser);
+        itemList.setSharedWithUsers(sharers);
+        itemListRepository.save(itemList);
             return 3;
     }
 

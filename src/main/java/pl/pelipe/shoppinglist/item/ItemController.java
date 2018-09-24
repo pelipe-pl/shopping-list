@@ -114,7 +114,7 @@ public class ItemController {
         return "redirect:/list/" + listId;
     }
 
-    @RequestMapping(value = "/list/{listId}/share", method = RequestMethod.POST)
+    @RequestMapping(value = "/list/share/{listId}", method = RequestMethod.POST)
     public String shareItemList(Model model, @PathVariable Long listId, UserEntity listSharer, Principal principal) {
         if (listSharer == null || listSharer.getUsername() == null) {
             model.addAttribute("error", "The sharer username has not been provided.");
@@ -130,7 +130,7 @@ public class ItemController {
                 return "redirect:/list/" + listId;
             }
             if (result == 3) {
-                model.addAttribute("message", "The has been list successfully shared.");
+                model.addAttribute("message", "The list has been successfully shared " + listSharer.getUsername());
                 return "redirect:/list/" + listId;
             }
         }
