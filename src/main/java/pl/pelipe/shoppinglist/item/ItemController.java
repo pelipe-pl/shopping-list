@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.pelipe.shoppinglist.user.UserEntity;
 import pl.pelipe.shoppinglist.user.UserService;
 
@@ -115,26 +116,30 @@ public class ItemController {
     }
 
     @RequestMapping(value = "/list/share/{listId}", method = RequestMethod.POST)
-    public String shareItemList(Model model, @PathVariable Long listId, UserEntity listSharer, Principal principal) {
+    public String shareItemList(Model model, @PathVariable Long listId, UserEntity listSharer, Principal principal,
+                                RedirectAttributes redirectAttributes) {
         if (listSharer == null || listSharer.getUsername() == null) {
-            model.addAttribute("error", "The sharer username has not been provided.");
-            return "redirect:/list/" + listId;
+            redirectAttributes.addFlashAttribute("error", "The sharer username has not been provided.");
+            return "redirect:/lists";
         } else {
             int result = itemListService.share(listId, principal.getName(), listSharer.getUsername());
+            if (result == 0) {
+                redirectAttributes.addFlashAttribute("error", "You cannot share the list with yourself");
+                return "redirect:/lists";
+            }
             if (result == 1) {
-                model.addAttribute("error", "The user " + listSharer.getUsername() + " not found");
-                return "redirect:/list/" + listId;
+                redirectAttributes.addFlashAttribute("error", "The user " + listSharer.getUsername() + " not found");
+                return "redirect:/lists";
             }
             if (result == 2) {
-                model.addAttribute("message", "You already share this list with " + listSharer.getUsername());
-                return "redirect:/list/" + listId;
+                redirectAttributes.addFlashAttribute("error", "You already share this list with " + listSharer.getUsername());
+                return "redirect:/lists";
             }
             if (result == 3) {
-                model.addAttribute("message", "The list has been successfully shared " + listSharer.getUsername());
-                return "redirect:/list/" + listId;
+                redirectAttributes.addFlashAttribute("message", "The list has been successfully shared with " + listSharer.getUsername());
+                return "redirect:/lists";
             }
         }
-        return "/lists";
+        return "redirect:lists";
     }
-
 }

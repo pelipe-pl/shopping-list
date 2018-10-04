@@ -57,6 +57,7 @@ public class ItemListService {
     }
 
     Integer share(Long id, String listOwnerUsername, String listSharerUsername) {
+        if (listOwnerUsername.toLowerCase().equals(listSharerUsername.toLowerCase())) return 0;
         ItemListEntity itemList = itemListRepository.getByIdAndUser_Username(id, listOwnerUsername);
         if (itemList == null) throw new IllegalArgumentException("The user does not have item list with this id");
         UserEntity listSharerUser = userRepository.findByUsername(listSharerUsername);
@@ -68,7 +69,7 @@ public class ItemListService {
         sharers.add(listSharerUser);
         itemList.setSharedWithUsers(sharers);
         itemListRepository.save(itemList);
-            return 3;
+        return 3;
     }
 
     public void addSampleLists(UserEntity userEntity) {
