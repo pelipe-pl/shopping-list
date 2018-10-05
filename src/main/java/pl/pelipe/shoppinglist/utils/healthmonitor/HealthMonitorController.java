@@ -17,12 +17,12 @@ public class HealthMonitorController {
     public String healthCheck(Model model) {
 
         RuntimeMXBean runtimeBean = ManagementFactory.getRuntimeMXBean();
-        long startTime = runtimeBean.getStartTime();
-        Date startDate = new Date(startTime);
+        long startTimeMillis = runtimeBean.getStartTime();
+        Date startTime = new Date(startTimeMillis);
         long upTimeMillis = runtimeBean.getUptime();
         String upTimeHumanReadable = getDuration(upTimeMillis);
 
-        model.addAttribute("startDate", startDate);
+        model.addAttribute("startDate", startTime);
         model.addAttribute("upTime", upTimeHumanReadable);
 
         return "health";
