@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import pl.pelipe.shoppinglist.user.UserEntity;
 import pl.pelipe.shoppinglist.user.UserRepository;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -42,6 +43,11 @@ public class ItemListService {
 
     List<ItemListDto> findAllByUsernameAndRemovedFalse(String username) {
         return toDtoList(itemListRepository.findAllByUser_UsernameAndRemovedFalseOrderByCreatedAtDesc(username));
+    }
+
+    List<ItemListDto> findAllShared(String username) {
+        UserEntity userEntity = userRepository.findByUsername(username);
+        return toDtoList(itemListRepository.findAllBySharedWithUsersContaining(userEntity));
     }
 
     public void remove(Long id, String username) {
@@ -90,6 +96,12 @@ public class ItemListService {
                 .stream()
                 .filter(itemEntity -> !itemEntity.getRemoved() && !itemEntity.getDone())
                 .count());
+
+        Set<String> sharedWithUsersDtoSet = new HashSet<>();
+        for (UserEntity user : itemListEntity.getSharedWithUsers()) {
+            sharedWithUsersDtoSet.add(user.getUsername());
+        }
+        itemListDto.setSharedWithUsers(sharedWithUsersDtoSet);
         return itemListDto;
     }
 

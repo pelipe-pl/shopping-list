@@ -28,6 +28,7 @@ public class ItemController {
     @ModelAttribute
     public void addAttributes(Model model, Principal principal) {
         model.addAttribute("lists", itemListService.findAllByUsernameAndRemovedFalse(principal.getName()));
+        model.addAttribute("sharedLists", itemListService.findAllShared(principal.getName()));
         model.addAttribute("item", new ItemDto());
         model.addAttribute("user", new UserEntity());
     }
@@ -35,6 +36,11 @@ public class ItemController {
     @RequestMapping(value = "/lists", method = RequestMethod.GET)
     public String lists() {
         return "lists";
+    }
+
+    @RequestMapping(value = "/lists/shared", method = RequestMethod.GET)
+    public String sharedList() {
+        return "sharedLists";
     }
 
     @RequestMapping(value = "/list/{itemListId}", method = RequestMethod.GET)

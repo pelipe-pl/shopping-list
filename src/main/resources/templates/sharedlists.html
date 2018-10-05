@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="layouts/head">Head</th:block>
+</head>
+<body class="sidebar-collapse"
+      style="background-size: cover;
+      background: url(/img/sl-bg2.jpg) no-repeat center center fixed; min-height: 100vh">
+
+<th:block th:replace="layouts/nav">Nav</th:block>
+
+<div class="wrapper">
+    <th:block th:replace="layouts/notification">Notifications</th:block>
+    <div class="section align-middle" style="background-color: transparent; padding-top: 100px">
+        <div class="container">
+            <div class="row justify-content-center align-self-center text-light">
+                <div class="col-md-4">
+                    <h2 class="title text-center">The lists shared with you</h2>
+                    <div th:if="${sharedLists.isEmpty()}">
+                        <h5>Nothing shared with you.</h5>
+                    </div>
+                    <table th:each="list : ${sharedLists}" class="table-condensed">
+                        <tr>
+                            <td>
+
+                                <a th:href="@{'/list/shared/'+ ${list.id}}">
+                                    <button
+                                            class="btn btn-warning btn-round btn-block"
+                                            style="width: 245px; font-weight: bold;">
+                                        <span th:text="${#strings.toUpperCase(list.name)
+                                        +' ['+list.getUndoneSize()+'/'+list.getTotalSize()+']'}"></span>
+                                    </button>
+                                </a>
+                            </td>
+                            <td>
+                                <div class="dropdown">
+                                    <a href="" class="btn btn-icon btn-default btn-round"
+                                       data-toggle="dropdown" id="navbarDropdownMenuLink1">
+                                        <i class="now-ui-icons design_bullet-list-67"></i>
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
+                                        <li>
+                                            <a class="dropdown-item" th:href="@{'/list/email/'+ ${list.id}}">Email me
+                                                this list</a>
+                                        </li>
+                                        <li class="nav-item dropdown">
+                                            <a class="dropdown-item" data-toggle="modal"
+                                               th:attr="data-target='#shareModal'+${list.getId()}">
+                                                Share
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <th:block th:replace="layouts/footer">Footer</th:block>
+        </div>
+    </div>
+</div>
+</body>
+<th:block th:replace="layouts/scripts">Scripts</th:block>
+</html>
