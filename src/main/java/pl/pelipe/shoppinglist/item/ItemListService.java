@@ -29,6 +29,11 @@ public class ItemListService {
         return toDto(itemListRepository.getByIdAndUser_Username(id, username));
     }
 
+    ItemListDto getByIdAndSharerUsername(Long id, String username) {
+        UserEntity userEntity = userRepository.findByUsername(username);
+        return toDto(itemListRepository.getByIdAndSharedWithUsersContaining(id, userEntity));
+    }
+
     public void add(ItemListDto itemListDto) {
         ItemListEntity itemListEntity = new ItemListEntity();
         itemListEntity.setName(itemListDto.getName());

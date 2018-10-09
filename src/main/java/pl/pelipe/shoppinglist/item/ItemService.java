@@ -39,6 +39,14 @@ public class ItemService {
                 .map(i -> toDto(i))
                 .collect(Collectors.toList());
     }
+//TODO Add 2nd checking by principals username
+
+    List<ItemDto> findAllBySharerUsernameAndListId(String username, Long listId) {
+        return itemRepository.findAllByList_IdAndRemovedIsFalseOrderByCreatedAtDesc(listId)
+                .stream()
+                .map(i -> toDto(i))
+                .collect(Collectors.toList());
+    }
 
     void findDoneAndSetRemoved(Long listId, String username) {
         List<ItemEntity> items =
