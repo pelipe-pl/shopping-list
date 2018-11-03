@@ -51,7 +51,7 @@ public class ItemController {
         return "list";
     }
 
-    @RequestMapping(value = "/list//shared/{itemListId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/list/shared/{itemListId}", method = RequestMethod.GET)
     public String sharedList(@PathVariable Long itemListId, Principal principal, Model model) {
         ItemListDto list = itemListService.getByIdAndSharerUsername(itemListId, principal.getName());
         model.addAttribute("list", list);

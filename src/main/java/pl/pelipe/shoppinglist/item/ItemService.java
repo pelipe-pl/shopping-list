@@ -89,22 +89,7 @@ public class ItemService {
         if (itemList == null || itemList.getRemoved()) return false;
         if (items == null || items.isEmpty()) return false;
 
-        StringBuilder stringList = new StringBuilder();
-        stringList.append("<STRONG>").append(itemList.getName().toUpperCase()).append("</STRONG><br>");
-
-        for (ItemEntity item : items) {
-            if (item.getDone()) {
-                stringList.append("<DEL>").append(item.getName()).append("</DEL>").append("<BR>");
-            } else
-                stringList.append(item.getName()).append("<BR>");
-        }
-        try {
-            emailService.send(username, "Shopping list: " + itemList.getName().toUpperCase(), stringList.toString());
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return emailService.sendItemList(username, itemList, items);
     }
 
     private ItemDto toDto(ItemEntity itemEntity) {
