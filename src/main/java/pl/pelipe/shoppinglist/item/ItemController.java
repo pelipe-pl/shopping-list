@@ -86,6 +86,14 @@ public class ItemController {
         return "lists";
     }
 
+    @RequestMapping(value = "list/shared/email/{itemListId}", method = RequestMethod.GET)
+    public String sendSharedListOnEmail(Model model, @PathVariable Long itemListId, Principal principal) {
+        Boolean result = itemService.emailSharedItemList(itemListId, principal.getName());
+        if (result) model.addAttribute("message", "The list has been sent to " + principal.getName() + ".");
+        else model.addAttribute("error", "Oops! Something went wrong :(");
+        return "sharedlists";
+    }
+
     @RequestMapping(value = "/item/done", method = RequestMethod.POST)
     public String setDone(ItemDto item, Principal principal) {
         itemService.setDone(item.getId(), true, principal.getName());

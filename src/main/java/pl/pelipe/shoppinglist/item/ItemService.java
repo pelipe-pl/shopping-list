@@ -82,10 +82,21 @@ public class ItemService {
         } else throw new IllegalArgumentException("The item does not exist.");
     }
 
-    public Boolean emailItemList(Long listId, String username) {
+    Boolean emailItemList(Long listId, String username) {
         ItemListDto itemList = itemListService.getByIdAndUsername(listId, username);
         List<ItemEntity> items = itemRepository.findAllByUser_UsernameAndRemovedFalseAndList_IdOrderByCreatedAtDesc(username, listId);
 
+        return sendListByEmail(username, itemList, items);
+    }
+
+    Boolean emailSharedItemList(Long listId, String username){
+        ItemListDto itemList = itemListService.getByIdAndSharerUsername(listId, username);
+        List<ItemEntity> items = itemRepository.findAllByList_IdAndRemovedIsFalseOrderByCreatedAtDesc(listId);
+
+        return sendListByEmail(username, itemList, items);
+    }
+
+    private Boolean sendListByEmail(String username, ItemListDto itemList, List<ItemEntity> items) {
         if (itemList == null || itemList.getRemoved()) return false;
         if (items == null || items.isEmpty()) return false;
 
