@@ -104,7 +104,7 @@ public class ItemController {
     @RequestMapping(value = "/list/shared/item/add", method = RequestMethod.POST)
     public String addItemToSharedList(ItemDto item, Principal principal) {
 
-        itemService.addShared(principal,item);
+        itemService.addShared(principal, item);
         return "redirect:/list/shared" + "/" + item.getListId();
     }
 
@@ -113,6 +113,13 @@ public class ItemController {
         itemService.setDone(item.getId(), true, principal.getName());
         return "redirect:/list" + "/" + item.getListId();
     }
+
+    @RequestMapping(value = "/list/shared/item/done", method = RequestMethod.POST)
+    public String setSharedItemDone(ItemDto item, Principal principal) {
+        itemService.setDone(item.getId(), true, principal.getName());
+        return "redirect:/list/shared" + "/" + item.getListId();
+    }
+
 
     @RequestMapping(value = "/item/notdone", method = RequestMethod.POST)
     public String setNotDone(ItemDto item, Principal principal) {

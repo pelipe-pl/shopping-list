@@ -35,12 +35,12 @@ public class ItemService {
         UserEntity sharerUser = userService.findByUsername(principal.getName());
         ItemListEntity itemListEntity = itemListService.getById(itemDto.getListId());
 
-        if (itemListEntity.getSharedWithUsers().contains(sharerUser)) {
+        if (isSharerOfTheItemList(sharerUser.getUsername(), itemDto.getListId())) {
             itemDto.setUserId(itemListEntity.getUser().getId());
             addToRepository(itemDto);
-        }
-        else throw new AccessDeniedException("The user " + principal.getName() + " is not allowed to add item to list ID: "
-                + itemDto.getListId());
+        } else
+            throw new AccessDeniedException(
+                    "The user " + principal.getName() + " is not allowed to add item to list ID: " + itemDto.getListId());
     }
 
     List<ItemDto> findAllByUsernameAndListId(String username, Long listId) {
@@ -50,7 +50,7 @@ public class ItemService {
                 .collect(Collectors.toList());
     }
 
-//TODO Add 2nd checking by principals username
+    //TODO Add 2nd checking by principals username
     List<ItemDto> findAllBySharerUsernameAndListId(String username, Long listId) {
         return itemRepository.findAllByList_IdAndRemovedIsFalseOrderByCreatedAtDesc(listId)
                 .stream()
@@ -100,6 +100,12 @@ public class ItemService {
         itemEntity.setDone(false);
         itemEntity.setRemoved(false);
         itemRepository.save(itemEntity);
+    }
+
+    private Boolean isSharerOfTheItemList(String username, Long listId) {
+        UserEntity sharerUser = userService.findByUsername(username);
+        ItemListEntity itemListEntity = itemListService.getById(listId);
+        return itemListEntity.getSharedWithUsers().contains(sharerUser);
     }
 
     Boolean emailItemList(Long listId, String username) {
