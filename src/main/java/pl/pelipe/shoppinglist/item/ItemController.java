@@ -156,10 +156,22 @@ public class ItemController {
         return "redirect:/list/" + listId;
     }
 
+    @RequestMapping(value = "/list/shared/removedone/{listId}", method = RequestMethod.GET)
+    public String setDoneSharedItemsRemoved(@PathVariable Long listId, Principal principal) {
+        itemService.findSharedDoneAndSetRemoved(listId, principal.getName());
+        return "redirect:/list/shared" + "/" + listId;
+    }
+
     @RequestMapping(value = "/list/setalldone/{listId}", method = RequestMethod.GET)
     public String setAllItemsDone(@PathVariable Long listId, Principal principal) {
         itemService.findAllNotRemovedAndSetDone(listId, principal.getName());
         return "redirect:/list/" + listId;
+    }
+
+    @RequestMapping(value = "/list/shared/setalldone/{listId}", method = RequestMethod.GET)
+    public String setAllSharedItemsDone(@PathVariable Long listId, Principal principal) {
+        itemService.findAllSharedNotRemovedAndSetDone(listId, principal.getName());
+        return "redirect:/list/shared" + "/" + listId;
     }
 
     @RequestMapping(value = "/list/share/{listId}", method = RequestMethod.POST)

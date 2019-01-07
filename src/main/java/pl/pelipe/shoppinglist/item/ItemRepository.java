@@ -2,7 +2,6 @@ package pl.pelipe.shoppinglist.item;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pl.pelipe.shoppinglist.user.UserEntity;
 
 import java.util.List;
 
@@ -20,4 +19,6 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Integer> {
     List<ItemEntity> findAllByUser_UsernameAndRemovedFalseAndList_IdOrderByCreatedAtDesc(String username, Long ListId);
 
     List<ItemEntity> findAllByList_IdAndRemovedIsFalseOrderByCreatedAtDesc(Long id);
+
+    List<ItemEntity> findAllByListIdAndRemovedIsFalseAndDoneIsTrue(Long id);
 }
