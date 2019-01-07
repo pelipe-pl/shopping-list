@@ -78,10 +78,34 @@ public class ItemService {
         itemRepository.save(itemEntity);
     }
 
+    void setDoneBySharer(Long itemListId, Long itemId, Boolean done, String username) {
+
+        ItemEntity itemEntity = itemRepository.getById(itemId);
+        if (isSharerOfTheItemList(username, itemListId) && itemEntity.getList().getId().equals(itemListId)) {
+
+            itemEntity.setDone(done);
+            itemRepository.save(itemEntity);
+
+        } else
+            throw new AccessDeniedException(
+                    "The user " + username + " is not allowed to set done status of this item");
+    }
+
     void setRemoved(Long id, String username) {
         ItemEntity itemEntity = itemRepository.getByIdAndUserUsername(id, username);
         itemEntity.setRemoved(true);
         itemRepository.save(itemEntity);
+    }
+
+    void setRemovedBySharer(Long itemId, Long itemListId, String username) {
+
+        ItemEntity itemEntity = itemRepository.getById(itemId);
+        if (isSharerOfTheItemList(username, itemListId) && itemEntity.getList().getId().equals(itemListId)) {
+            itemEntity.setRemoved(true);
+            itemRepository.save(itemEntity);
+        } else
+            throw new AccessDeniedException(
+                    "The user " + username + " is not allowed to remove this item");
     }
 
     void rename(Long id, String name, String username) {

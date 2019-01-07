@@ -9,6 +9,8 @@ import java.util.List;
 @Repository
 public interface ItemRepository extends JpaRepository<ItemEntity, Integer> {
 
+    ItemEntity getById(Long id);
+
     ItemEntity getByIdAndUserUsername(Long id, String username);
 
     List<ItemEntity> findAllByUser_UsernameAndList_IdAndRemovedFalseAndDoneTrue(String username, Long listId);

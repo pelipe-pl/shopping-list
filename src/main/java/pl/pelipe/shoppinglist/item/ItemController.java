@@ -116,15 +116,20 @@ public class ItemController {
 
     @RequestMapping(value = "/list/shared/item/done", method = RequestMethod.POST)
     public String setSharedItemDone(ItemDto item, Principal principal) {
-        itemService.setDone(item.getId(), true, principal.getName());
+        itemService.setDoneBySharer(item.getListId(), item.getId(), true, principal.getName());
         return "redirect:/list/shared" + "/" + item.getListId();
     }
-
 
     @RequestMapping(value = "/item/notdone", method = RequestMethod.POST)
     public String setNotDone(ItemDto item, Principal principal) {
         itemService.setDone(item.getId(), false, principal.getName());
         return "redirect:/list" + "/" + item.getListId();
+    }
+
+    @RequestMapping(value = "/list/shared/item/notdone", method = RequestMethod.POST)
+    public String setSharedItemNotDone(ItemDto item, Principal principal) {
+        itemService.setDoneBySharer(item.getListId(), item.getId(), false, principal.getName());
+        return "redirect:/list/shared" + "/" + item.getListId();
     }
 
     @RequestMapping(value = "/item/rename", method = RequestMethod.POST)
@@ -137,6 +142,12 @@ public class ItemController {
     public String setRemoved(ItemDto item, Principal principal) {
         itemService.setRemoved(item.getId(), principal.getName());
         return "redirect:/list" + "/" + item.getListId();
+    }
+
+    @RequestMapping(value = "/list/shared/item/remove", method = RequestMethod.POST)
+    public String setSharedItemRemoved(ItemDto item, Principal principal) {
+        itemService.setRemovedBySharer(item.getId(), item.getListId(), principal.getName());
+        return "redirect:/list/shared" + "/" + item.getListId();
     }
 
     @RequestMapping(value = "/list/removedone/{listId}", method = RequestMethod.GET)
