@@ -40,7 +40,7 @@ public class ItemController {
 
     @RequestMapping(value = "/lists/shared", method = RequestMethod.GET)
     public String sharedList() {
-        return "sharedLists";
+        return "sharedlists";
     }
 
     @RequestMapping(value = "/list/{itemListId}", method = RequestMethod.GET)
