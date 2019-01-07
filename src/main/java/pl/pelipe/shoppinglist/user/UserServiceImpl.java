@@ -75,6 +75,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.getById(id);
     }
 
+    public String getUsernameById(Long id) {
+        return userRepository.getById(id).getUsername();
+    }
+
     @Override
     public Boolean sendPasswordResetToken(String username) throws IOException {
         UserEntity userEntity = findByUsername(username);

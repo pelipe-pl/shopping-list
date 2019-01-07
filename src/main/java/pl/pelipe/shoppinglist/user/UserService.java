@@ -16,4 +16,6 @@ public interface UserService {
     String resetPassword(String tokenValue, String newPassword, String newPasswordConfirm) throws IOException;
 
     String passwordChange(String username, String oldPassword, String newPassword, String newPasswordConfirm) throws IOException;
+
+    String getUsernameById(Long id);
 }

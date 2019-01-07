@@ -1,7 +1,9 @@
 package pl.pelipe.shoppinglist.item;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class ItemListDto {
 
@@ -18,6 +20,8 @@ public class ItemListDto {
     private Long totalSize;
 
     private Long undoneSize;
+
+    private Set<String> sharedWithUsers = new HashSet<>();
 
     public ItemListDto() {
     }
@@ -84,6 +88,14 @@ public class ItemListDto {
 
     public void setUndoneSize(Long undoneSize) {
         this.undoneSize = undoneSize;
+    }
+
+    public Set<String> getSharedWithUsers() {
+        return sharedWithUsers;
+    }
+
+    public void setSharedWithUsers(Set<String> sharedWithUsers) {
+        this.sharedWithUsers = sharedWithUsers;
     }
 
     @Override

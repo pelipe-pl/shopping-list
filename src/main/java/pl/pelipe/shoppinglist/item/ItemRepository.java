@@ -8,6 +8,8 @@ import java.util.List;
 @Repository
 public interface ItemRepository extends JpaRepository<ItemEntity, Integer> {
 
+    ItemEntity getById(Long id);
+
     ItemEntity getByIdAndUserUsername(Long id, String username);
 
     List<ItemEntity> findAllByUser_UsernameAndList_IdAndRemovedFalseAndDoneTrue(String username, Long listId);
@@ -15,4 +17,8 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Integer> {
     List<ItemEntity> findAllByUser_UsernameAndList_IdAndRemovedFalseAndDoneFalse(String username, Long listId);
 
     List<ItemEntity> findAllByUser_UsernameAndRemovedFalseAndList_IdOrderByCreatedAtDesc(String username, Long ListId);
+
+    List<ItemEntity> findAllByList_IdAndRemovedIsFalseOrderByCreatedAtDesc(Long id);
+
+    List<ItemEntity> findAllByListIdAndRemovedIsFalseAndDoneIsTrue(Long id);
 }

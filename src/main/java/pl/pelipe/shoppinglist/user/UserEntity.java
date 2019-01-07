@@ -1,11 +1,13 @@
 package pl.pelipe.shoppinglist.user;
 
 import org.hibernate.annotations.DynamicUpdate;
+import pl.pelipe.shoppinglist.item.ItemListEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -36,6 +38,9 @@ public class UserEntity {
     @ManyToMany
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
+
+    @ManyToMany(mappedBy = "sharedWithUsers")
+    private Set<ItemListEntity> sharedItemLists = new HashSet<>();
 
     public UserEntity() {
     }
@@ -108,5 +113,13 @@ public class UserEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Set<ItemListEntity> getSharedItemLists() {
+        return sharedItemLists;
+    }
+
+    public void setSharedItemLists(Set<ItemListEntity> sharedItemLists) {
+        this.sharedItemLists = sharedItemLists;
     }
 }

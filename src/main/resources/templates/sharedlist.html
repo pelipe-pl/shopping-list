@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="layouts/head">Head</th:block>
+</head>
+<body class="sidebar-collapse"
+      style="background-size: cover;
+      background: url(/img/sl-bg2.jpg) no-repeat center center fixed; min-height: 100vh">
+
+<th:block th:replace="layouts/nav">Nav</th:block>
+
+<div class="wrapper">
+    <th:block th:replace="layouts/notification">Notifications</th:block>
+    <div class="section align-middle" style="background-color: transparent; padding-top: 100px">
+        <div class="container">
+            <div class="row justify-content-center align-self-center text-light">
+                <div class="col-md-4">
+                    <h2 class="title text-center" th:text="${list.getName()}"></h2>
+                    <h6 class="text-center">Shared by</h6>
+                    <h6 class="text-center" th:text="${listOwner}"></h6>
+                    <div th:if="${items.isEmpty()}">
+                        <h>This list is empty.</h>
+                    </div>
+                    <table class="table-condensed content-center">
+                        <tr th:if="${!items.isEmpty()}">
+                            <td></td>
+                            <td>
+                                <div class="dropdown">
+                                    <a href="" class="btn btn-icon btn-default btn-round"
+                                       data-toggle="dropdown" id="navbarDropdownMenuLink1">
+                                        <i class="now-ui-icons ui-1_settings-gear-63"></i>
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
+                                        <a class="dropdown-item" th:href="@{'/list/shared/setalldone/'+ ${list.id}}">Set all
+                                            done</a>
+                                        <a class="dropdown-item" th:href="@{'/list/shared/removedone/'+ ${list.id}}">Remove all
+                                            done</a>
+                                        <a class="dropdown-item" th:href="@{'/list/shared/email/'+ ${list.id}}">Email me this list</a>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <form action="/list/shared/item/add" method="post">
+                            <tr>
+                                <td>
+                                    <input type="text" id="name" name="name" required
+                                           placeholder="Type new item name here."
+                                           class="form-control" style="width: 200px"/>
+                                    <input type="hidden" id="listId" name="listId" th:value="${list.id}">
+                                </td>
+                                <td>
+                                    <button class="btn btn-icon btn-warning btn-round" style="width: 85px"
+                                            type="submit">
+                                        <i class="now-ui-icons ui-1_simple-add"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </form>
+                    </table>
+                    <table th:each="item : ${items}" class="table-condensed">
+                        <tr>
+                            <td>
+                                <button th:if="${item.done == false}" th:text="${item.name}"
+                                        class="btn btn-primary btn-round btn-block" style="width: 200px"
+                                        data-toggle="modal"
+                                        th:attr="data-target='#renameModal'+${item.getId()}"></button>
+                                <button th:if="${item.done == true}" th:text="${item.name}"
+                                        class="btn btn-light btn-round btn-block"
+                                        style="text-decoration: line-through; width: 200px"></button>
+                            </td>
+                            <td>
+                                <form th:if="${item.done == false}" th:action="@{/list/shared/item/done}" method="post">
+                                    <input type="hidden" id="id" name="id" th:value="${item.id}">
+                                    <input type="hidden" id="listId" name="listId" th:value="${list.id}">
+                                    <button type="submit" class="btn btn-success btn-icon  btn-icon-mini btn-round"
+                                            title="Set done">
+                                        <i class="now-ui-icons ui-1_check"></i>
+                                    </button>
+                                </form>
+                                <!--RENAME MODAL-START-->
+                                <div class="modal fade" th:id="'renameModal'+${item.getId()}" tabindex="-1"
+                                     role="dialog"
+                                     th:attr="aria-labelledby='renameModalLabel'+${item.getId()}"
+                                     aria-hidden="true">
+                                    <form th:action="@{'/item/rename'}" method="post">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h3 class="modal-title" style="color: #2c2c2c"
+                                                        th:id="'renameModalLabel'+${item.getId()}">Item rename</h3>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <input type="hidden" id="id" name="id"
+                                                       th:value="${item.getId()}">
+                                                <input type="hidden" id="listId" name="listId" th:value="${list.id}">
+                                                <input type="text" id="name" name="name" required
+                                                       th:value="${item.getName()}"
+                                                       class="form-control" style="margin: 15px; width: auto"/>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">
+                                                        Never mind
+                                                    </button>
+                                                    <button type="submit" class="btn btn-success">
+                                                        Rename
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!--RENAME MODAL-END-->
+
+
+                                <form th:if="${item.done == true}" th:action="@{/list/shared/item/notdone}" method="post">
+                                    <input type="hidden" id="id" name="id" th:value="${item.id}">
+                                    <input type="hidden" id="listId" name="listId" th:value="${list.id}">
+                                    <button type="submit" class="btn btn-default btn-icon  btn-icon-mini btn-round"
+                                            title="Set not done">
+                                        <i class="now-ui-icons arrows-1_minimal-up"></i>
+                                    </button>
+                                </form>
+                            <td>
+                                <form th:action="@{/list/shared/item/remove}"
+                                      method="post">
+                                    <input type="hidden" id="id" name="id" th:value="${item.id}">
+                                    <input type="hidden" id="listId" name="listId" th:value="${list.id}">
+                                    <button type="submit" class="btn btn-danger btn-icon  btn-icon-mini btn-round"
+                                            title="Remove">
+                                        <i class="now-ui-icons ui-1_simple-remove"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    </table>
+                    <div><a href="/lists/shared">
+                        <button type="button" class="btn btn-default btn-round"
+                                style="background-color: #333333; width: 200px">
+                            BACK TO LISTS
+                        </button>
+                    </a>
+                    </div>
+                </div>
+            </div>
+            <th:block th:replace="layouts/footer">Footer</th:block>
+        </div>
+    </div>
+</div>
+</body>
+<th:block th:replace="layouts/scripts">Scripts</th:block>
+</html>
