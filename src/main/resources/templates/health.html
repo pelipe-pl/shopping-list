@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="layouts/head">Head</th:block>
+</head>
+<body class="sidebar-collapse"
+      style="background-size: cover; background: url(/img/sl-bg2.jpg) no-repeat center center fixed;
+min-height: 100vh">
+
+<th:block th:replace="layouts/nav">Nav</th:block>
+
+<div class="wrapper">
+    <th:block th:replace="layouts/notification">Notifications</th:block>
+    <div class="section align-middle" style="background-color: transparent; padding-top: 100px">
+        <div class="container">
+            <div class="row justify-content-center align-self-center text-light">
+                <div class="col-md-5">
+                    <h1 class="title text-light">Health report</h1>
+                    <div><strong>Server start date: </strong><span th:text="${startDate}"></span></div>
+                    <div><strong>Server up time: </strong><span th:text="${upTime}"></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <th:block th:replace="layouts/footer"></th:block>
+</div>
+</body>
+<th:block th:replace="layouts/scripts"></th:block>
+</html>

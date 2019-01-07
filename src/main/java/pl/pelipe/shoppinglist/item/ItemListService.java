@@ -4,7 +4,9 @@ import org.springframework.stereotype.Service;
 import pl.pelipe.shoppinglist.user.UserEntity;
 import pl.pelipe.shoppinglist.user.UserRepository;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +29,11 @@ public class ItemListService {
         return toDto(itemListRepository.getByIdAndUser_Username(id, username));
     }
 
+    ItemListDto getByIdAndSharerUsername(Long id, String username) {
+        UserEntity userEntity = userRepository.findByUsername(username);
+        return toDto(itemListRepository.getByIdAndSharedWithUsersContaining(id, userEntity));
+    }
+
     public void add(ItemListDto itemListDto) {
         ItemListEntity itemListEntity = new ItemListEntity();
         itemListEntity.setName(itemListDto.getName());
@@ -43,6 +50,11 @@ public class ItemListService {
         return toDtoList(itemListRepository.findAllByUser_UsernameAndRemovedFalseOrderByCreatedAtDesc(username));
     }
 
+    List<ItemListDto> findAllShared(String username) {
+        UserEntity userEntity = userRepository.findByUsername(username);
+        return toDtoList(itemListRepository.findAllBySharedWithUsersContaining(userEntity));
+    }
+
     public void remove(Long id, String username) {
         ItemListEntity itemListEntity = itemListRepository.getByIdAndUser_Username(id, username);
         itemListEntity.setRemoved(true);
@@ -55,12 +67,29 @@ public class ItemListService {
         itemListRepository.save(itemListEntity);
     }
 
+    Integer share(Long id, String listOwnerUsername, String listSharerUsername) {
+        if (listOwnerUsername.toLowerCase().equals(listSharerUsername.toLowerCase())) return 0;
+        ItemListEntity itemList = itemListRepository.getByIdAndUser_Username(id, listOwnerUsername);
+        if (itemList == null) throw new IllegalArgumentException("The user does not have item list with this id");
+        UserEntity listSharerUser = userRepository.findByUsername(listSharerUsername);
+        if (listSharerUser == null)
+            return 1;
+        Set<UserEntity> sharers = itemList.getSharedWithUsers();
+        if (sharers.contains(listSharerUser))
+            return 2;
+        sharers.add(listSharerUser);
+        itemList.setSharedWithUsers(sharers);
+        itemListRepository.save(itemList);
+        return 3;
+    }
+
     public void addSampleLists(UserEntity userEntity) {
         itemListRepository.saveAll(itemListFactory.createSampleLists(userEntity));
     }
 
     private ItemListDto toDto(ItemListEntity itemListEntity) {
         ItemListDto itemListDto = new ItemListDto();
+        itemListDto.setUserId(itemListEntity.getUser().getId());
         itemListDto.setId(itemListEntity.getId());
         itemListDto.setName(itemListEntity.getName());
         itemListDto.setCreatedAt(itemListEntity.getCreatedAt());
@@ -73,6 +102,12 @@ public class ItemListService {
                 .stream()
                 .filter(itemEntity -> !itemEntity.getRemoved() && !itemEntity.getDone())
                 .count());
+
+        Set<String> sharedWithUsersDtoSet = new HashSet<>();
+        for (UserEntity user : itemListEntity.getSharedWithUsers()) {
+            sharedWithUsersDtoSet.add(user.getUsername());
+        }
+        itemListDto.setSharedWithUsers(sharedWithUsersDtoSet);
         return itemListDto;
     }
 
