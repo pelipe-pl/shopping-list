@@ -1,10 +1,13 @@
 package pl.pelipe.shoppinglist.item;
 
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import pl.pelipe.shoppinglist.email.EmailService;
+import pl.pelipe.shoppinglist.user.UserEntity;
 import pl.pelipe.shoppinglist.user.UserService;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,13 +27,20 @@ public class ItemService {
     }
 
     public void add(ItemDto itemDto) {
-        ItemEntity itemEntity = new ItemEntity();
-        itemEntity.setName(itemDto.getName());
-        itemEntity.setUser(userService.findById(itemDto.getUserId()));
-        itemEntity.setList(itemListService.getById(itemDto.getListId()));
-        itemEntity.setDone(false);
-        itemEntity.setRemoved(false);
-        itemRepository.save(itemEntity);
+        addToRepository(itemDto);
+    }
+
+    void addShared(Principal principal, ItemDto itemDto) {
+
+        UserEntity sharerUser = userService.findByUsername(principal.getName());
+        ItemListEntity itemListEntity = itemListService.getById(itemDto.getListId());
+
+        if (itemListEntity.getSharedWithUsers().contains(sharerUser)) {
+            itemDto.setUserId(itemListEntity.getUser().getId());
+            addToRepository(itemDto);
+        }
+        else throw new AccessDeniedException("The user " + principal.getName() + " is not allowed to add item to list ID: "
+                + itemDto.getListId());
     }
 
     List<ItemDto> findAllByUsernameAndListId(String username, Long listId) {
@@ -39,8 +49,8 @@ public class ItemService {
                 .map(i -> toDto(i))
                 .collect(Collectors.toList());
     }
-//TODO Add 2nd checking by principals username
 
+//TODO Add 2nd checking by principals username
     List<ItemDto> findAllBySharerUsernameAndListId(String username, Long listId) {
         return itemRepository.findAllByList_IdAndRemovedIsFalseOrderByCreatedAtDesc(listId)
                 .stream()
@@ -82,6 +92,16 @@ public class ItemService {
         } else throw new IllegalArgumentException("The item does not exist.");
     }
 
+    private void addToRepository(ItemDto itemDto) {
+        ItemEntity itemEntity = new ItemEntity();
+        itemEntity.setName(itemDto.getName());
+        itemEntity.setUser(userService.findById(itemDto.getUserId()));
+        itemEntity.setList(itemListService.getById(itemDto.getListId()));
+        itemEntity.setDone(false);
+        itemEntity.setRemoved(false);
+        itemRepository.save(itemEntity);
+    }
+
     Boolean emailItemList(Long listId, String username) {
         ItemListDto itemList = itemListService.getByIdAndUsername(listId, username);
         List<ItemEntity> items = itemRepository.findAllByUser_UsernameAndRemovedFalseAndList_IdOrderByCreatedAtDesc(username, listId);
@@ -89,7 +109,7 @@ public class ItemService {
         return sendListByEmail(username, itemList, items);
     }
 
-    Boolean emailSharedItemList(Long listId, String username){
+    Boolean emailSharedItemList(Long listId, String username) {
         ItemListDto itemList = itemListService.getByIdAndSharerUsername(listId, username);
         List<ItemEntity> items = itemRepository.findAllByList_IdAndRemovedIsFalseOrderByCreatedAtDesc(listId);
 

@@ -94,16 +94,23 @@ public class ItemController {
         return "sharedlists";
     }
 
-    @RequestMapping(value = "/item/done", method = RequestMethod.POST)
-    public String setDone(ItemDto item, Principal principal) {
-        itemService.setDone(item.getId(), true, principal.getName());
-        return "redirect:/list" + "/" + item.getListId();
-    }
-
     @RequestMapping(value = "/item/add", method = RequestMethod.POST)
     public String addItem(ItemDto item, Principal principal) {
         item.setUserId(userService.findByUsername(principal.getName()).getId());
         itemService.add(item);
+        return "redirect:/list" + "/" + item.getListId();
+    }
+
+    @RequestMapping(value = "/list/shared/item/add", method = RequestMethod.POST)
+    public String addItemToSharedList(ItemDto item, Principal principal) {
+
+        itemService.addShared(principal,item);
+        return "redirect:/list/shared" + "/" + item.getListId();
+    }
+
+    @RequestMapping(value = "/item/done", method = RequestMethod.POST)
+    public String setDone(ItemDto item, Principal principal) {
+        itemService.setDone(item.getId(), true, principal.getName());
         return "redirect:/list" + "/" + item.getListId();
     }
 
