@@ -16,7 +16,8 @@
             <div class="row justify-content-center align-self-center text-light">
                 <div class="col-md-4">
                     <h2 class="title text-center" th:text="${list.getName()}"></h2>
-                    <h6 class="subTitle text-center">Shared with you</h6>
+                    <h6 class="text-center">Shared by</h6>
+                    <h6 class="text-center" th:text="${listOwner}"></h6>
                     <div th:if="${items.isEmpty()}">
                         <h>This list is empty.</h>
                     </div>

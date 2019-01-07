@@ -56,6 +56,7 @@ public class ItemController {
         ItemListDto list = itemListService.getByIdAndSharerUsername(itemListId, principal.getName());
         model.addAttribute("list", list);
         model.addAttribute("items", itemService.findAllBySharerUsernameAndListId(principal.getName(), itemListId));
+        model.addAttribute("listOwner", userService.getUsernameById(list.getUserId()));
         return "sharedlist";
     }
 

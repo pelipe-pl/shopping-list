@@ -89,6 +89,7 @@ public class ItemListService {
 
     private ItemListDto toDto(ItemListEntity itemListEntity) {
         ItemListDto itemListDto = new ItemListDto();
+        itemListDto.setUserId(itemListEntity.getUser().getId());
         itemListDto.setId(itemListEntity.getId());
         itemListDto.setName(itemListEntity.getName());
         itemListDto.setCreatedAt(itemListEntity.getCreatedAt());
