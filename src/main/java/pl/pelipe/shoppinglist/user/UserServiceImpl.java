@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity findByUsername(String username) {
-        return userRepository.findByUsername(username);
+        return userRepository.getByUsername(username);
     }
 
     @Override
@@ -126,7 +126,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String passwordChange(String username, String oldPassword, String newPassword, String newPasswordConfirm) throws IOException {
-        UserEntity userEntity = userRepository.findByUsername(username);
+        UserEntity userEntity = userRepository.getByUsername(username);
         if (!bCryptPasswordEncoder.matches(oldPassword, userEntity.getPassword()))
             return "The old password is not valid.";
         else if (!newPassword.equals(newPasswordConfirm)) return "Passwords do not match.";

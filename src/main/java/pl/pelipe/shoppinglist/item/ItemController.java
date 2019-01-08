@@ -139,6 +139,12 @@ public class ItemController {
         return "redirect:/list" + "/" + item.getListId();
     }
 
+    @RequestMapping(value = "/list/shared/item/rename", method = RequestMethod.POST)
+    public String renameSharedItem(ItemDto item, Principal principal) {
+        itemService.renameShared(item.getId(), item.getName(), principal.getName());
+        return "redirect:/list/shared" + "/" + item.getListId();
+    }
+
     @RequestMapping(value = "/item/remove", method = RequestMethod.POST)
     public String setRemoved(ItemDto item, Principal principal) {
         itemService.setRemoved(item.getId(), principal.getName());
@@ -176,7 +182,7 @@ public class ItemController {
     }
 
     @RequestMapping(value = "/list/share/{listId}", method = RequestMethod.POST)
-    public String shareItemList(Model model, @PathVariable Long listId, UserEntity listSharer, Principal principal,
+    public String shareItemList(@PathVariable Long listId, UserEntity listSharer, Principal principal,
                                 RedirectAttributes redirectAttributes) {
         if (listSharer == null || listSharer.getUsername() == null) {
             redirectAttributes.addFlashAttribute("error", "The sharer username has not been provided.");
@@ -201,5 +207,12 @@ public class ItemController {
             }
         }
         return "redirect:lists";
+    }
+
+    @RequestMapping(value = "/list/shared/stopwatching/{listId}", method = RequestMethod.POST)
+    public String stopWatchingList(Model model, Principal principal, @PathVariable Long listId) {
+        String result = itemListService.stopWatchingList(listId, principal.getName());
+        model.addAttribute("message", result);
+        return "redirect:/lists/shared";
     }
 }

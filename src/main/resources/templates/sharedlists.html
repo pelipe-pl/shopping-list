@@ -17,7 +17,7 @@
                 <div class="col-md-4">
                     <h2 class="title text-center">The lists shared with you</h2>
                     <div th:if="${sharedLists.isEmpty()}">
-                        <h5>Nothing shared with you.</h5>
+                        <h5>Nothing is shared with you.</h5>
                     </div>
                     <table th:each="list : ${sharedLists}" class="table-condensed">
                         <tr>
