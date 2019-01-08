@@ -139,6 +139,12 @@ public class ItemController {
         return "redirect:/list" + "/" + item.getListId();
     }
 
+    @RequestMapping(value = "/list/shared/item/rename", method = RequestMethod.POST)
+    public String renameSharedItem(ItemDto item, Principal principal) {
+        itemService.renameShared(item.getId(), item.getName(), principal.getName());
+        return "redirect:/list/shared" + "/" + item.getListId();
+    }
+
     @RequestMapping(value = "/item/remove", method = RequestMethod.POST)
     public String setRemoved(ItemDto item, Principal principal) {
         itemService.setRemoved(item.getId(), principal.getName());
