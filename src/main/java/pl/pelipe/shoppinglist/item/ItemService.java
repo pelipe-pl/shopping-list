@@ -129,6 +129,17 @@ public class ItemService {
         } else throw new IllegalArgumentException("The item does not exist.");
     }
 
+    void renameShared(Long id, String newName, String sharerUsername) {
+        ItemEntity entity = itemRepository.getById(id);
+        if (entity == null) throw new IllegalArgumentException("The item does not exist.");
+        else if (!isSharerOfTheItemList(sharerUsername, entity.getList().getId()))
+            throw new AccessDeniedException("The user " + sharerUsername + " is not allowed to rename this item");
+        else {
+            entity.setName(newName);
+            itemRepository.save(entity);
+        }
+    }
+
     private void addToRepository(ItemDto itemDto) {
         ItemEntity itemEntity = new ItemEntity();
         itemEntity.setName(itemDto.getName());

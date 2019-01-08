@@ -25,7 +25,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        UserEntity userEntity = userRepository.findByUsername(username);
+        UserEntity userEntity = userRepository.getByUsername(username);
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet();
         for (Role role : userEntity.getRoles()) {
