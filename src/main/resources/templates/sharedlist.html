@@ -36,7 +36,46 @@
                                         <a class="dropdown-item" th:href="@{'/list/shared/removedone/'+ ${list.id}}">Remove all
                                             done</a>
                                         <a class="dropdown-item" th:href="@{'/list/shared/email/'+ ${list.id}}">Email me this list</a>
+                                        <a class="dropdown-item" data-toggle="modal" th:attr="data-target='#deleteModal'">
+                                                Remove the list
+                                            </a>
+                                        </li>
                                     </ul>
+                                    <!--REMOVE MODAL-START-->
+                                    <div class="modal fade" th:id="'deleteModal'" tabindex="-1"
+                                         role="dialog"
+                                         th:attr="aria-labelledby='deleteModalLabel'"
+                                         aria-hidden="true">
+                                        <form th:action="@{'/list/shared/stopwatching/'+ ${list.id}}" method="post">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h3 class="modal-title" style="color: #2c2c2c"
+                                                            th:id="'deleteModalLabel'">Remove</h3>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body" style="color: #2c2c2c">
+                                                        Are you sure you want to remove the list named "<span
+                                                            th:text="${#strings.toUpperCase(list.name)}"></span>"
+                                                        from the lists shared with you?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">
+                                                            No, sorry.
+                                                        </button>
+                                                        <button type="submit" class="btn btn-danger">
+                                                            Yes, remove it.
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!--REMOVE-MODAL-END-->
                                 </div>
                             </td>
                         </tr>

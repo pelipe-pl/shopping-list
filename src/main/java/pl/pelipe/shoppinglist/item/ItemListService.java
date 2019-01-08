@@ -30,7 +30,7 @@ public class ItemListService {
     }
 
     ItemListDto getByIdAndSharerUsername(Long id, String username) {
-        UserEntity userEntity = userRepository.findByUsername(username);
+        UserEntity userEntity = userRepository.getByUsername(username);
         return toDto(itemListRepository.getByIdAndSharedWithUsersContaining(id, userEntity));
     }
 
@@ -51,7 +51,7 @@ public class ItemListService {
     }
 
     List<ItemListDto> findAllShared(String username) {
-        UserEntity userEntity = userRepository.findByUsername(username);
+        UserEntity userEntity = userRepository.getByUsername(username);
         return toDtoList(itemListRepository.findAllBySharedWithUsersContaining(userEntity));
     }
 
@@ -71,7 +71,7 @@ public class ItemListService {
         if (listOwnerUsername.toLowerCase().equals(listSharerUsername.toLowerCase())) return 0;
         ItemListEntity itemList = itemListRepository.getByIdAndUser_Username(id, listOwnerUsername);
         if (itemList == null) throw new IllegalArgumentException("The user does not have item list with this id");
-        UserEntity listSharerUser = userRepository.findByUsername(listSharerUsername);
+        UserEntity listSharerUser = userRepository.getByUsername(listSharerUsername);
         if (listSharerUser == null)
             return 1;
         Set<UserEntity> sharers = itemList.getSharedWithUsers();
@@ -81,6 +81,20 @@ public class ItemListService {
         itemList.setSharedWithUsers(sharers);
         itemListRepository.save(itemList);
         return 3;
+    }
+
+    String stopWatchingList(Long listId, String name) {
+        UserEntity user = userRepository.getByUsername(name);
+        ItemListEntity itemList = itemListRepository.getByIdAndSharedWithUsersContaining(listId, user);
+        if (itemList == null) return "No such a list";
+        else if (!itemList.getSharedWithUsers().contains(user)) return "The user is not a sharer of this list";
+        else {
+            Set<UserEntity> sharers = itemList.getSharedWithUsers();
+            sharers.remove(user);
+            itemList.setSharedWithUsers(sharers);
+            itemListRepository.save(itemList);
+            return "You stopped watching this list";
+        }
     }
 
     public void addSampleLists(UserEntity userEntity) {
