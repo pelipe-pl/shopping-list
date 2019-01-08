@@ -46,6 +46,7 @@
                                             style="width: 245px; font-weight: bold;">
                                         <span th:text="${#strings.toUpperCase(list.name)
                                         +' ['+list.getUndoneSize()+'/'+list.getTotalSize()+']'}"></span>
+                                        <span th:if="${!list.getSharedWithUsers().isEmpty()}" >[S]</span>
                                     </button>
                                 </a>
                             </td>
