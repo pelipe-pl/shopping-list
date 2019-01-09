@@ -84,6 +84,12 @@ public class ItemListService {
         return 3;
     }
 
+    void stopSharingList(Long listId, String name) {
+        ItemListEntity itemList = itemListRepository.getByIdAndUser_Username(listId, name);
+        itemList.getSharedWithUsers().clear();
+        itemListRepository.save(itemList);
+    }
+
     String stopWatchingList(Long listId, String name) {
         UserEntity user = userRepository.getByUsername(name);
         ItemListEntity itemList = itemListRepository.getByIdAndSharedWithUsersContaining(listId, user);
