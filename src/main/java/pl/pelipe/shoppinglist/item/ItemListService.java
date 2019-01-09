@@ -58,6 +58,7 @@ public class ItemListService {
     public void remove(Long id, String username) {
         ItemListEntity itemListEntity = itemListRepository.getByIdAndUser_Username(id, username);
         itemListEntity.setRemoved(true);
+        itemListEntity.getSharedWithUsers().clear();
         itemListRepository.save(itemListEntity);
     }
 
@@ -81,6 +82,12 @@ public class ItemListService {
         itemList.setSharedWithUsers(sharers);
         itemListRepository.save(itemList);
         return 3;
+    }
+
+    void stopSharingList(Long listId, String name) {
+        ItemListEntity itemList = itemListRepository.getByIdAndUser_Username(listId, name);
+        itemList.getSharedWithUsers().clear();
+        itemListRepository.save(itemList);
     }
 
     String stopWatchingList(Long listId, String name) {

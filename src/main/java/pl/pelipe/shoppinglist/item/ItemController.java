@@ -209,6 +209,12 @@ public class ItemController {
         return "redirect:lists";
     }
 
+    @RequestMapping(value = "/list/stopsharing/{listId}", method = RequestMethod.GET)
+    public String stopSharingList(Principal principal, @PathVariable Long listId){
+        itemListService.stopSharingList(listId, principal.getName());
+        return "redirect:/list" + "/" + listId;
+    }
+
     @RequestMapping(value = "/list/shared/stopwatching/{listId}", method = RequestMethod.POST)
     public String stopWatchingList(Model model, Principal principal, @PathVariable Long listId) {
         String result = itemListService.stopWatchingList(listId, principal.getName());

@@ -15,10 +15,12 @@
         <div class="container">
             <div class="row justify-content-center align-self-center text-light">
                 <div class="col-md-4">
-                    <h2 class="title text-center" th:text="${list.getName()}"></h2>
-                    <div th:if="${!list.getSharedWithUsers().isEmpty()}">
-                        <h6 class="subTitle text-center"><a href="" style="color: lightgray">Shared with other users</a> </h6>
-                    </div>
+                    <h2 class="title text-center">
+                        <span th:text="${list.getName()}"></span>
+                        <a data-toggle="modal"
+                           data-target=#sharersListModal style="color: white">
+                            <i th:if="${!list.getSharedWithUsers().isEmpty()}" class="now-ui-icons loader_refresh"></i></a>
+                    </h2>
                     <div th:if="${items.isEmpty()}">
                         <h5>This list is empty.</h5>
                     </div>
@@ -82,6 +84,38 @@
                                         </form>
                                     </div>
                                     <!--SHARE MODAL-END-->
+                                    <!--SHARERS LIST MODAL-START-->
+                                    <div class="modal fade" id="sharersListModal" tabindex="-1"
+                                         role="dialog"
+                                         aria-labelledby="sharersListModal"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" style="color: #2c2c2c">Sharers</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body" style="color: #2c2c2c">
+                                                    <p class="text_align-left">
+                                                        This list is shared with the following users:
+                                                        <ul class="list-group" th:each="sharer : ${list.sharedWithUsers}">
+                                                            <li class="list-group-item"th:text="${sharer}">asd</li>
+                                                        </ul>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-primary">
+                                                        <a th:href="'/list/stopsharing/'+${list.getId()}" style="color: white">
+                                                            Stop sharing
+                                                        </a>
+                                                    </button>
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--SHARERS LIST MODAL-END-->
                                 </div>
                             </td>
                         </tr>
@@ -158,8 +192,6 @@
                                     </form>
                                 </div>
                                 <!--RENAME MODAL-END-->
-
-
                                 <form th:if="${item.done == true}" th:action="@{/item/notdone}" method="post">
                                     <input type="hidden" id="id" name="id" th:value="${item.id}">
                                     <input type="hidden" id="listId" name="listId" th:value="${list.id}">
@@ -190,6 +222,38 @@
                     </div>
                 </div>
             </div>
+            <!--SHARERS LIST MODAL-START-->
+            <div class="modal fade" id="sharersListModal" tabindex="-1"
+                 role="dialog"
+                 aria-labelledby="sharersListModal"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" style="color: #2c2c2c">Sharers</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" style="color: #2c2c2c">
+                            <p class="text_align-left">
+                                This list is shared with the following users:
+                            <ul class="list-group" th:each="sharer : ${list.sharedWithUsers}">
+                                <li class="list-group-item"th:text="${sharer}">asd</li>
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary">
+                                <a th:href="'/list/stopsharing/'+${list.getId()}" style="color: white">
+                                    Stop sharing
+                                </a>
+                            </button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--SHARERS LIST MODAL-END-->
             <th:block th:replace="layouts/footer">Footer</th:block>
         </div>
     </div>
