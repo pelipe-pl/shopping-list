@@ -58,6 +58,7 @@ public class ItemListService {
     public void remove(Long id, String username) {
         ItemListEntity itemListEntity = itemListRepository.getByIdAndUser_Username(id, username);
         itemListEntity.setRemoved(true);
+        itemListEntity.getSharedWithUsers().clear();
         itemListRepository.save(itemListEntity);
     }
 
