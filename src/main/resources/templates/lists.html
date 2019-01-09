@@ -41,12 +41,12 @@
                             <td>
 
                                 <a th:href="@{'/list/'+ ${list.id}}">
-                                    <button
-                                            class="btn btn-primary btn-round btn-block"
+                                    <button class="btn btn-primary btn-round btn-block"
                                             style="width: 245px; font-weight: bold;">
-                                        <span th:text="${#strings.toUpperCase(list.name)
-                                        +' ['+list.getUndoneSize()+'/'+list.getTotalSize()+']'}"></span>
-                                        <span th:if="${!list.getSharedWithUsers().isEmpty()}" >[S]</span>
+                                        <span th:text="${#strings.toUpperCase(list.name)}"></span>
+                                        <span th:text="${list.getUndoneSize()+'/'+list.getTotalSize()}"></span>
+                                        <span th:if="${!list.getSharedWithUsers().isEmpty()}" >
+                                            <i class="now-ui-icons loader_refresh"></i></span>
                                     </button>
                                 </a>
                             </td>

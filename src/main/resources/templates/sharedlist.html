@@ -152,8 +152,6 @@
                                     </form>
                                 </div>
                                 <!--RENAME MODAL-END-->
-
-
                                 <form th:if="${item.done == true}" th:action="@{/list/shared/item/notdone}" method="post">
                                     <input type="hidden" id="id" name="id" th:value="${item.id}">
                                     <input type="hidden" id="listId" name="listId" th:value="${list.id}">
