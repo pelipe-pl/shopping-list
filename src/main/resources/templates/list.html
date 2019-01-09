@@ -17,8 +17,7 @@
                 <div class="col-md-4">
                     <h2 class="title text-center">
                         <span th:text="${list.getName()}"></span>
-                        <span class="badge badge-neutral"th:if="${!list.getSharedWithUsers().isEmpty()}" >
-                            <i class="now-ui-icons loader_refresh"></i></span>
+                        <i th:if="${!list.getSharedWithUsers().isEmpty()}" class="now-ui-icons loader_refresh"></i>
                     </h2>
                     <div th:if="${items.isEmpty()}">
                         <h5>This list is empty.</h5>

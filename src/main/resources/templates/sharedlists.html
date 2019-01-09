@@ -27,7 +27,7 @@
                                             class="btn btn-warning btn-round btn-block"
                                             style="width: 245px; font-weight: bold;">
                                         <span th:text="${#strings.toUpperCase(list.name)
-                                        +' ['+list.getUndoneSize()+'/'+list.getTotalSize()+']'}"></span>
+                                        + ' ' + list.getUndoneSize()+'/'+list.getTotalSize()}"></span>
                                     </button>
                                 </a>
                             </td>
