@@ -1,9 +1,11 @@
 package pl.pelipe.shoppinglist.item;
 
 import org.springframework.stereotype.Service;
+import pl.pelipe.shoppinglist.email.EmailService;
 import pl.pelipe.shoppinglist.user.UserEntity;
 import pl.pelipe.shoppinglist.user.UserRepository;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,11 +16,13 @@ public class ItemListService {
     private final ItemListRepository itemListRepository;
     private final UserRepository userRepository;
     private final ItemListFactory itemListFactory;
+    private final EmailService emailService;
 
-    public ItemListService(ItemListRepository itemListRepository, UserRepository userRepository, ItemListFactory itemListFactory) {
+    public ItemListService(ItemListRepository itemListRepository, UserRepository userRepository, ItemListFactory itemListFactory, EmailService emailService) {
         this.itemListRepository = itemListRepository;
         this.userRepository = userRepository;
         this.itemListFactory = itemListFactory;
+        this.emailService = emailService;
     }
 
     ItemListEntity getById(Long id) {
@@ -81,13 +85,17 @@ public class ItemListService {
         sharers.add(listSharerUser);
         itemList.setSharedWithUsers(sharers);
         itemListRepository.save(itemList);
+        emailService.sendItemListShareConfirmation(listSharerUser, itemList);
         return 3;
     }
 
     void stopSharingList(Long listId, String name) {
         ItemListEntity itemList = itemListRepository.getByIdAndUser_Username(listId, name);
+        Set<UserEntity> sharedWithUsers = new HashSet<>();
+        sharedWithUsers.addAll(itemList.getSharedWithUsers());
         itemList.getSharedWithUsers().clear();
         itemListRepository.save(itemList);
+        emailService.sendItemListStopSharingConfirmation(sharedWithUsers, itemList);
     }
 
     String stopWatchingList(Long listId, String name) {
