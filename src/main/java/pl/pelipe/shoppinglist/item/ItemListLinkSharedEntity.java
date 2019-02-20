@@ -1,0 +1,77 @@
+package pl.pelipe.shoppinglist.item;
+
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "item_list_link_shared")
+
+public class ItemListLinkSharedEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Integer id;
+
+    @ManyToOne(targetEntity = ItemListEntity.class, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false, name = "item_list_id")
+    public ItemListEntity listEntity;
+
+    public String token;
+
+    public Boolean active;
+
+    public LocalDateTime creationDate = LocalDateTime.now();
+
+    public LocalDateTime expiryDate;
+
+    public ItemListLinkSharedEntity() {
+    }
+
+    public ItemListLinkSharedEntity(ItemListEntity listEntity, String token, Boolean active, LocalDateTime expiryDate) {
+        this.listEntity = listEntity;
+        this.token = token;
+        this.active = active;
+        this.expiryDate = expiryDate;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public ItemListEntity getListEntity() {
+        return listEntity;
+    }
+
+    public void setListEntity(ItemListEntity listEntity) {
+        this.listEntity = listEntity;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public LocalDateTime getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(LocalDateTime expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+}
