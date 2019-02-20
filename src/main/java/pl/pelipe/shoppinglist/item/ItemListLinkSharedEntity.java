@@ -1,6 +1,5 @@
 package pl.pelipe.shoppinglist.item;
 
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -11,7 +10,7 @@ public class ItemListLinkSharedEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Integer id;
+    public Long id;
 
     @ManyToOne(targetEntity = ItemListEntity.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "item_list_id")
@@ -35,11 +34,11 @@ public class ItemListLinkSharedEntity {
         this.expiryDate = expiryDate;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
