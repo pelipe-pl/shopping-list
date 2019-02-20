@@ -16,6 +16,8 @@ public class ItemListLinkSharedEntity {
     @JoinColumn(nullable = false, name = "item_list_id")
     public ItemListEntity listEntity;
 
+    public String emailAddress;
+
     public String token;
 
     public Boolean active;
@@ -72,5 +74,21 @@ public class ItemListLinkSharedEntity {
 
     public void setExpiryDate(LocalDateTime expiryDate) {
         this.expiryDate = expiryDate;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }
