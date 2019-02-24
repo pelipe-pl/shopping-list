@@ -5,6 +5,7 @@ import pl.pelipe.shoppinglist.email.EmailService;
 import pl.pelipe.shoppinglist.user.UserEntity;
 import pl.pelipe.shoppinglist.user.UserRepository;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
