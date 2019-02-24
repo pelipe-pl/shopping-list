@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pl.pelipe.shoppinglist.user.UserService;
 
 import java.security.Principal;
 
@@ -14,9 +15,13 @@ import java.security.Principal;
 public class ItemListLinkSharedController {
 
     private final ItemListLinkSharedService itemListLinkSharedService;
+    private final ItemService itemService;
+    private final UserService userService;
 
-    public ItemListLinkSharedController(ItemListLinkSharedService itemListLinkSharedService) {
+    public ItemListLinkSharedController(ItemListLinkSharedService itemListLinkSharedService, ItemService itemService, UserService userService) {
         this.itemListLinkSharedService = itemListLinkSharedService;
+        this.itemService = itemService;
+        this.userService = userService;
     }
 
     @RequestMapping(value = "/list/share/token/{listId}", method = RequestMethod.POST)
@@ -34,6 +39,8 @@ public class ItemListLinkSharedController {
         ItemListDto list = itemListLinkSharedService.get(token);
         if (list != null) {
             model.addAttribute("list", list);
+            model.addAttribute("items", itemService.findAllByUserIdAndListId(list.getUserId(), list.getId()));
+            model.addAttribute("listOwner", userService.getNameById(list.getUserId()));
             return "sharedbylinklist";
         } else {
             redirectAttributes.addFlashAttribute("error", "Oops! The link is not valid.");
