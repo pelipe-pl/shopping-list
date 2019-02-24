@@ -1,6 +1,7 @@
 package pl.pelipe.shoppinglist.item;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,6 +17,7 @@ public class ItemListLinkSharedEntity {
     @JoinColumn(nullable = false, name = "item_list_id")
     public ItemListEntity listEntity;
 
+    @Email
     public String emailAddress;
 
     public String token;

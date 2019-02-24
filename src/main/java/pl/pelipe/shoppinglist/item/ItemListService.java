@@ -115,7 +115,7 @@ public class ItemListService {
         itemListRepository.saveAll(itemListFactory.createSampleLists(userEntity));
     }
 
-    private ItemListDto toDto(ItemListEntity itemListEntity) {
+    ItemListDto toDto(ItemListEntity itemListEntity) {
         ItemListDto itemListDto = new ItemListDto();
         itemListDto.setUserId(itemListEntity.getUser().getId());
         itemListDto.setId(itemListEntity.getId());

@@ -101,11 +101,10 @@ public class EmailService {
                 "User " + listOwnerName + " has just shared his/her shopping list named " + listName.toUpperCase() + "." + "<BR>" +
                 "<a href=" + '"'
                 + environment.getRequiredProperty(URL_ITEM_LIST_SHARED_LINK)
-                + "?token=" + listLinkShared.getToken()
+                + listLinkShared.getToken()
                 + '"' + ">Click this link to open it!</a>" +
                 "<BR><BR>" +
                 "Thank you.";
         return send(to, subject, content);
     }
 }
-
