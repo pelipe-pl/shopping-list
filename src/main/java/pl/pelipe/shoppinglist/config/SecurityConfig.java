@@ -40,7 +40,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/",
                         "/password-recovery",
                         "/password-reset**",
-                        "/health")
+                        "/health",
+                        "/list/share/token/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -72,6 +73,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/*.png", "/*.jpg", "/css/**", "/js/**",
                 "/sass/**", "/img/**", "/*.ttf", "/*.scss", "/resources/**", "/fonts/**",
-                "/favico/**", "*.json", "*.ico");
+                "/favico/**", "*.json", "*.ico", "/list/share/token/**");
     }
 }
