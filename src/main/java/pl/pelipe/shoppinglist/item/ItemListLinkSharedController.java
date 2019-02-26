@@ -41,7 +41,7 @@ public class ItemListLinkSharedController {
             model.addAttribute("list", list);
             model.addAttribute("items", itemService.findAllByUserIdAndListId(list.getUserId(), list.getId()));
             model.addAttribute("listOwner", userService.getNameById(list.getUserId()));
-            return "sharedbylinklist";
+            return "/sharedbylinklist";
         } else {
             redirectAttributes.addFlashAttribute("error", "Oops! The link is not valid.");
             return "redirect:/";
