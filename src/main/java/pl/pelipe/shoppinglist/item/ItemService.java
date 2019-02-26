@@ -47,6 +47,13 @@ public class ItemService {
                 .collect(Collectors.toList());
     }
 
+    List<ItemDto> findAllByUserIdAndListId(Long userId, Long listId) {
+        return itemRepository.findAllByUser_IdAndList_IdAndRemovedFalseOrderByCreatedAtDesc(userId, listId)
+                .stream()
+                .map(i -> toDto(i))
+                .collect(Collectors.toList());
+    }
+
     //TODO Add 2nd checking by principals username
     List<ItemDto> findAllBySharerUsernameAndListId(String username, Long listId) {
         return itemRepository.findAllByList_IdAndRemovedIsFalseOrderByCreatedAtDesc(listId)

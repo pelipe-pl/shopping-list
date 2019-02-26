@@ -7,11 +7,14 @@ import org.springframework.stereotype.Service;
 import pl.pelipe.shoppinglist.item.ItemEntity;
 import pl.pelipe.shoppinglist.item.ItemListDto;
 import pl.pelipe.shoppinglist.item.ItemListEntity;
+import pl.pelipe.shoppinglist.item.ItemListLinkSharedEntity;
 import pl.pelipe.shoppinglist.user.UserEntity;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
+
+import static pl.pelipe.shoppinglist.config.Keys.URL_ITEM_LIST_SHARED_LINK;
 
 @Service
 public class EmailService {
@@ -23,7 +26,8 @@ public class EmailService {
         this.environment = environment;
     }
 
-    public void send(String to, String subject, String content) {
+    public Boolean send(String to, String subject, String content) {
+        Boolean result = Boolean.FALSE;
         Email from = new Email(environment.getProperty("SENDGRID_FROM_EMAIL"));
         from.setName("Shopping List");
         Mail mail = new Mail(from, subject, new Email(to), new Content("text/html", content));
@@ -37,9 +41,13 @@ public class EmailService {
             System.out.println(response.getStatusCode());
             System.out.println(response.getBody());
             System.out.println(response.getHeaders());
+            result = true;
         } catch (IOException ex) {
+            System.out.println("EmailService.send has failed to send following email.");
+            System.out.println("to = [" + to + "], subject = [" + subject);
             ex.printStackTrace();
         }
+        return result;
     }
 
     public Boolean sendItemList(String to, ItemListDto itemList, List<ItemEntity> items) {
@@ -53,11 +61,10 @@ public class EmailService {
                 stringList.append(item.getName()).append("<BR>");
         }
 
-        send(to, "Shopping list: " + itemList.getName().toUpperCase(), stringList.toString());
-        return true;
+        return send(to, "Shopping list: " + itemList.getName().toUpperCase(), stringList.toString());
     }
 
-    public void sendItemListShareConfirmation(UserEntity listSharer, ItemListEntity itemList) {
+    public Boolean sendItemListShareConfirmation(UserEntity listSharer, ItemListEntity itemList) {
         String to = listSharer.getUsername();
         String listSharerName = listSharer.getName();
         String listOwnerName = itemList.getUser().getName();
@@ -67,7 +74,7 @@ public class EmailService {
                 "User " + listOwnerName + " shared a shopping list named " + listName.toUpperCase() + "." + "<BR>" +
                 "You can log in to your Shopping List account and check it out. <BR><BR>" +
                 "Thank you.";
-        send(to, subject, content);
+        return send(to, subject, content);
     }
 
     public void sendItemListStopSharingConfirmation(Set<UserEntity> sharedWithUsers, ItemListEntity itemList) {
@@ -84,5 +91,20 @@ public class EmailService {
             send(to, subject, content);
         }
     }
-}
 
+    public Boolean sendItemListLinkShared(ItemListLinkSharedEntity listLinkShared) {
+        String to = listLinkShared.emailAddress;
+        String listOwnerName = listLinkShared.getListEntity().getUser().getName();
+        String listName = listLinkShared.getListEntity().getName();
+        String subject = listOwnerName + " has shared a shopping list with you!";
+        String content = "Hello! <BR><BR>" +
+                "User " + listOwnerName + " has just shared his/her shopping list named " + listName.toUpperCase() + "." + "<BR>" +
+                "<a href=" + '"'
+                + environment.getRequiredProperty(URL_ITEM_LIST_SHARED_LINK)
+                + listLinkShared.getToken()
+                + '"' + ">Click this link to open it!</a>" +
+                "<BR><BR>" +
+                "Thank you.";
+        return send(to, subject, content);
+    }
+}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="layouts/head">Head</th:block>
+</head>
+<body class="sidebar-collapse"
+      style="background-size: cover;
+      background: url(/img/sl-bg2.jpg) no-repeat center center fixed; min-height: 100vh">
+
+<th:block th:replace="layouts/nav">Nav</th:block>
+
+<div class="wrapper">
+    <th:block th:replace="layouts/notification">Notifications</th:block>
+    <div class="section align-middle" style="background-color: transparent; padding-top: 100px">
+        <div class="container">
+            <div class="row justify-content-center align-self-center text-light">
+                <div class="col-md-4">
+                    <h2 class="title text-center">
+                        <span th:text="${list.getName()}"></span>
+                    </h2>
+                        <h6 class="title text-center">Owned by
+                            <span th:text="${listOwner}"></span></h6>
+
+                    <div th:if="${items.isEmpty()}">
+                        <h5>This list is empty.</h5>
+                    </div>
+                    <table th:each="item : ${items}" class="table-condensed">
+                        <tr style="width: 100%">
+                            <td>
+                                <button th:if="${item.done == false}" th:text="${item.name}"
+                                        class="btn btn-primary btn-round btn-block" style="width: 350px"
+                                        data-toggle="modal"
+                                        th:attr="data-target='#renameModal'+${item.getId()}"></button>
+                                <button th:if="${item.done == true}" th:text="${item.name}"
+                                        class="btn btn-light btn-round btn-block"
+                                        style="text-decoration: line-through; width: 350px"></button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:replace="layouts/footer">Footer</th:block>
+</body>
+<th:block th:replace="layouts/scripts">Scripts</th:block>
+</html>

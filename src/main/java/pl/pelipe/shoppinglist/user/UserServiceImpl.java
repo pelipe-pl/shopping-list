@@ -2,11 +2,11 @@ package pl.pelipe.shoppinglist.user;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.pelipe.shoppinglist.email.EmailService;
 import pl.pelipe.shoppinglist.item.ItemListService;
-import org.springframework.core.env.Environment;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -78,6 +78,9 @@ public class UserServiceImpl implements UserService {
     public String getUsernameById(Long id) {
         return userRepository.getById(id).getUsername();
     }
+
+    @Override
+    public String getNameById(Long id) { return userRepository.getById(id).getName(); }
 
     @Override
     public Boolean sendPasswordResetToken(String username) throws IOException {

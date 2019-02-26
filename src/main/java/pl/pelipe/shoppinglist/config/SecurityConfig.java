@@ -40,7 +40,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/",
                         "/password-recovery",
                         "/password-reset**",
-                        "/health")
+                        "/health",
+                        "/list/share/get/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
