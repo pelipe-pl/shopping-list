@@ -25,15 +25,15 @@ public class ItemListLinkSharedController {
     }
 
     @RequestMapping(value = "/list/share/token/{listId}", method = RequestMethod.POST)
-    public String shareByLink(@PathVariable Long listId, @RequestParam("email") String email, Principal principal, RedirectAttributes redirectAttributes) {
+    public String shareByLink(@PathVariable Long listId,  @RequestParam("email") String email, Principal principal, RedirectAttributes redirectAttributes) {
 
         Boolean result = itemListLinkSharedService.share(listId, principal.getName(), email);
-        if (result) redirectAttributes.addFlashAttribute("message", "The link to the list has been sent to " + email);
+        if (result) redirectAttributes.addFlashAttribute("message", "The link has been sent to " + email);
         else redirectAttributes.addFlashAttribute("error", "Oops! Something went wrong :(");
         return "redirect:/lists";
     }
 
-    @RequestMapping(value = "/list/share/token/{token}", method = RequestMethod.GET)
+    @RequestMapping(value = "/list/share/get/{token}", method = RequestMethod.GET)
     public String getByLink(Model model, @PathVariable String token, RedirectAttributes redirectAttributes) {
 
         ItemListDto list = itemListLinkSharedService.get(token);

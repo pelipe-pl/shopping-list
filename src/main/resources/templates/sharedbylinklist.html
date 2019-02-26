@@ -7,37 +7,7 @@
       style="background-size: cover;
       background: url(/img/sl-bg2.jpg) no-repeat center center fixed; min-height: 100vh">
 
-<!--/* Workaround NAV block because as include does not work */-->
-
-<nav class="navbar navbar-expand-lg bg-primary fixed-top" style="margin-bottom: 100px">
-    <div class="container">
-        <div class="navbar-logo">
-            <a class="logo-container" href="/" data-placement="bottom">
-                <img src="/img/sl-logo.png" alt="Shopping List" style="max-width: 200px">
-            </a>
-        </div>
-        <button class="navbar-toggler" type="button" data-toggle="collapse"
-                data-target="#navigation" aria-controls="navigation-index" aria-expanded="false"
-                aria-label="Toggle navigation">
-            <span class="navbar-toggler-bar bar1"></span>
-            <span class="navbar-toggler-bar bar2"></span>
-            <span class="navbar-toggler-bar bar3"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-end" id="navigation"
-             data-nav-image="/img/blurred-image-1.jpg">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="/login"><i class="now-ui-icons users_single-02"></i>Log in</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/registration">
-                        <i class="now-ui-icons files_single-copy-04"></i>Register</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-<!--/* End of NAV Block */-->
+<th:block th:replace="layouts/nav">Nav</th:block>
 
 <div class="wrapper">
     <th:block th:replace="layouts/notification">Notifications</th:block>
