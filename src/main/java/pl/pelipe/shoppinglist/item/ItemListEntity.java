@@ -30,7 +30,7 @@ public class ItemListEntity {
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "list")
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "list")
     private List<ItemEntity> itemList = new ArrayList<>();
 
     @ManyToMany

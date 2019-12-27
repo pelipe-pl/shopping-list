@@ -1,7 +1,8 @@
 package pl.pelipe.shoppinglist.email;
 
 import com.sendgrid.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import pl.pelipe.shoppinglist.item.ItemEntity;
@@ -19,9 +20,10 @@ import static pl.pelipe.shoppinglist.config.Keys.URL_ITEM_LIST_SHARED_LINK;
 @Service
 public class EmailService {
 
+    private final static String MSG_ADMINS_EMAIL_ADDRESS_NOT_DEFINED = "Admins email address is not defined.";
     private final Environment environment;
+    private final Logger logger = LoggerFactory.getLogger(EmailService.class);
 
-    @Autowired
     public EmailService(Environment environment) {
         this.environment = environment;
     }
@@ -29,23 +31,22 @@ public class EmailService {
     public Boolean send(String to, String subject, String content) {
         Boolean result = Boolean.FALSE;
         Email from = new Email(environment.getProperty("SENDGRID_FROM_EMAIL"));
-        from.setName("Shopping List");
+        from.setName(environment.getProperty("EMAIL_SENDER_NAME"));
         Mail mail = new Mail(from, subject, new Email(to), new Content("text/html", content));
         SendGrid sendGrid = new SendGrid(environment.getProperty("SENDGRID_API_KEY"));
         Request request = new Request();
         try {
+            logger.info("Sending e-mail to " + "****" + to.substring(4));
             request.setMethod(Method.POST);
             request.setEndpoint("mail/send");
             request.setBody(mail.build());
             Response response = sendGrid.api(request);
-            System.out.println(response.getStatusCode());
-            System.out.println(response.getBody());
-            System.out.println(response.getHeaders());
+            logger.info("Response status code: " + response.getStatusCode());
+            logger.info("Response body: " + response.getBody());
+            logger.info("Response headers: " + response.getHeaders());
             result = true;
         } catch (IOException ex) {
-            System.out.println("EmailService.send has failed to send following email.");
-            System.out.println("to = [" + to + "], subject = [" + subject);
-            ex.printStackTrace();
+            logger.error(EmailService.class.getName() + " has failed to send email to: " + "****" + to.substring(4) + " , subject: " + subject, ex);
         }
         return result;
     }
@@ -106,5 +107,13 @@ public class EmailService {
                 "<BR><BR>" +
                 "Thank you.";
         return send(to, subject, content);
+    }
+
+    public void sendToAdmin(String subject, String content) {
+        String to = environment.getProperty("ADMINS_EMAIL_ADDRESS");
+        if (to == null) {
+            logger.error(MSG_ADMINS_EMAIL_ADDRESS_NOT_DEFINED);
+        }
+        send(to, subject, content);
     }
 }

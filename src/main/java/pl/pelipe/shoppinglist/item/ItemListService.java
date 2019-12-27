@@ -63,6 +63,7 @@ public class ItemListService {
         ItemListEntity itemListEntity = itemListRepository.getByIdAndUser_Username(id, username);
         itemListEntity.setRemoved(true);
         itemListEntity.getSharedWithUsers().clear();
+        itemListEntity.getItemList().forEach(itemEntity -> itemEntity.setRemoved(true));
         itemListRepository.save(itemListEntity);
     }
 
