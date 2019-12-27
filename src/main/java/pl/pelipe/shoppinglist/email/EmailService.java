@@ -42,8 +42,6 @@ public class EmailService {
             request.setBody(mail.build());
             Response response = sendGrid.api(request);
             logger.info("Response status code: " + response.getStatusCode());
-            logger.info("Response body: " + response.getBody());
-            logger.info("Response headers: " + response.getHeaders());
             result = true;
         } catch (IOException ex) {
             logger.error(EmailService.class.getName() + " has failed to send email to: " + "****" + to.substring(4) + " , subject: " + subject, ex);
