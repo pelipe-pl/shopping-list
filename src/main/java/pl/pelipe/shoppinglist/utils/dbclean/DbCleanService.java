@@ -35,7 +35,7 @@ public class DbCleanService {
         this.emailService = emailService;
     }
 
-    @Scheduled(cron = "00 17 * * * ?")
+    @Scheduled(cron = "00 00 21 * * *")
     public void cleanObsoleteDbRecords() {
         try {
             long startTime = System.currentTimeMillis();
