@@ -20,7 +20,6 @@ import static pl.pelipe.shoppinglist.config.Keys.URL_ITEM_LIST_SHARED_LINK;
 @Service
 public class EmailService {
 
-    private final static String EMAIL_SENDER_NAME = "Shopping List";
     private final static String MSG_ADMINS_EMAIL_ADDRESS_NOT_DEFINED = "Admins email address is not defined.";
     private final Environment environment;
     private final Logger logger = LoggerFactory.getLogger(EmailService.class);
@@ -32,7 +31,7 @@ public class EmailService {
     public Boolean send(String to, String subject, String content) {
         Boolean result = Boolean.FALSE;
         Email from = new Email(environment.getProperty("SENDGRID_FROM_EMAIL"));
-        from.setName(EMAIL_SENDER_NAME);
+        from.setName(environment.getProperty("EMAIL_SENDER_NAME"));
         Mail mail = new Mail(from, subject, new Email(to), new Content("text/html", content));
         SendGrid sendGrid = new SendGrid(environment.getProperty("SENDGRID_API_KEY"));
         Request request = new Request();
