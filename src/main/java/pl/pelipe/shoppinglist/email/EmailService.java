@@ -36,7 +36,7 @@ public class EmailService {
         SendGrid sendGrid = new SendGrid(environment.getProperty("SENDGRID_API_KEY"));
         Request request = new Request();
         try {
-            logger.info("Sending e-mail to " + to);
+            logger.info("Sending e-mail to " + "****" + to.substring(4));
             request.setMethod(Method.POST);
             request.setEndpoint("mail/send");
             request.setBody(mail.build());
@@ -46,7 +46,7 @@ public class EmailService {
             logger.info("Response headers: " + response.getHeaders());
             result = true;
         } catch (IOException ex) {
-            logger.error(EmailService.class.getName() + " has failed to send email to: " + to + " , subject: " + subject, ex);
+            logger.error(EmailService.class.getName() + " has failed to send email to: " + "****" + to.substring(4) + " , subject: " + subject, ex);
         }
         return result;
     }
