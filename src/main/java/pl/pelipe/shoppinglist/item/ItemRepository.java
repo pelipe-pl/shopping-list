@@ -1,6 +1,8 @@
 package pl.pelipe.shoppinglist.item;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,4 +25,8 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Integer> {
     List<ItemEntity> findAllByList_IdAndRemovedIsFalseOrderByCreatedAtDesc(Long id);
 
     List<ItemEntity> findAllByListIdAndRemovedIsFalseAndDoneIsTrue(Long id);
+
+    @Modifying
+    @Query("delete from ItemEntity where removed = true")
+    Integer deleteAllByRemovedIsTrue();
 }

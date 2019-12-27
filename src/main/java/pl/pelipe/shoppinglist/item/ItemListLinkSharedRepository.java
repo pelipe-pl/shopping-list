@@ -9,4 +9,6 @@ import java.time.LocalDateTime;
 public interface ItemListLinkSharedRepository extends JpaRepository<ItemListLinkSharedEntity, Long> {
 
     ItemListLinkSharedEntity getByTokenAndActiveTrueAndExpiryDateIsAfter(String token, LocalDateTime expiryDate);
+
+    Integer deleteAllByExpiryDateBefore(LocalDateTime expiryDate);
 }
