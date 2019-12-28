@@ -3,6 +3,7 @@ package pl.pelipe.shoppinglist.email;
 import com.sendgrid.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import pl.pelipe.shoppinglist.item.ItemEntity;
@@ -23,6 +24,12 @@ public class EmailService {
     private final static String MSG_ADMINS_EMAIL_ADDRESS_NOT_DEFINED = "Admins email address is not defined.";
     private final Environment environment;
     private final Logger logger = LoggerFactory.getLogger(EmailService.class);
+    @Value("#{environment.SENDGRID_FROM_EMAIL}")
+    private String sendgridFromEmail;
+    @Value("#{environment.EMAIL_SENDER_NAME}")
+    private String emailSenderName;
+    @Value("#{environment.SENDGRID_API_KEY}")
+    private String sendgridApiKey;
 
     public EmailService(Environment environment) {
         this.environment = environment;
@@ -30,10 +37,10 @@ public class EmailService {
 
     public Boolean send(String to, String subject, String content) {
         Boolean result = Boolean.FALSE;
-        Email from = new Email(environment.getProperty("SENDGRID_FROM_EMAIL"));
-        from.setName(environment.getProperty("EMAIL_SENDER_NAME"));
+        Email from = new Email(sendgridFromEmail);
+        from.setName(emailSenderName);
         Mail mail = new Mail(from, subject, new Email(to), new Content("text/html", content));
-        SendGrid sendGrid = new SendGrid(environment.getProperty("SENDGRID_API_KEY"));
+        SendGrid sendGrid = new SendGrid(sendgridApiKey);
         Request request = new Request();
         try {
             logger.info("Sending e-mail to " + "****" + to.substring(4));
@@ -42,8 +49,6 @@ public class EmailService {
             request.setBody(mail.build());
             Response response = sendGrid.api(request);
             logger.info("Response status code: " + response.getStatusCode());
-            logger.info("Response body: " + response.getBody());
-            logger.info("Response headers: " + response.getHeaders());
             result = true;
         } catch (IOException ex) {
             logger.error(EmailService.class.getName() + " has failed to send email to: " + "****" + to.substring(4) + " , subject: " + subject, ex);
