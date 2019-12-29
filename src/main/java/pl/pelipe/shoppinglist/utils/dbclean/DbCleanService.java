@@ -2,33 +2,36 @@ package pl.pelipe.shoppinglist.utils.dbclean;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.pelipe.shoppinglist.email.EmailService;
 import pl.pelipe.shoppinglist.item.ItemListLinkSharedRepository;
 import pl.pelipe.shoppinglist.item.ItemListRepository;
 import pl.pelipe.shoppinglist.item.ItemRepository;
 import pl.pelipe.shoppinglist.user.PasswordResetTokenRepository;
+import pl.pelipe.shoppinglist.utils.email.EmailService;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 
 @Service
 @Transactional
 public class DbCleanService {
 
-    private final static String ADMIN_EMAIL_SUBJECT_SUCCESS = "System message: DbCleanService task succeeded";
-    private final static String ADMIN_EMAIL_SUBJECT_FAIL = "System message: DbCleanService failed";
-
+    private final static String ADMIN_EMAIL_SUBJECT_DBCLEAN_SUCCESS = "System message: DbCleanService task succeeded";
+    private final static String ADMIN_EMAIL_SUBJECT_DBCLEAN_FAIL = "System message: DbCleanService failed";
     private final ItemListRepository itemListRepository;
     private final ItemRepository itemRepository;
     private final ItemListLinkSharedRepository itemListLinkSharedRepository;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final EmailService emailService;
     private final Logger logger = LoggerFactory.getLogger(DbCleanService.class);
+    @Value("#{environment.ENVIRONMENT_TAG}")
+    private String environmentTag;
 
-    public DbCleanService(ItemListRepository itemListRepository, ItemRepository itemRepository, ItemListLinkSharedRepository itemListLinkSharedRepository, PasswordResetTokenRepository passwordResetTokenRepository, EmailService emailService) {
+    public DbCleanService(ItemListRepository itemListRepository, ItemRepository itemRepository,
+                          ItemListLinkSharedRepository itemListLinkSharedRepository,
+                          PasswordResetTokenRepository passwordResetTokenRepository, EmailService emailService) {
         this.itemListRepository = itemListRepository;
         this.itemRepository = itemRepository;
         this.itemListLinkSharedRepository = itemListLinkSharedRepository;
@@ -53,8 +56,8 @@ public class DbCleanService {
             logger.info("Total execution time: " + elapsedTime + " milliseconds");
 
             emailService.sendToAdmin(
-                    ADMIN_EMAIL_SUBJECT_SUCCESS,
-                    "Report date: " + LocalDateTime.now() +
+                    environmentTag + ": " + ADMIN_EMAIL_SUBJECT_DBCLEAN_SUCCESS,
+                    "Report date: " + LocalDateTime.now().withNano(0) + "<br>" +
                             "cleanedObsoleteItems: " + cleanedObsoleteItems + "<br>" +
                             "cleanedObsoleteItemLists: " + cleanedObsoleteItemLists + "<br>" +
                             "cleanedObsoleteListLinkShared: " + cleanedObsoleteListLinkShared + "<br>" +
@@ -63,11 +66,7 @@ public class DbCleanService {
                             "elapsedTime: " + elapsedTime + " milliseconds");
         } catch (Exception e) {
             logger.error("DbCleanService task failed.", e);
-            emailService.sendToAdmin(ADMIN_EMAIL_SUBJECT_FAIL,
-                    "DbCleanService task failed." + "<br>"
-                            + "Report date: " + LocalDateTime.now() + "<br>"
-                            + "Exception message: " + e.getMessage() + "<br>"
-                            + "Exception stack trace: " + Arrays.toString(e.getStackTrace()));
+            emailService.sendExceptionNotifyToAdmin(environmentTag + ": " + ADMIN_EMAIL_SUBJECT_DBCLEAN_FAIL, e);
         }
     }
 

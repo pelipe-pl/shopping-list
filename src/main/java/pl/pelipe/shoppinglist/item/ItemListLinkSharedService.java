@@ -2,7 +2,7 @@ package pl.pelipe.shoppinglist.item;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
-import pl.pelipe.shoppinglist.email.EmailService;
+import pl.pelipe.shoppinglist.utils.email.EmailService;
 
 import java.time.LocalDateTime;
 
