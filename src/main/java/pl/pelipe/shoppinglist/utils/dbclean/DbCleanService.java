@@ -12,6 +12,7 @@ import pl.pelipe.shoppinglist.item.ItemRepository;
 import pl.pelipe.shoppinglist.user.PasswordResetTokenRepository;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 @Service
 @Transactional
@@ -53,7 +54,8 @@ public class DbCleanService {
 
             emailService.sendToAdmin(
                     ADMIN_EMAIL_SUBJECT_SUCCESS,
-                    "cleanedObsoleteItems: " + cleanedObsoleteItems + "<br>" +
+                    "Report date: " + LocalDateTime.now() +
+                            "cleanedObsoleteItems: " + cleanedObsoleteItems + "<br>" +
                             "cleanedObsoleteItemLists: " + cleanedObsoleteItemLists + "<br>" +
                             "cleanedObsoleteListLinkShared: " + cleanedObsoleteListLinkShared + "<br>" +
                             "cleanedObsoletePasswordResetTokens: " + cleanedObsoletePasswordResetTokens + "<br>" +
@@ -61,8 +63,11 @@ public class DbCleanService {
                             "elapsedTime: " + elapsedTime + " milliseconds");
         } catch (Exception e) {
             logger.error("DbCleanService task failed.", e);
-            emailService.sendToAdmin(ADMIN_EMAIL_SUBJECT_FAIL, "DbCleanService task failed." + "<br>" + e.toString()
-            );
+            emailService.sendToAdmin(ADMIN_EMAIL_SUBJECT_FAIL,
+                    "DbCleanService task failed." + "<br>"
+                            + "Report date: " + LocalDateTime.now() + "<br>"
+                            + "Exception message: " + e.getMessage() + "<br>"
+                            + "Exception stack trace: " + Arrays.toString(e.getStackTrace()));
         }
     }
 
