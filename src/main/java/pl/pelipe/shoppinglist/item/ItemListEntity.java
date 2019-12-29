@@ -33,7 +33,7 @@ public class ItemListEntity {
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "list")
     private List<ItemEntity> itemList = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(name = "shared_item_list",
             joinColumns = {@JoinColumn(name = "item_list_id")},
             inverseJoinColumns = {@JoinColumn(name = "user_table_id")})
