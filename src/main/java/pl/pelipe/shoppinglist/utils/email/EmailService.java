@@ -1,4 +1,4 @@
-package pl.pelipe.shoppinglist.email;
+package pl.pelipe.shoppinglist.utils.email;
 
 import com.sendgrid.*;
 import org.slf4j.Logger;

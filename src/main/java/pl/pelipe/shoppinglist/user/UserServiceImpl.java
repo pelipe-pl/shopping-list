@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.pelipe.shoppinglist.email.EmailService;
+import pl.pelipe.shoppinglist.utils.email.EmailService;
 import pl.pelipe.shoppinglist.item.ItemListService;
 
 import java.io.IOException;

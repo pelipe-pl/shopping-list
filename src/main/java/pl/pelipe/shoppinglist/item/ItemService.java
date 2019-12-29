@@ -2,7 +2,7 @@ package pl.pelipe.shoppinglist.item;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import pl.pelipe.shoppinglist.email.EmailService;
+import pl.pelipe.shoppinglist.utils.email.EmailService;
 import pl.pelipe.shoppinglist.user.UserEntity;
 import pl.pelipe.shoppinglist.user.UserService;
 
