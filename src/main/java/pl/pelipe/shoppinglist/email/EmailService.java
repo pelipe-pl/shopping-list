@@ -13,6 +13,8 @@ import pl.pelipe.shoppinglist.item.ItemListLinkSharedEntity;
 import pl.pelipe.shoppinglist.user.UserEntity;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -120,5 +122,13 @@ public class EmailService {
             logger.error(MSG_ADMINS_EMAIL_ADDRESS_NOT_DEFINED);
         }
         send(to, subject, content);
+    }
+
+    public void sendExceptionNotifyToAdmin(String subject, Exception e) {
+        sendToAdmin(subject,
+                "DbCleanService task failed." + "<br>"
+                        + "Report date: " + LocalDateTime.now() + "<br>"
+                        + "Exception message: " + e.getMessage() + "<br>"
+                        + "Exception stack trace: " + Arrays.toString(e.getStackTrace()));
     }
 }

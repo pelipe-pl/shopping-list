@@ -12,14 +12,13 @@ import pl.pelipe.shoppinglist.item.ItemRepository;
 import pl.pelipe.shoppinglist.user.PasswordResetTokenRepository;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 
 @Service
 @Transactional
 public class DbCleanService {
 
-    private final static String ADMIN_EMAIL_SUBJECT_SUCCESS = "System message: DbCleanService task succeeded";
-    private final static String ADMIN_EMAIL_SUBJECT_FAIL = "System message: DbCleanService failed";
+    private final static String ADMIN_EMAIL_SUBJECT_DBCLEAN_SUCCESS = "System message: DbCleanService task succeeded";
+    private final static String ADMIN_EMAIL_SUBJECT_DBCLEAN_FAIL = "System message: DbCleanService failed";
 
     private final ItemListRepository itemListRepository;
     private final ItemRepository itemRepository;
@@ -28,7 +27,9 @@ public class DbCleanService {
     private final EmailService emailService;
     private final Logger logger = LoggerFactory.getLogger(DbCleanService.class);
 
-    public DbCleanService(ItemListRepository itemListRepository, ItemRepository itemRepository, ItemListLinkSharedRepository itemListLinkSharedRepository, PasswordResetTokenRepository passwordResetTokenRepository, EmailService emailService) {
+    public DbCleanService(ItemListRepository itemListRepository, ItemRepository itemRepository,
+                          ItemListLinkSharedRepository itemListLinkSharedRepository,
+                          PasswordResetTokenRepository passwordResetTokenRepository, EmailService emailService) {
         this.itemListRepository = itemListRepository;
         this.itemRepository = itemRepository;
         this.itemListLinkSharedRepository = itemListLinkSharedRepository;
@@ -53,7 +54,7 @@ public class DbCleanService {
             logger.info("Total execution time: " + elapsedTime + " milliseconds");
 
             emailService.sendToAdmin(
-                    ADMIN_EMAIL_SUBJECT_SUCCESS,
+                    ADMIN_EMAIL_SUBJECT_DBCLEAN_SUCCESS,
                     "Report date: " + LocalDateTime.now() +
                             "cleanedObsoleteItems: " + cleanedObsoleteItems + "<br>" +
                             "cleanedObsoleteItemLists: " + cleanedObsoleteItemLists + "<br>" +
@@ -63,11 +64,7 @@ public class DbCleanService {
                             "elapsedTime: " + elapsedTime + " milliseconds");
         } catch (Exception e) {
             logger.error("DbCleanService task failed.", e);
-            emailService.sendToAdmin(ADMIN_EMAIL_SUBJECT_FAIL,
-                    "DbCleanService task failed." + "<br>"
-                            + "Report date: " + LocalDateTime.now() + "<br>"
-                            + "Exception message: " + e.getMessage() + "<br>"
-                            + "Exception stack trace: " + Arrays.toString(e.getStackTrace()));
+            emailService.sendExceptionNotifyToAdmin(ADMIN_EMAIL_SUBJECT_DBCLEAN_FAIL, e);
         }
     }
 
