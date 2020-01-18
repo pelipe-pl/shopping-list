@@ -39,14 +39,14 @@ public class DbCleanService {
         this.emailService = emailService;
     }
 
-    @Scheduled(cron = "00 00 21 * * *")
+    @Scheduled(cron = "00 00 20 * * *")
     public void cleanObsoleteDbRecords() {
         try {
             long startTime = System.currentTimeMillis();
             logger.info("Starting cleanObsoleteDbRecords scheduled task.");
             Integer cleanedObsoleteItems = cleanObsoleteItems();
-            Integer cleanedObsoleteItemLists = cleanObsoleteItemLists();
             Integer cleanedObsoleteListLinkShared = cleanObsoleteListLinkShared();
+            Integer cleanedObsoleteItemLists = cleanObsoleteItemLists();
             Integer cleanedObsoletePasswordResetTokens = cleanObsoletePasswordResetTokens();
             Integer cleanedTotal =
                     cleanedObsoleteItemLists + cleanedObsoleteItems + cleanedObsoleteListLinkShared + cleanedObsoletePasswordResetTokens;
@@ -59,8 +59,8 @@ public class DbCleanService {
                     environmentTag + ": " + ADMIN_EMAIL_SUBJECT_DBCLEAN_SUCCESS,
                     "Report date: " + LocalDateTime.now().withNano(0) + "<br>" +
                             "cleanedObsoleteItems: " + cleanedObsoleteItems + "<br>" +
+                            "cleanedObsoleteItemItemListLinkShared: " + cleanedObsoleteListLinkShared + "<br>" +
                             "cleanedObsoleteItemLists: " + cleanedObsoleteItemLists + "<br>" +
-                            "cleanedObsoleteListLinkShared: " + cleanedObsoleteListLinkShared + "<br>" +
                             "cleanedObsoletePasswordResetTokens: " + cleanedObsoletePasswordResetTokens + "<br>" +
                             "cleanedTotal: " + cleanedTotal + "<br>" +
                             "elapsedTime: " + elapsedTime + " milliseconds");

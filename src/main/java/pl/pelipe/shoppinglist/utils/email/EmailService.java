@@ -126,7 +126,7 @@ public class EmailService {
 
     public void sendExceptionNotifyToAdmin(String subject, Exception e) {
         sendToAdmin(subject,
-                "DbCleanService task failed." + "<br>"
+                subject + "<br>"
                         + "Report date: " + LocalDateTime.now() + "<br>"
                         + "Exception message: " + e.getMessage() + "<br>"
                         + "Exception stack trace: " + Arrays.toString(e.getStackTrace()));
