@@ -45,11 +45,10 @@ public class DbCleanService {
             long startTime = System.currentTimeMillis();
             logger.info("Starting cleanObsoleteDbRecords scheduled task.");
             Integer cleanedObsoleteItems = cleanObsoleteItems();
-            Integer cleanedObsoleteListLinkShared = cleanObsoleteListLinkShared();
             Integer cleanedObsoleteItemLists = cleanObsoleteItemLists();
             Integer cleanedObsoletePasswordResetTokens = cleanObsoletePasswordResetTokens();
             Integer cleanedTotal =
-                    cleanedObsoleteItemLists + cleanedObsoleteItems + cleanedObsoleteListLinkShared + cleanedObsoletePasswordResetTokens;
+                    cleanedObsoleteItemLists + cleanedObsoleteItems + cleanedObsoletePasswordResetTokens;
             long elapsedTime = System.currentTimeMillis() - startTime;
             logger.info("Finished cleanObsoleteDbRecords scheduled task.");
             logger.info("Total deleted records: " + cleanedTotal);
@@ -59,7 +58,6 @@ public class DbCleanService {
                     environmentTag + ": " + ADMIN_EMAIL_SUBJECT_DBCLEAN_SUCCESS,
                     "Report date: " + LocalDateTime.now().withNano(0) + "<br>" +
                             "cleanedObsoleteItems: " + cleanedObsoleteItems + "<br>" +
-                            "cleanedObsoleteItemItemListLinkShared: " + cleanedObsoleteListLinkShared + "<br>" +
                             "cleanedObsoleteItemLists: " + cleanedObsoleteItemLists + "<br>" +
                             "cleanedObsoletePasswordResetTokens: " + cleanedObsoletePasswordResetTokens + "<br>" +
                             "cleanedTotal: " + cleanedTotal + "<br>" +
@@ -83,14 +81,6 @@ public class DbCleanService {
         Integer deletedRecords = itemListRepository.deleteAllByRemovedIsTrue();
         logger.info("ItemList records: finished cleaning...");
         logger.info("ItemList records: deleted " + deletedRecords + " rows.");
-        return deletedRecords;
-    }
-
-    private Integer cleanObsoleteListLinkShared() {
-        logger.info("ListLinkShared records: starting cleaning...");
-        Integer deletedRecords = itemListLinkSharedRepository.deleteAllByExpiryDateBefore(LocalDateTime.now());
-        logger.info("ListLinkShared records: finished cleaning...");
-        logger.info("ListLinkShared records: deleted " + deletedRecords + " rows.");
         return deletedRecords;
     }
 
