@@ -13,7 +13,7 @@ public class ItemListLinkSharedEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
 
-    @ManyToOne(targetEntity = ItemListEntity.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = ItemListEntity.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "item_list_id")
     public ItemListEntity listEntity;
 
