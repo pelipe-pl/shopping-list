@@ -45,8 +45,8 @@ public class DbCleanService {
             long startTime = System.currentTimeMillis();
             logger.info("Starting cleanObsoleteDbRecords scheduled task.");
             Integer cleanedObsoleteItems = cleanObsoleteItems();
-            Integer cleanedObsoleteItemLists = cleanObsoleteItemLists();
             Integer cleanedObsoleteListLinkShared = cleanObsoleteListLinkShared();
+            Integer cleanedObsoleteItemLists = cleanObsoleteItemLists();
             Integer cleanedObsoletePasswordResetTokens = cleanObsoletePasswordResetTokens();
             Integer cleanedTotal =
                     cleanedObsoleteItemLists + cleanedObsoleteItems + cleanedObsoleteListLinkShared + cleanedObsoletePasswordResetTokens;
