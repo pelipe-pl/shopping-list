@@ -40,7 +40,11 @@ public class DbCleanService {
     }
 
     @Scheduled(cron = "00 00 20 * * *")
-    public void cleanObsoleteDbRecords() {
+    public void cleanObsoleteDbRecordsScheduled() {
+        cleanObsoleteDbRecords();
+    }
+
+    public String cleanObsoleteDbRecords() {
         try {
             long startTime = System.currentTimeMillis();
             logger.info("Starting cleanObsoleteDbRecords scheduled task.");
@@ -54,18 +58,26 @@ public class DbCleanService {
             logger.info("Total deleted records: " + cleanedTotal);
             logger.info("Total execution time: " + elapsedTime + " milliseconds");
 
+            StringBuilder report = new StringBuilder();
+            report.append("Report date: ").append(LocalDateTime.now().withNano(0)).append("<br>");
+            report.append("cleanedObsoleteItemLists: ").append(cleanedObsoleteItemLists).append("<br>");
+            report.append("cleanedObsoleteItems: ").append(cleanedObsoleteItems).append("<br>");
+            report.append("cleanedObsoletePasswordResetTokens: ").append(cleanedObsoletePasswordResetTokens).append("<br>");
+            report.append("cleanedTotal: ").append(cleanedTotal).append("<br>");
+            report.append("cleanedTotal: ").append(cleanedTotal).append("<br>");
+            report.append("elapsedTime: ").append(elapsedTime).append(" milliseconds");
+
             emailService.sendToAdmin(
-                    environmentTag + ": " + ADMIN_EMAIL_SUBJECT_DBCLEAN_SUCCESS,
-                    "Report date: " + LocalDateTime.now().withNano(0) + "<br>" +
-                            "cleanedObsoleteItems: " + cleanedObsoleteItems + "<br>" +
-                            "cleanedObsoleteItemLists: " + cleanedObsoleteItemLists + "<br>" +
-                            "cleanedObsoletePasswordResetTokens: " + cleanedObsoletePasswordResetTokens + "<br>" +
-                            "cleanedTotal: " + cleanedTotal + "<br>" +
-                            "elapsedTime: " + elapsedTime + " milliseconds");
+                    environmentTag + ": " + ADMIN_EMAIL_SUBJECT_DBCLEAN_SUCCESS, report.toString());
+
+            return report.toString();
+
         } catch (Exception e) {
             logger.error("DbCleanService task failed.", e);
             emailService.sendExceptionNotifyToAdmin(environmentTag + ": " + ADMIN_EMAIL_SUBJECT_DBCLEAN_FAIL, e);
         }
+
+        return "";
     }
 
     private Integer cleanObsoleteItems() {

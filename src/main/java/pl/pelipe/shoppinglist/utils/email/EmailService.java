@@ -125,9 +125,14 @@ public class EmailService {
     }
 
     public void sendExceptionNotifyToAdmin(String subject, Exception e) {
+        sendExceptionNotifyToAdmin(subject, "", e);
+    }
+
+    public void sendExceptionNotifyToAdmin(String subject, String content, Exception e) {
         sendToAdmin(subject,
                 subject + "<br>"
                         + "Report date: " + LocalDateTime.now() + "<br>"
+                        + content + "<br>"
                         + "Exception message: " + e.getMessage() + "<br>"
                         + "Exception stack trace: " + Arrays.toString(e.getStackTrace()));
     }
