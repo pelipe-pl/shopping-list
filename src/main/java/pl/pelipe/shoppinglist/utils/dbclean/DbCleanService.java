@@ -64,7 +64,6 @@ public class DbCleanService {
             report.append("cleanedObsoleteItems: ").append(cleanedObsoleteItems).append("<br>");
             report.append("cleanedObsoletePasswordResetTokens: ").append(cleanedObsoletePasswordResetTokens).append("<br>");
             report.append("cleanedTotal: ").append(cleanedTotal).append("<br>");
-            report.append("cleanedTotal: ").append(cleanedTotal).append("<br>");
             report.append("elapsedTime: ").append(elapsedTime).append(" milliseconds");
 
             emailService.sendToAdmin(
