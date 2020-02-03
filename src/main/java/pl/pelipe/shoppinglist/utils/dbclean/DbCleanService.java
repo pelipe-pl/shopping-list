@@ -47,14 +47,14 @@ public class DbCleanService {
     public String cleanObsoleteDbRecords() {
         try {
             long startTime = System.currentTimeMillis();
-            logger.info("Starting cleanObsoleteDbRecords scheduled task.");
+            logger.info("Starting cleanObsoleteDbRecords task.");
             Integer cleanedObsoleteItemLists = cleanObsoleteItemLists();
             Integer cleanedObsoleteItems = cleanObsoleteItems();
             Integer cleanedObsoletePasswordResetTokens = cleanObsoletePasswordResetTokens();
-            Integer cleanedTotal =
-                    cleanedObsoleteItemLists + cleanedObsoleteItems + cleanedObsoletePasswordResetTokens;
+            Integer cleanedItemListLinkShared = cleanItemListLinkShared();
+            Integer cleanedTotal = cleanedObsoleteItemLists + cleanedObsoleteItems + cleanedObsoletePasswordResetTokens + cleanedItemListLinkShared;
             long elapsedTime = System.currentTimeMillis() - startTime;
-            logger.info("Finished cleanObsoleteDbRecords scheduled task.");
+            logger.info("Finished cleanObsoleteDbRecords task.");
             logger.info("Total deleted records: " + cleanedTotal);
             logger.info("Total execution time: " + elapsedTime + " milliseconds");
 
@@ -63,6 +63,7 @@ public class DbCleanService {
             report.append("cleanedObsoleteItemLists: ").append(cleanedObsoleteItemLists).append("<br>");
             report.append("cleanedObsoleteItems: ").append(cleanedObsoleteItems).append("<br>");
             report.append("cleanedObsoletePasswordResetTokens: ").append(cleanedObsoletePasswordResetTokens).append("<br>");
+            report.append("cleanedItemListLinkShared: ").append(cleanedItemListLinkShared).append("<br>");
             report.append("cleanedTotal: ").append(cleanedTotal).append("<br>");
             report.append("elapsedTime: ").append(elapsedTime).append(" milliseconds");
 
@@ -74,9 +75,8 @@ public class DbCleanService {
         } catch (Exception e) {
             logger.error("DbCleanService task failed.", e);
             emailService.sendExceptionNotifyToAdmin(environmentTag + ": " + ADMIN_EMAIL_SUBJECT_DBCLEAN_FAIL, e);
+            return e.getMessage();
         }
-
-        return "";
     }
 
     private Integer cleanObsoleteItems() {
@@ -99,7 +99,15 @@ public class DbCleanService {
         logger.info("PasswordResetToken records: starting cleaning...");
         Integer deletedRecords = passwordResetTokenRepository.deleteAllByExpiryDateBefore(LocalDateTime.now());
         logger.info("PasswordResetToken records: finished cleaning...");
-        logger.info("PasswordResetToken records: " + deletedRecords + " rows.");
+        logger.info("PasswordResetToken records deleted: " + deletedRecords + " rows.");
+        return deletedRecords;
+    }
+
+    private Integer cleanItemListLinkShared() {
+        logger.info("ItemListLinkShared records: starting cleaning...");
+        Integer deletedRecords = itemListLinkSharedRepository.deleteAllByExpiryDateBefore(LocalDateTime.now());
+        logger.info("ItemListLinkShared records: finished cleaning...");
+        logger.info("ItemListLinkShared records: " + deletedRecords + " rows.");
         return deletedRecords;
     }
 }
