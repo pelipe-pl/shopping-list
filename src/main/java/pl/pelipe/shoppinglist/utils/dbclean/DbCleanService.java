@@ -39,7 +39,7 @@ public class DbCleanService {
         this.emailService = emailService;
     }
 
-    @Scheduled(cron = "00 00 20 * * *")
+    @Scheduled(cron = "${dbclean.cron}")
     public void cleanObsoleteDbRecordsScheduled() {
         cleanObsoleteDbRecords();
     }
@@ -67,8 +67,8 @@ public class DbCleanService {
             report.append("cleanedTotal: ").append(cleanedTotal).append("<br>");
             report.append("elapsedTime: ").append(elapsedTime).append(" milliseconds");
 
-            emailService.sendToAdmin(
-                    environmentTag + ": " + ADMIN_EMAIL_SUBJECT_DBCLEAN_SUCCESS, report.toString());
+//            emailService.sendToAdmin(
+//                    environmentTag + ": " + ADMIN_EMAIL_SUBJECT_DBCLEAN_SUCCESS, report.toString());
 
             return report.toString();
 
