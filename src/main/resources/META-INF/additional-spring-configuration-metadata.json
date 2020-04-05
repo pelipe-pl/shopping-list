@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "dbclean.cron",
+      "type": "java.lang.String",
+      "description": "Description for dbclean.cron."
+  }
+] }
