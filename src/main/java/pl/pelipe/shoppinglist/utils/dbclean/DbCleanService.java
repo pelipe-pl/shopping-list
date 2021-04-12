@@ -39,7 +39,7 @@ public class DbCleanService {
         this.emailService = emailService;
     }
 
-    @Scheduled(cron = "${dbclean.cron}")
+//    @Scheduled(cron = "${dbclean.cron}")
     public void cleanObsoleteDbRecordsScheduled() {
         cleanObsoleteDbRecords();
     }
